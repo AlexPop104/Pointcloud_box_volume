@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alex/catkin_ws/src/pcl_demos
+CMAKE_SOURCE_DIR = /home/alex/Volume_Box/catkin_ws/src/pcl_demos
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alex/catkin_ws/src/pcl_demos/build
+CMAKE_BINARY_DIR = /home/alex/Volume_Box/catkin_ws/src/pcl_demos/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/alex/catkin_ws/src/pcl_demos/build/CMakeFiles /home/alex/catkin_ws/src/pcl_demos/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles /home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/alex/catkin_ws/src/pcl_demos/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,95 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named proiectii_final
+# Target rules for targets named create_planes
 
 # Build rule for target.
-proiectii_final: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 proiectii_final
-.PHONY : proiectii_final
+create_planes: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 create_planes
+.PHONY : create_planes
 
 # fast build rule for target.
-proiectii_final/fast:
-	$(MAKE) -f CMakeFiles/proiectii_final.dir/build.make CMakeFiles/proiectii_final.dir/build
-.PHONY : proiectii_final/fast
-
-#=============================================================================
-# Target rules for targets named linii_final
-
-# Build rule for target.
-linii_final: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 linii_final
-.PHONY : linii_final
-
-# fast build rule for target.
-linii_final/fast:
-	$(MAKE) -f CMakeFiles/linii_final.dir/build.make CMakeFiles/linii_final.dir/build
-.PHONY : linii_final/fast
-
-#=============================================================================
-# Target rules for targets named distante_final
-
-# Build rule for target.
-distante_final: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 distante_final
-.PHONY : distante_final
-
-# fast build rule for target.
-distante_final/fast:
-	$(MAKE) -f CMakeFiles/distante_final.dir/build.make CMakeFiles/distante_final.dir/build
-.PHONY : distante_final/fast
-
-#=============================================================================
-# Target rules for targets named get_min_max
-
-# Build rule for target.
-get_min_max: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 get_min_max
-.PHONY : get_min_max
-
-# fast build rule for target.
-get_min_max/fast:
-	$(MAKE) -f CMakeFiles/get_min_max.dir/build.make CMakeFiles/get_min_max.dir/build
-.PHONY : get_min_max/fast
-
-#=============================================================================
-# Target rules for targets named project_inliers_file
-
-# Build rule for target.
-project_inliers_file: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 project_inliers_file
-.PHONY : project_inliers_file
-
-# fast build rule for target.
-project_inliers_file/fast:
-	$(MAKE) -f CMakeFiles/project_inliers_file.dir/build.make CMakeFiles/project_inliers_file.dir/build
-.PHONY : project_inliers_file/fast
-
-#=============================================================================
-# Target rules for targets named keypoints
-
-# Build rule for target.
-keypoints: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 keypoints
-.PHONY : keypoints
-
-# fast build rule for target.
-keypoints/fast:
-	$(MAKE) -f CMakeFiles/keypoints.dir/build.make CMakeFiles/keypoints.dir/build
-.PHONY : keypoints/fast
-
-#=============================================================================
-# Target rules for targets named icp
-
-# Build rule for target.
-icp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 icp
-.PHONY : icp
-
-# fast build rule for target.
-icp/fast:
-	$(MAKE) -f CMakeFiles/icp.dir/build.make CMakeFiles/icp.dir/build
-.PHONY : icp/fast
+create_planes/fast:
+	$(MAKE) -f CMakeFiles/create_planes.dir/build.make CMakeFiles/create_planes.dir/build
+.PHONY : create_planes/fast
 
 #=============================================================================
 # Target rules for targets named openni_grabber
@@ -215,213 +137,43 @@ openni_grabber/fast:
 .PHONY : openni_grabber/fast
 
 #=============================================================================
-# Target rules for targets named plane_segmentation
+# Target rules for targets named linii_final
 
 # Build rule for target.
-plane_segmentation: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 plane_segmentation
-.PHONY : plane_segmentation
+linii_final: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 linii_final
+.PHONY : linii_final
 
 # fast build rule for target.
-plane_segmentation/fast:
-	$(MAKE) -f CMakeFiles/plane_segmentation.dir/build.make CMakeFiles/plane_segmentation.dir/build
-.PHONY : plane_segmentation/fast
+linii_final/fast:
+	$(MAKE) -f CMakeFiles/linii_final.dir/build.make CMakeFiles/linii_final.dir/build
+.PHONY : linii_final/fast
 
 #=============================================================================
-# Target rules for targets named project_inliers
+# Target rules for targets named proiectii_final
 
 # Build rule for target.
-project_inliers: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 project_inliers
-.PHONY : project_inliers
+proiectii_final: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 proiectii_final
+.PHONY : proiectii_final
 
 # fast build rule for target.
-project_inliers/fast:
-	$(MAKE) -f CMakeFiles/project_inliers.dir/build.make CMakeFiles/project_inliers.dir/build
-.PHONY : project_inliers/fast
+proiectii_final/fast:
+	$(MAKE) -f CMakeFiles/proiectii_final.dir/build.make CMakeFiles/proiectii_final.dir/build
+.PHONY : proiectii_final/fast
 
 #=============================================================================
-# Target rules for targets named filtering
+# Target rules for targets named distante_final
 
 # Build rule for target.
-filtering: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 filtering
-.PHONY : filtering
+distante_final: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 distante_final
+.PHONY : distante_final
 
 # fast build rule for target.
-filtering/fast:
-	$(MAKE) -f CMakeFiles/filtering.dir/build.make CMakeFiles/filtering.dir/build
-.PHONY : filtering/fast
-
-#=============================================================================
-# Target rules for targets named create_planes
-
-# Build rule for target.
-create_planes: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 create_planes
-.PHONY : create_planes
-
-# fast build rule for target.
-create_planes/fast:
-	$(MAKE) -f CMakeFiles/create_planes.dir/build.make CMakeFiles/create_planes.dir/build
-.PHONY : create_planes/fast
-
-#=============================================================================
-# Target rules for targets named octree
-
-# Build rule for target.
-octree: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 octree
-.PHONY : octree
-
-# fast build rule for target.
-octree/fast:
-	$(MAKE) -f CMakeFiles/octree.dir/build.make CMakeFiles/octree.dir/build
-.PHONY : octree/fast
-
-#=============================================================================
-# Target rules for targets named write_pcd
-
-# Build rule for target.
-write_pcd: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 write_pcd
-.PHONY : write_pcd
-
-# fast build rule for target.
-write_pcd/fast:
-	$(MAKE) -f CMakeFiles/write_pcd.dir/build.make CMakeFiles/write_pcd.dir/build
-.PHONY : write_pcd/fast
-
-#=============================================================================
-# Target rules for targets named compute_normals
-
-# Build rule for target.
-compute_normals: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 compute_normals
-.PHONY : compute_normals
-
-# fast build rule for target.
-compute_normals/fast:
-	$(MAKE) -f CMakeFiles/compute_normals.dir/build.make CMakeFiles/compute_normals.dir/build
-.PHONY : compute_normals/fast
-
-#=============================================================================
-# Target rules for targets named read_pcd
-
-# Build rule for target.
-read_pcd: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 read_pcd
-.PHONY : read_pcd
-
-# fast build rule for target.
-read_pcd/fast:
-	$(MAKE) -f CMakeFiles/read_pcd.dir/build.make CMakeFiles/read_pcd.dir/build
-.PHONY : read_pcd/fast
-
-#=============================================================================
-# Target rules for targets named euclidean_cluster_extraction
-
-# Build rule for target.
-euclidean_cluster_extraction: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 euclidean_cluster_extraction
-.PHONY : euclidean_cluster_extraction
-
-# fast build rule for target.
-euclidean_cluster_extraction/fast:
-	$(MAKE) -f CMakeFiles/euclidean_cluster_extraction.dir/build.make CMakeFiles/euclidean_cluster_extraction.dir/build
-.PHONY : euclidean_cluster_extraction/fast
-
-#=============================================================================
-# Target rules for targets named project_inliers_concat
-
-# Build rule for target.
-project_inliers_concat: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 project_inliers_concat
-.PHONY : project_inliers_concat
-
-# fast build rule for target.
-project_inliers_concat/fast:
-	$(MAKE) -f CMakeFiles/project_inliers_concat.dir/build.make CMakeFiles/project_inliers_concat.dir/build
-.PHONY : project_inliers_concat/fast
-
-#=============================================================================
-# Target rules for targets named sample_consensus
-
-# Build rule for target.
-sample_consensus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sample_consensus
-.PHONY : sample_consensus
-
-# fast build rule for target.
-sample_consensus/fast:
-	$(MAKE) -f CMakeFiles/sample_consensus.dir/build.make CMakeFiles/sample_consensus.dir/build
-.PHONY : sample_consensus/fast
-
-#=============================================================================
-# Target rules for targets named kdtree
-
-# Build rule for target.
-kdtree: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 kdtree
-.PHONY : kdtree
-
-# fast build rule for target.
-kdtree/fast:
-	$(MAKE) -f CMakeFiles/kdtree.dir/build.make CMakeFiles/kdtree.dir/build
-.PHONY : kdtree/fast
-
-#=============================================================================
-# Target rules for targets named template_matching
-
-# Build rule for target.
-template_matching: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 template_matching
-.PHONY : template_matching
-
-# fast build rule for target.
-template_matching/fast:
-	$(MAKE) -f CMakeFiles/template_matching.dir/build.make CMakeFiles/template_matching.dir/build
-.PHONY : template_matching/fast
-
-#=============================================================================
-# Target rules for targets named project_lines
-
-# Build rule for target.
-project_lines: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 project_lines
-.PHONY : project_lines
-
-# fast build rule for target.
-project_lines/fast:
-	$(MAKE) -f CMakeFiles/project_lines.dir/build.make CMakeFiles/project_lines.dir/build
-.PHONY : project_lines/fast
-
-3D_features/compute_normals.o: 3D_features/compute_normals.cpp.o
-
-.PHONY : 3D_features/compute_normals.o
-
-# target to build an object file
-3D_features/compute_normals.cpp.o:
-	$(MAKE) -f CMakeFiles/compute_normals.dir/build.make CMakeFiles/compute_normals.dir/3D_features/compute_normals.cpp.o
-.PHONY : 3D_features/compute_normals.cpp.o
-
-3D_features/compute_normals.i: 3D_features/compute_normals.cpp.i
-
-.PHONY : 3D_features/compute_normals.i
-
-# target to preprocess a source file
-3D_features/compute_normals.cpp.i:
-	$(MAKE) -f CMakeFiles/compute_normals.dir/build.make CMakeFiles/compute_normals.dir/3D_features/compute_normals.cpp.i
-.PHONY : 3D_features/compute_normals.cpp.i
-
-3D_features/compute_normals.s: 3D_features/compute_normals.cpp.s
-
-.PHONY : 3D_features/compute_normals.s
-
-# target to generate assembly for a file
-3D_features/compute_normals.cpp.s:
-	$(MAKE) -f CMakeFiles/compute_normals.dir/build.make CMakeFiles/compute_normals.dir/3D_features/compute_normals.cpp.s
-.PHONY : 3D_features/compute_normals.cpp.s
+distante_final/fast:
+	$(MAKE) -f CMakeFiles/distante_final.dir/build.make CMakeFiles/distante_final.dir/build
+.PHONY : distante_final/fast
 
 Final/create_planes.o: Final/create_planes.cpp.o
 
@@ -531,114 +283,6 @@ Final/proiectii_final.cpp.s:
 	$(MAKE) -f CMakeFiles/proiectii_final.dir/build.make CMakeFiles/proiectii_final.dir/Final/proiectii_final.cpp.s
 .PHONY : Final/proiectii_final.cpp.s
 
-filtering/filtering.o: filtering/filtering.cpp.o
-
-.PHONY : filtering/filtering.o
-
-# target to build an object file
-filtering/filtering.cpp.o:
-	$(MAKE) -f CMakeFiles/filtering.dir/build.make CMakeFiles/filtering.dir/filtering/filtering.cpp.o
-.PHONY : filtering/filtering.cpp.o
-
-filtering/filtering.i: filtering/filtering.cpp.i
-
-.PHONY : filtering/filtering.i
-
-# target to preprocess a source file
-filtering/filtering.cpp.i:
-	$(MAKE) -f CMakeFiles/filtering.dir/build.make CMakeFiles/filtering.dir/filtering/filtering.cpp.i
-.PHONY : filtering/filtering.cpp.i
-
-filtering/filtering.s: filtering/filtering.cpp.s
-
-.PHONY : filtering/filtering.s
-
-# target to generate assembly for a file
-filtering/filtering.cpp.s:
-	$(MAKE) -f CMakeFiles/filtering.dir/build.make CMakeFiles/filtering.dir/filtering/filtering.cpp.s
-.PHONY : filtering/filtering.cpp.s
-
-io/read_pcd.o: io/read_pcd.cpp.o
-
-.PHONY : io/read_pcd.o
-
-# target to build an object file
-io/read_pcd.cpp.o:
-	$(MAKE) -f CMakeFiles/read_pcd.dir/build.make CMakeFiles/read_pcd.dir/io/read_pcd.cpp.o
-.PHONY : io/read_pcd.cpp.o
-
-io/read_pcd.i: io/read_pcd.cpp.i
-
-.PHONY : io/read_pcd.i
-
-# target to preprocess a source file
-io/read_pcd.cpp.i:
-	$(MAKE) -f CMakeFiles/read_pcd.dir/build.make CMakeFiles/read_pcd.dir/io/read_pcd.cpp.i
-.PHONY : io/read_pcd.cpp.i
-
-io/read_pcd.s: io/read_pcd.cpp.s
-
-.PHONY : io/read_pcd.s
-
-# target to generate assembly for a file
-io/read_pcd.cpp.s:
-	$(MAKE) -f CMakeFiles/read_pcd.dir/build.make CMakeFiles/read_pcd.dir/io/read_pcd.cpp.s
-.PHONY : io/read_pcd.cpp.s
-
-io/write_pcd.o: io/write_pcd.cpp.o
-
-.PHONY : io/write_pcd.o
-
-# target to build an object file
-io/write_pcd.cpp.o:
-	$(MAKE) -f CMakeFiles/write_pcd.dir/build.make CMakeFiles/write_pcd.dir/io/write_pcd.cpp.o
-.PHONY : io/write_pcd.cpp.o
-
-io/write_pcd.i: io/write_pcd.cpp.i
-
-.PHONY : io/write_pcd.i
-
-# target to preprocess a source file
-io/write_pcd.cpp.i:
-	$(MAKE) -f CMakeFiles/write_pcd.dir/build.make CMakeFiles/write_pcd.dir/io/write_pcd.cpp.i
-.PHONY : io/write_pcd.cpp.i
-
-io/write_pcd.s: io/write_pcd.cpp.s
-
-.PHONY : io/write_pcd.s
-
-# target to generate assembly for a file
-io/write_pcd.cpp.s:
-	$(MAKE) -f CMakeFiles/write_pcd.dir/build.make CMakeFiles/write_pcd.dir/io/write_pcd.cpp.s
-.PHONY : io/write_pcd.cpp.s
-
-keypoints/keypoints.o: keypoints/keypoints.cpp.o
-
-.PHONY : keypoints/keypoints.o
-
-# target to build an object file
-keypoints/keypoints.cpp.o:
-	$(MAKE) -f CMakeFiles/keypoints.dir/build.make CMakeFiles/keypoints.dir/keypoints/keypoints.cpp.o
-.PHONY : keypoints/keypoints.cpp.o
-
-keypoints/keypoints.i: keypoints/keypoints.cpp.i
-
-.PHONY : keypoints/keypoints.i
-
-# target to preprocess a source file
-keypoints/keypoints.cpp.i:
-	$(MAKE) -f CMakeFiles/keypoints.dir/build.make CMakeFiles/keypoints.dir/keypoints/keypoints.cpp.i
-.PHONY : keypoints/keypoints.cpp.i
-
-keypoints/keypoints.s: keypoints/keypoints.cpp.s
-
-.PHONY : keypoints/keypoints.s
-
-# target to generate assembly for a file
-keypoints/keypoints.cpp.s:
-	$(MAKE) -f CMakeFiles/keypoints.dir/build.make CMakeFiles/keypoints.dir/keypoints/keypoints.cpp.s
-.PHONY : keypoints/keypoints.cpp.s
-
 openni_grabber/openni_grabber.o: openni_grabber/openni_grabber.cpp.o
 
 .PHONY : openni_grabber/openni_grabber.o
@@ -666,330 +310,6 @@ openni_grabber/openni_grabber.cpp.s:
 	$(MAKE) -f CMakeFiles/openni_grabber.dir/build.make CMakeFiles/openni_grabber.dir/openni_grabber/openni_grabber.cpp.s
 .PHONY : openni_grabber/openni_grabber.cpp.s
 
-project_inliers/get_min_max.o: project_inliers/get_min_max.cpp.o
-
-.PHONY : project_inliers/get_min_max.o
-
-# target to build an object file
-project_inliers/get_min_max.cpp.o:
-	$(MAKE) -f CMakeFiles/get_min_max.dir/build.make CMakeFiles/get_min_max.dir/project_inliers/get_min_max.cpp.o
-.PHONY : project_inliers/get_min_max.cpp.o
-
-project_inliers/get_min_max.i: project_inliers/get_min_max.cpp.i
-
-.PHONY : project_inliers/get_min_max.i
-
-# target to preprocess a source file
-project_inliers/get_min_max.cpp.i:
-	$(MAKE) -f CMakeFiles/get_min_max.dir/build.make CMakeFiles/get_min_max.dir/project_inliers/get_min_max.cpp.i
-.PHONY : project_inliers/get_min_max.cpp.i
-
-project_inliers/get_min_max.s: project_inliers/get_min_max.cpp.s
-
-.PHONY : project_inliers/get_min_max.s
-
-# target to generate assembly for a file
-project_inliers/get_min_max.cpp.s:
-	$(MAKE) -f CMakeFiles/get_min_max.dir/build.make CMakeFiles/get_min_max.dir/project_inliers/get_min_max.cpp.s
-.PHONY : project_inliers/get_min_max.cpp.s
-
-project_inliers/project_inliers.o: project_inliers/project_inliers.cpp.o
-
-.PHONY : project_inliers/project_inliers.o
-
-# target to build an object file
-project_inliers/project_inliers.cpp.o:
-	$(MAKE) -f CMakeFiles/project_inliers.dir/build.make CMakeFiles/project_inliers.dir/project_inliers/project_inliers.cpp.o
-.PHONY : project_inliers/project_inliers.cpp.o
-
-project_inliers/project_inliers.i: project_inliers/project_inliers.cpp.i
-
-.PHONY : project_inliers/project_inliers.i
-
-# target to preprocess a source file
-project_inliers/project_inliers.cpp.i:
-	$(MAKE) -f CMakeFiles/project_inliers.dir/build.make CMakeFiles/project_inliers.dir/project_inliers/project_inliers.cpp.i
-.PHONY : project_inliers/project_inliers.cpp.i
-
-project_inliers/project_inliers.s: project_inliers/project_inliers.cpp.s
-
-.PHONY : project_inliers/project_inliers.s
-
-# target to generate assembly for a file
-project_inliers/project_inliers.cpp.s:
-	$(MAKE) -f CMakeFiles/project_inliers.dir/build.make CMakeFiles/project_inliers.dir/project_inliers/project_inliers.cpp.s
-.PHONY : project_inliers/project_inliers.cpp.s
-
-project_inliers/project_inliers_concat.o: project_inliers/project_inliers_concat.cpp.o
-
-.PHONY : project_inliers/project_inliers_concat.o
-
-# target to build an object file
-project_inliers/project_inliers_concat.cpp.o:
-	$(MAKE) -f CMakeFiles/project_inliers_concat.dir/build.make CMakeFiles/project_inliers_concat.dir/project_inliers/project_inliers_concat.cpp.o
-.PHONY : project_inliers/project_inliers_concat.cpp.o
-
-project_inliers/project_inliers_concat.i: project_inliers/project_inliers_concat.cpp.i
-
-.PHONY : project_inliers/project_inliers_concat.i
-
-# target to preprocess a source file
-project_inliers/project_inliers_concat.cpp.i:
-	$(MAKE) -f CMakeFiles/project_inliers_concat.dir/build.make CMakeFiles/project_inliers_concat.dir/project_inliers/project_inliers_concat.cpp.i
-.PHONY : project_inliers/project_inliers_concat.cpp.i
-
-project_inliers/project_inliers_concat.s: project_inliers/project_inliers_concat.cpp.s
-
-.PHONY : project_inliers/project_inliers_concat.s
-
-# target to generate assembly for a file
-project_inliers/project_inliers_concat.cpp.s:
-	$(MAKE) -f CMakeFiles/project_inliers_concat.dir/build.make CMakeFiles/project_inliers_concat.dir/project_inliers/project_inliers_concat.cpp.s
-.PHONY : project_inliers/project_inliers_concat.cpp.s
-
-project_inliers/project_inliers_file.o: project_inliers/project_inliers_file.cpp.o
-
-.PHONY : project_inliers/project_inliers_file.o
-
-# target to build an object file
-project_inliers/project_inliers_file.cpp.o:
-	$(MAKE) -f CMakeFiles/project_inliers_file.dir/build.make CMakeFiles/project_inliers_file.dir/project_inliers/project_inliers_file.cpp.o
-.PHONY : project_inliers/project_inliers_file.cpp.o
-
-project_inliers/project_inliers_file.i: project_inliers/project_inliers_file.cpp.i
-
-.PHONY : project_inliers/project_inliers_file.i
-
-# target to preprocess a source file
-project_inliers/project_inliers_file.cpp.i:
-	$(MAKE) -f CMakeFiles/project_inliers_file.dir/build.make CMakeFiles/project_inliers_file.dir/project_inliers/project_inliers_file.cpp.i
-.PHONY : project_inliers/project_inliers_file.cpp.i
-
-project_inliers/project_inliers_file.s: project_inliers/project_inliers_file.cpp.s
-
-.PHONY : project_inliers/project_inliers_file.s
-
-# target to generate assembly for a file
-project_inliers/project_inliers_file.cpp.s:
-	$(MAKE) -f CMakeFiles/project_inliers_file.dir/build.make CMakeFiles/project_inliers_file.dir/project_inliers/project_inliers_file.cpp.s
-.PHONY : project_inliers/project_inliers_file.cpp.s
-
-project_inliers/project_lines.o: project_inliers/project_lines.cpp.o
-
-.PHONY : project_inliers/project_lines.o
-
-# target to build an object file
-project_inliers/project_lines.cpp.o:
-	$(MAKE) -f CMakeFiles/project_lines.dir/build.make CMakeFiles/project_lines.dir/project_inliers/project_lines.cpp.o
-.PHONY : project_inliers/project_lines.cpp.o
-
-project_inliers/project_lines.i: project_inliers/project_lines.cpp.i
-
-.PHONY : project_inliers/project_lines.i
-
-# target to preprocess a source file
-project_inliers/project_lines.cpp.i:
-	$(MAKE) -f CMakeFiles/project_lines.dir/build.make CMakeFiles/project_lines.dir/project_inliers/project_lines.cpp.i
-.PHONY : project_inliers/project_lines.cpp.i
-
-project_inliers/project_lines.s: project_inliers/project_lines.cpp.s
-
-.PHONY : project_inliers/project_lines.s
-
-# target to generate assembly for a file
-project_inliers/project_lines.cpp.s:
-	$(MAKE) -f CMakeFiles/project_lines.dir/build.make CMakeFiles/project_lines.dir/project_inliers/project_lines.cpp.s
-.PHONY : project_inliers/project_lines.cpp.s
-
-registration/icp.o: registration/icp.cpp.o
-
-.PHONY : registration/icp.o
-
-# target to build an object file
-registration/icp.cpp.o:
-	$(MAKE) -f CMakeFiles/icp.dir/build.make CMakeFiles/icp.dir/registration/icp.cpp.o
-.PHONY : registration/icp.cpp.o
-
-registration/icp.i: registration/icp.cpp.i
-
-.PHONY : registration/icp.i
-
-# target to preprocess a source file
-registration/icp.cpp.i:
-	$(MAKE) -f CMakeFiles/icp.dir/build.make CMakeFiles/icp.dir/registration/icp.cpp.i
-.PHONY : registration/icp.cpp.i
-
-registration/icp.s: registration/icp.cpp.s
-
-.PHONY : registration/icp.s
-
-# target to generate assembly for a file
-registration/icp.cpp.s:
-	$(MAKE) -f CMakeFiles/icp.dir/build.make CMakeFiles/icp.dir/registration/icp.cpp.s
-.PHONY : registration/icp.cpp.s
-
-registration/template_matching.o: registration/template_matching.cpp.o
-
-.PHONY : registration/template_matching.o
-
-# target to build an object file
-registration/template_matching.cpp.o:
-	$(MAKE) -f CMakeFiles/template_matching.dir/build.make CMakeFiles/template_matching.dir/registration/template_matching.cpp.o
-.PHONY : registration/template_matching.cpp.o
-
-registration/template_matching.i: registration/template_matching.cpp.i
-
-.PHONY : registration/template_matching.i
-
-# target to preprocess a source file
-registration/template_matching.cpp.i:
-	$(MAKE) -f CMakeFiles/template_matching.dir/build.make CMakeFiles/template_matching.dir/registration/template_matching.cpp.i
-.PHONY : registration/template_matching.cpp.i
-
-registration/template_matching.s: registration/template_matching.cpp.s
-
-.PHONY : registration/template_matching.s
-
-# target to generate assembly for a file
-registration/template_matching.cpp.s:
-	$(MAKE) -f CMakeFiles/template_matching.dir/build.make CMakeFiles/template_matching.dir/registration/template_matching.cpp.s
-.PHONY : registration/template_matching.cpp.s
-
-sample_consensus/sample_consensus.o: sample_consensus/sample_consensus.cpp.o
-
-.PHONY : sample_consensus/sample_consensus.o
-
-# target to build an object file
-sample_consensus/sample_consensus.cpp.o:
-	$(MAKE) -f CMakeFiles/sample_consensus.dir/build.make CMakeFiles/sample_consensus.dir/sample_consensus/sample_consensus.cpp.o
-.PHONY : sample_consensus/sample_consensus.cpp.o
-
-sample_consensus/sample_consensus.i: sample_consensus/sample_consensus.cpp.i
-
-.PHONY : sample_consensus/sample_consensus.i
-
-# target to preprocess a source file
-sample_consensus/sample_consensus.cpp.i:
-	$(MAKE) -f CMakeFiles/sample_consensus.dir/build.make CMakeFiles/sample_consensus.dir/sample_consensus/sample_consensus.cpp.i
-.PHONY : sample_consensus/sample_consensus.cpp.i
-
-sample_consensus/sample_consensus.s: sample_consensus/sample_consensus.cpp.s
-
-.PHONY : sample_consensus/sample_consensus.s
-
-# target to generate assembly for a file
-sample_consensus/sample_consensus.cpp.s:
-	$(MAKE) -f CMakeFiles/sample_consensus.dir/build.make CMakeFiles/sample_consensus.dir/sample_consensus/sample_consensus.cpp.s
-.PHONY : sample_consensus/sample_consensus.cpp.s
-
-segmentation/euclidean_cluster_extraction.o: segmentation/euclidean_cluster_extraction.cpp.o
-
-.PHONY : segmentation/euclidean_cluster_extraction.o
-
-# target to build an object file
-segmentation/euclidean_cluster_extraction.cpp.o:
-	$(MAKE) -f CMakeFiles/euclidean_cluster_extraction.dir/build.make CMakeFiles/euclidean_cluster_extraction.dir/segmentation/euclidean_cluster_extraction.cpp.o
-.PHONY : segmentation/euclidean_cluster_extraction.cpp.o
-
-segmentation/euclidean_cluster_extraction.i: segmentation/euclidean_cluster_extraction.cpp.i
-
-.PHONY : segmentation/euclidean_cluster_extraction.i
-
-# target to preprocess a source file
-segmentation/euclidean_cluster_extraction.cpp.i:
-	$(MAKE) -f CMakeFiles/euclidean_cluster_extraction.dir/build.make CMakeFiles/euclidean_cluster_extraction.dir/segmentation/euclidean_cluster_extraction.cpp.i
-.PHONY : segmentation/euclidean_cluster_extraction.cpp.i
-
-segmentation/euclidean_cluster_extraction.s: segmentation/euclidean_cluster_extraction.cpp.s
-
-.PHONY : segmentation/euclidean_cluster_extraction.s
-
-# target to generate assembly for a file
-segmentation/euclidean_cluster_extraction.cpp.s:
-	$(MAKE) -f CMakeFiles/euclidean_cluster_extraction.dir/build.make CMakeFiles/euclidean_cluster_extraction.dir/segmentation/euclidean_cluster_extraction.cpp.s
-.PHONY : segmentation/euclidean_cluster_extraction.cpp.s
-
-segmentation/plane_segmentation.o: segmentation/plane_segmentation.cpp.o
-
-.PHONY : segmentation/plane_segmentation.o
-
-# target to build an object file
-segmentation/plane_segmentation.cpp.o:
-	$(MAKE) -f CMakeFiles/plane_segmentation.dir/build.make CMakeFiles/plane_segmentation.dir/segmentation/plane_segmentation.cpp.o
-.PHONY : segmentation/plane_segmentation.cpp.o
-
-segmentation/plane_segmentation.i: segmentation/plane_segmentation.cpp.i
-
-.PHONY : segmentation/plane_segmentation.i
-
-# target to preprocess a source file
-segmentation/plane_segmentation.cpp.i:
-	$(MAKE) -f CMakeFiles/plane_segmentation.dir/build.make CMakeFiles/plane_segmentation.dir/segmentation/plane_segmentation.cpp.i
-.PHONY : segmentation/plane_segmentation.cpp.i
-
-segmentation/plane_segmentation.s: segmentation/plane_segmentation.cpp.s
-
-.PHONY : segmentation/plane_segmentation.s
-
-# target to generate assembly for a file
-segmentation/plane_segmentation.cpp.s:
-	$(MAKE) -f CMakeFiles/plane_segmentation.dir/build.make CMakeFiles/plane_segmentation.dir/segmentation/plane_segmentation.cpp.s
-.PHONY : segmentation/plane_segmentation.cpp.s
-
-trees/kdtree.o: trees/kdtree.cpp.o
-
-.PHONY : trees/kdtree.o
-
-# target to build an object file
-trees/kdtree.cpp.o:
-	$(MAKE) -f CMakeFiles/kdtree.dir/build.make CMakeFiles/kdtree.dir/trees/kdtree.cpp.o
-.PHONY : trees/kdtree.cpp.o
-
-trees/kdtree.i: trees/kdtree.cpp.i
-
-.PHONY : trees/kdtree.i
-
-# target to preprocess a source file
-trees/kdtree.cpp.i:
-	$(MAKE) -f CMakeFiles/kdtree.dir/build.make CMakeFiles/kdtree.dir/trees/kdtree.cpp.i
-.PHONY : trees/kdtree.cpp.i
-
-trees/kdtree.s: trees/kdtree.cpp.s
-
-.PHONY : trees/kdtree.s
-
-# target to generate assembly for a file
-trees/kdtree.cpp.s:
-	$(MAKE) -f CMakeFiles/kdtree.dir/build.make CMakeFiles/kdtree.dir/trees/kdtree.cpp.s
-.PHONY : trees/kdtree.cpp.s
-
-trees/octree.o: trees/octree.cpp.o
-
-.PHONY : trees/octree.o
-
-# target to build an object file
-trees/octree.cpp.o:
-	$(MAKE) -f CMakeFiles/octree.dir/build.make CMakeFiles/octree.dir/trees/octree.cpp.o
-.PHONY : trees/octree.cpp.o
-
-trees/octree.i: trees/octree.cpp.i
-
-.PHONY : trees/octree.i
-
-# target to preprocess a source file
-trees/octree.cpp.i:
-	$(MAKE) -f CMakeFiles/octree.dir/build.make CMakeFiles/octree.dir/trees/octree.cpp.i
-.PHONY : trees/octree.cpp.i
-
-trees/octree.s: trees/octree.cpp.s
-
-.PHONY : trees/octree.s
-
-# target to generate assembly for a file
-trees/octree.cpp.s:
-	$(MAKE) -f CMakeFiles/octree.dir/build.make CMakeFiles/octree.dir/trees/octree.cpp.s
-.PHONY : trees/octree.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -997,32 +317,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... proiectii_final"
-	@echo "... linii_final"
-	@echo "... distante_final"
-	@echo "... get_min_max"
-	@echo "... project_inliers_file"
-	@echo "... keypoints"
-	@echo "... icp"
-	@echo "... openni_grabber"
-	@echo "... edit_cache"
-	@echo "... plane_segmentation"
-	@echo "... project_inliers"
-	@echo "... filtering"
 	@echo "... create_planes"
-	@echo "... octree"
-	@echo "... write_pcd"
-	@echo "... compute_normals"
-	@echo "... read_pcd"
-	@echo "... euclidean_cluster_extraction"
-	@echo "... project_inliers_concat"
-	@echo "... sample_consensus"
-	@echo "... kdtree"
-	@echo "... template_matching"
-	@echo "... project_lines"
-	@echo "... 3D_features/compute_normals.o"
-	@echo "... 3D_features/compute_normals.i"
-	@echo "... 3D_features/compute_normals.s"
+	@echo "... openni_grabber"
+	@echo "... linii_final"
+	@echo "... proiectii_final"
+	@echo "... distante_final"
+	@echo "... edit_cache"
 	@echo "... Final/create_planes.o"
 	@echo "... Final/create_planes.i"
 	@echo "... Final/create_planes.s"
@@ -1035,57 +335,9 @@ help:
 	@echo "... Final/proiectii_final.o"
 	@echo "... Final/proiectii_final.i"
 	@echo "... Final/proiectii_final.s"
-	@echo "... filtering/filtering.o"
-	@echo "... filtering/filtering.i"
-	@echo "... filtering/filtering.s"
-	@echo "... io/read_pcd.o"
-	@echo "... io/read_pcd.i"
-	@echo "... io/read_pcd.s"
-	@echo "... io/write_pcd.o"
-	@echo "... io/write_pcd.i"
-	@echo "... io/write_pcd.s"
-	@echo "... keypoints/keypoints.o"
-	@echo "... keypoints/keypoints.i"
-	@echo "... keypoints/keypoints.s"
 	@echo "... openni_grabber/openni_grabber.o"
 	@echo "... openni_grabber/openni_grabber.i"
 	@echo "... openni_grabber/openni_grabber.s"
-	@echo "... project_inliers/get_min_max.o"
-	@echo "... project_inliers/get_min_max.i"
-	@echo "... project_inliers/get_min_max.s"
-	@echo "... project_inliers/project_inliers.o"
-	@echo "... project_inliers/project_inliers.i"
-	@echo "... project_inliers/project_inliers.s"
-	@echo "... project_inliers/project_inliers_concat.o"
-	@echo "... project_inliers/project_inliers_concat.i"
-	@echo "... project_inliers/project_inliers_concat.s"
-	@echo "... project_inliers/project_inliers_file.o"
-	@echo "... project_inliers/project_inliers_file.i"
-	@echo "... project_inliers/project_inliers_file.s"
-	@echo "... project_inliers/project_lines.o"
-	@echo "... project_inliers/project_lines.i"
-	@echo "... project_inliers/project_lines.s"
-	@echo "... registration/icp.o"
-	@echo "... registration/icp.i"
-	@echo "... registration/icp.s"
-	@echo "... registration/template_matching.o"
-	@echo "... registration/template_matching.i"
-	@echo "... registration/template_matching.s"
-	@echo "... sample_consensus/sample_consensus.o"
-	@echo "... sample_consensus/sample_consensus.i"
-	@echo "... sample_consensus/sample_consensus.s"
-	@echo "... segmentation/euclidean_cluster_extraction.o"
-	@echo "... segmentation/euclidean_cluster_extraction.i"
-	@echo "... segmentation/euclidean_cluster_extraction.s"
-	@echo "... segmentation/plane_segmentation.o"
-	@echo "... segmentation/plane_segmentation.i"
-	@echo "... segmentation/plane_segmentation.s"
-	@echo "... trees/kdtree.o"
-	@echo "... trees/kdtree.i"
-	@echo "... trees/kdtree.s"
-	@echo "... trees/octree.o"
-	@echo "... trees/octree.i"
-	@echo "... trees/octree.s"
 .PHONY : help
 
 

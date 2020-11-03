@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/alex/catkin_ws/src/pcl_demos/openni_grabber/openni_grabber.cpp
+/home/alex/Volume_Box/catkin_ws/src/pcl_demos/openni_grabber/openni_grabber.cpp
 pcl/io/openni_grabber.h
 -
 pcl/visualization/cloud_viewer.h
