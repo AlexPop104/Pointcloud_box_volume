@@ -17,6 +17,7 @@ target_link_libraries (openni_grabber ${PCL_LIBRARIES})
 add_executable (create_planes Final/create_planes.cpp)
 target_link_libraries (create_planes ${PCL_LIBRARIES})
 
+
 add_executable (distante_final Final/distante_final.cpp)
 target_link_libraries (distante_final ${PCL_LIBRARIES})
 
@@ -25,3 +26,12 @@ target_link_libraries (linii_final ${PCL_LIBRARIES})
 
 add_executable (proiectii_final Final/proiectii_final.cpp)
 target_link_libraries (proiectii_final ${PCL_LIBRARIES})
+
+add_executable (intersectii_find_line Intersectii/intersectii_find_line.cpp)
+target_link_libraries (intersectii_find_line ${PCL_LIBRARIES})
+
+add_executable (intersectii_find_line_all Intersectii/intersectii_find_line_all.cpp)
+target_link_libraries (intersectii_find_line_all ${PCL_LIBRARIES})
+
+add_executable (intersectii_find_point Intersectii/intersectii_find_point.cpp)
+target_link_libraries (intersectii_find_point ${PCL_LIBRARIES})

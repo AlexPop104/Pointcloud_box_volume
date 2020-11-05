@@ -17,6 +17,12 @@ main (int argc, char** argv)
 {
 	
   pcl::PCDReader reader;
+
+// Read in the cloud data
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>), cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
+  reader.read ("vedere.pcd", *cloud);
+  std::cout << "PointCloud before filtering has: " << cloud->points.size () << " data points." << std::endl; //*
+
   
 for(int t=1;t<4;t++){	
 	
@@ -24,10 +30,7 @@ for(int t=1;t<4;t++){
   
   //Partea de Extragere
 		
-  // Read in the cloud data
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>), cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
-  reader.read ("vedere.pcd", *cloud);
-  std::cout << "PointCloud before filtering has: " << cloud->points.size () << " data points." << std::endl; //*
+  
 
   // Create the filtering object: downsample the dataset using a leaf size of 1cm
   pcl::VoxelGrid<pcl::PointXYZ> vg;
@@ -99,10 +102,14 @@ for(int t=1;t<4;t++){
     cloud_cluster->height = 1;
     cloud_cluster->is_dense = true;
 
+    /*
     std::cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
     std::stringstream ss;
     ss << "vedere" << ".pcd";
     writer.write<pcl::PointXYZ> (ss.str (), *cloud_cluster, false); //*
+
+    */
+    cloud=cloud_cluster;
   }
   ////////////////////////////////////
   
@@ -113,7 +120,7 @@ for(int t=1;t<4;t++){
   pcl::PointCloud<pcl::PointXYZ>::Ptr outliers (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr outliers_segmented (new pcl::PointCloud<pcl::PointXYZ>);
   
-  reader.read ("vedere.pcd", *cloud);
+  //reader.read ("vedere.pcd", *cloud);
   
  
   // Optional

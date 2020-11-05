@@ -145,16 +145,16 @@ for(int q=0;q<3;q++){
 int pozitie_min=Puncte[0][t];
 int pozitie_max=Puncte[1][t];
 
-//std::cout<<"Pozitie punct minim:"<<  pozitie_min  <<"\n";
-//std::cout<<"Pozitie punctul maxim:"<<pozitie_max;
+std::cout<<"Pozitie punct minim:"<<  pozitie_min  <<"\n";
+std::cout<<"Pozitie punctul maxim:"<<pozitie_max;
 
-//std::cout<<"\n";
+std::cout<<"\n";
 
 
-//std::cout<<"Coordonate punct minim:"<<cloud->points[pozitie_min].x<<" "<<cloud->points[pozitie_min].y<<" "<<cloud->points[pozitie_min].z<<"\n";
-//std::cout<<"Coordonate punct maxim:"<<cloud->points[pozitie_max].x<<" "<<cloud->points[pozitie_max].y<<" "<<cloud->points[pozitie_max].z;
+std::cout<<"Coordonate punct minim:"<<cloud->points[pozitie_min].x<<" "<<cloud->points[pozitie_min].y<<" "<<cloud->points[pozitie_min].z<<"\n";
+std::cout<<"Coordonate punct maxim:"<<cloud->points[pozitie_max].x<<" "<<cloud->points[pozitie_max].y<<" "<<cloud->points[pozitie_max].z;
 
-//std::cout<<"\n";
+std::cout<<"\n";
 
 float distanta;
 
@@ -174,6 +174,17 @@ distanta_z= distanta_z*distanta_z;
 std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
 
 std::cout<<"\n";
+std::cout<<"Componenta x la patrat:"<<distanta_x<<"\n";
+std::cout<<"Componenta y la patrat:"<<distanta_y<<"\n";
+std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
+std::cout<<"\n";
+
+distanta=distanta_x+distanta_y+distanta_z;
+
+std::cout<<"Distanta inainte de SQRT "<<i<<" "<<j<<" "<<distanta<<"\n";
+
+std::cout<<"\n";
+
 
 distanta=sqrt(distanta_x+distanta_y+distanta_z);
 
