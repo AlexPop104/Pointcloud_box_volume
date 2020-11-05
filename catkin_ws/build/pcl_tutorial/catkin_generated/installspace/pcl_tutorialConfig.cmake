@@ -67,14 +67,14 @@ set(pcl_tutorial_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(pcl_tutorial_SOURCE_PREFIX /home/alex/Volume_Box/catkin_ws/src/pcl_tutorial)
-  set(pcl_tutorial_DEVEL_PREFIX /home/alex/Volume_Box/catkin_ws/devel)
+  set(pcl_tutorial_SOURCE_PREFIX /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/pcl_tutorial)
+  set(pcl_tutorial_DEVEL_PREFIX /home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel)
   set(pcl_tutorial_INSTALL_PREFIX "")
   set(pcl_tutorial_PREFIX ${pcl_tutorial_DEVEL_PREFIX})
 else()
   set(pcl_tutorial_SOURCE_PREFIX "")
   set(pcl_tutorial_DEVEL_PREFIX "")
-  set(pcl_tutorial_INSTALL_PREFIX /home/alex/Volume_Box/catkin_ws/install)
+  set(pcl_tutorial_INSTALL_PREFIX /home/alex/workspace/volume_box/Volume_Box/catkin_ws/install)
   set(pcl_tutorial_PREFIX ${pcl_tutorial_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/alex/Volume_Box/catkin_ws/install/lib;/opt/ros/melodic/lib)
+    foreach(path /home/alex/workspace/volume_box/Volume_Box/catkin_ws/install/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/alex/catkin_ws/devel/include/pcl_tutorial/voxel_filter_nodeConfig.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include/pcl_tutorial/voxel_filter_nodeConfig.h
 dynamic_reconfigure/config_tools.h
 -
 limits
@@ -24,7 +24,7 @@ dynamic_reconfigure/config_init_mutex.h
 boost/any.hpp
 -
 
-/home/alex/catkin_ws/src/pcl_tutorial/src/voxel_filter_node.cpp
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/pcl_tutorial/src/voxel_filter_node.cpp
 ros/ros.h
 -
 dynamic_reconfigure/server.h

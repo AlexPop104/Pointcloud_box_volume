@@ -1,8 +1,8 @@
-# Install script for directory: /home/alex/catkin_ws/src/openni2/openni2_launch
+# Install script for directory: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_launch
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/alex/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,25 +38,25 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/alex/catkin_ws/build/openni2/openni2_launch/catkin_generated/safe_execute_install.cmake")
+  include("/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_launch/catkin_generated/safe_execute_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/alex/catkin_ws/build/openni2/openni2_launch/catkin_generated/installspace/openni2_launch.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_launch/catkin_generated/installspace/openni2_launch.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/openni2_launch/cmake" TYPE FILE FILES
-    "/home/alex/catkin_ws/build/openni2/openni2_launch/catkin_generated/installspace/openni2_launchConfig.cmake"
-    "/home/alex/catkin_ws/build/openni2/openni2_launch/catkin_generated/installspace/openni2_launchConfig-version.cmake"
+    "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_launch/catkin_generated/installspace/openni2_launchConfig.cmake"
+    "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_launch/catkin_generated/installspace/openni2_launchConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/openni2_launch" TYPE FILE FILES "/home/alex/catkin_ws/src/openni2/openni2_launch/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/openni2_launch" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_launch/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/openni2_launch/" TYPE DIRECTORY FILES "/home/alex/catkin_ws/src/openni2/openni2_launch/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/openni2_launch/" TYPE DIRECTORY FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_launch/launch")
 endif()
 

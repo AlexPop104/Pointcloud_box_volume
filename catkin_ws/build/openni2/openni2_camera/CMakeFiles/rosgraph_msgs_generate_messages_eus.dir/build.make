@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alex/catkin_ws/src
+CMAKE_SOURCE_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alex/catkin_ws/build
+CMAKE_BINARY_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build
 
 # Utility rule file for rosgraph_msgs_generate_messages_eus.
 
@@ -63,10 +63,10 @@ openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build:
 .PHONY : openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
 
 openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean:
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/cmake_clean.cmake
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/cmake_clean.cmake
 .PHONY : openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
 
 openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend:
-	cd /home/alex/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/catkin_ws/src /home/alex/catkin_ws/src/openni2/openni2_camera /home/alex/catkin_ws/build /home/alex/catkin_ws/build/openni2/openni2_camera /home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : openni2/openni2_camera/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend
 

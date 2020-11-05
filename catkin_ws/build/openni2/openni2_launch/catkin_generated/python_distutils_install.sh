@@ -13,21 +13,21 @@ fi
 
 echo_and_run() { echo "+ $@" ; "$@" ; }
 
-echo_and_run cd "/home/alex/Volume_Box/catkin_ws/src/openni2/openni2_launch"
+echo_and_run cd "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_launch"
 
 # ensure that Python install destination exists
-echo_and_run mkdir -p "$DESTDIR/home/alex/Volume_Box/catkin_ws/install/lib/python2.7/dist-packages"
+echo_and_run mkdir -p "$DESTDIR/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install/lib/python2.7/dist-packages"
 
 # Note that PYTHONPATH is pulled from the environment to support installing
 # into one location when some dependencies were installed in another
 # location, #123.
 echo_and_run /usr/bin/env \
-    PYTHONPATH="/home/alex/Volume_Box/catkin_ws/install/lib/python2.7/dist-packages:/home/alex/Volume_Box/catkin_ws/build/lib/python2.7/dist-packages:$PYTHONPATH" \
-    CATKIN_BINARY_DIR="/home/alex/Volume_Box/catkin_ws/build" \
+    PYTHONPATH="/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install/lib/python2.7/dist-packages:/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/lib/python2.7/dist-packages:$PYTHONPATH" \
+    CATKIN_BINARY_DIR="/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build" \
     "/usr/bin/python2" \
-    "/home/alex/Volume_Box/catkin_ws/src/openni2/openni2_launch/setup.py" \
+    "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_launch/setup.py" \
      \
-    build --build-base "/home/alex/Volume_Box/catkin_ws/build/openni2/openni2_launch" \
+    build --build-base "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_launch" \
     install \
     --root="${DESTDIR-/}" \
-    --install-layout=deb --prefix="/home/alex/Volume_Box/catkin_ws/install" --install-scripts="/home/alex/Volume_Box/catkin_ws/install/bin"
+    --install-layout=deb --prefix="/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install" --install-scripts="/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install/bin"

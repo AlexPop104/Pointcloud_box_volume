@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/alex/catkin_ws/src/openni2/openni2_camera/ros/openni2_camera_node.cpp" "/home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/openni2_camera_node.dir/ros/openni2_camera_node.cpp.o"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/ros/openni2_camera_node.cpp" "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/openni2_camera_node.dir/ros/openni2_camera_node.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,8 +17,8 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/alex/catkin_ws/devel/include"
-  "/home/alex/catkin_ws/src/openni2/openni2_camera/include"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include"
   "/opt/ros/melodic/include"
   "/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/openni2"
@@ -26,8 +26,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/openni2_driver_lib.dir/DependInfo.cmake"
-  "/home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/openni2_wrapper.dir/DependInfo.cmake"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/openni2_driver_lib.dir/DependInfo.cmake"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/openni2_wrapper.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

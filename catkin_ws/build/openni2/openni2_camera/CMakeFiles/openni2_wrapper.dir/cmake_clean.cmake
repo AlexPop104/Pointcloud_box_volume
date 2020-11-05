@@ -7,8 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/openni2_wrapper.dir/src/openni2_device_manager.cpp.o"
   "CMakeFiles/openni2_wrapper.dir/src/openni2_exception.cpp.o"
   "CMakeFiles/openni2_wrapper.dir/src/openni2_video_mode.cpp.o"
-  "/home/alex/catkin_ws/devel/lib/libopenni2_wrapper.pdb"
-  "/home/alex/catkin_ws/devel/lib/libopenni2_wrapper.so"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/libopenni2_wrapper.pdb"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/libopenni2_wrapper.so"
 )
 
 # Per-language clean rules from dependency scanning.

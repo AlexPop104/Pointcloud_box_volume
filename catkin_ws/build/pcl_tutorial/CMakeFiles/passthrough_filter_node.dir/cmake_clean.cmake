@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/passthrough_filter_node.dir/src/passthrough_filter_node.cpp.o"
-  "/home/alex/catkin_ws/devel/lib/pcl_tutorial/passthrough_filter_node.pdb"
-  "/home/alex/catkin_ws/devel/lib/pcl_tutorial/passthrough_filter_node"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/pcl_tutorial/passthrough_filter_node.pdb"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/pcl_tutorial/passthrough_filter_node"
 )
 
 # Per-language clean rules from dependency scanning.

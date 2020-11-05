@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alex/catkin_ws/src
+CMAKE_SOURCE_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alex/catkin_ws/build
+CMAKE_BINARY_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build
 
 # Utility rule file for _openni2_camera_generate_messages_check_deps_GetSerial.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/alex/catkin_ws/build
 include openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/progress.make
 
 openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial:
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && ../../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py openni2_camera /home/alex/catkin_ws/src/openni2/openni2_camera/srv/GetSerial.srv 
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && ../../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/srv/GetSerial.srv 
 
 _openni2_camera_generate_messages_check_deps_GetSerial: openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial
 _openni2_camera_generate_messages_check_deps_GetSerial: openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/build.make
@@ -67,10 +67,10 @@ openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_G
 .PHONY : openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/build
 
 openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/clean:
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/cmake_clean.cmake
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/cmake_clean.cmake
 .PHONY : openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/clean
 
 openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/depend:
-	cd /home/alex/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/catkin_ws/src /home/alex/catkin_ws/src/openni2/openni2_camera /home/alex/catkin_ws/build /home/alex/catkin_ws/build/openni2/openni2_camera /home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : openni2/openni2_camera/CMakeFiles/_openni2_camera_generate_messages_check_deps_GetSerial.dir/depend
 

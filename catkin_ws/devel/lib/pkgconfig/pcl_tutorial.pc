@@ -1,8 +1,8 @@
-prefix=/home/alex/Volume_Box/catkin_ws/devel
+prefix=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel
 
 Name: pcl_tutorial
 Description: Description of pcl_tutorial
 Version: 0.0.0
-Cflags: -I/home/alex/Volume_Box/catkin_ws/devel/include
+Cflags: -I/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include
 Libs: -L${prefix}/lib 
 Requires: 

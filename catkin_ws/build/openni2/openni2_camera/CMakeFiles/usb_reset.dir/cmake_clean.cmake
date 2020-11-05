@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/usb_reset.dir/src/usb_reset.c.o"
-  "/home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset.pdb"
-  "/home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset.pdb"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset"
 )
 
 # Per-language clean rules from dependency scanning.

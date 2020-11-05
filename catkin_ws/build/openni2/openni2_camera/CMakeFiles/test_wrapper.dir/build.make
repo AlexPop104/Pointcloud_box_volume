@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alex/catkin_ws/src
+CMAKE_SOURCE_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alex/catkin_ws/build
+CMAKE_BINARY_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build
 
 # Include any dependencies generated for this target.
 include openni2/openni2_camera/CMakeFiles/test_wrapper.dir/depend.make
@@ -58,17 +58,17 @@ include openni2/openni2_camera/CMakeFiles/test_wrapper.dir/progress.make
 include openni2/openni2_camera/CMakeFiles/test_wrapper.dir/flags.make
 
 openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/flags.make
-openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o: /home/alex/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o -c /home/alex/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp
+openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o"
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o -c /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp
 
 openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.i"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp > CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.i
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp > CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.i
 
 openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.s"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp -o CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.s
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp -o CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.s
 
 openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o.requires:
 
@@ -88,55 +88,55 @@ test_wrapper_OBJECTS = \
 # External object files for target test_wrapper
 test_wrapper_EXTERNAL_OBJECTS =
 
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/build.make
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /home/alex/catkin_ws/devel/lib/libopenni2_wrapper.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_system.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_thread.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libcamera_info_manager.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libcamera_calibration_parsers.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libimage_transport.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libmessage_filters.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libnodeletlib.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libbondcpp.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libuuid.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libclass_loader.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/libPocoFoundation.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libdl.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libroslib.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librospack.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libpython2.7.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_program_options.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libtinyxml2.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libroscpp.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librosconsole.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librosconsole_log4cxx.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librosconsole_backend_interface.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_regex.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libroscpp_serialization.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libxmlrpcpp.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librostime.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libcpp_common.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_system.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_thread.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alex/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_wrapper.dir/link.txt --verbose=$(VERBOSE)
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/test/test_wrapper.cpp.o
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/build.make
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/libopenni2_wrapper.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_system.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_thread.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libcamera_info_manager.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libcamera_calibration_parsers.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libimage_transport.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libmessage_filters.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libnodeletlib.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libbondcpp.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libuuid.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libclass_loader.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/libPocoFoundation.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libdl.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libroslib.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librospack.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libpython2.7.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_program_options.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libtinyxml2.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libroscpp.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librosconsole.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librosconsole_log4cxx.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librosconsole_backend_interface.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_regex.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libroscpp_serialization.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libxmlrpcpp.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/librostime.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /opt/ros/melodic/lib/libcpp_common.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_system.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_thread.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper: openni2/openni2_camera/CMakeFiles/test_wrapper.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper"
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_wrapper.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-openni2/openni2_camera/CMakeFiles/test_wrapper.dir/build: /home/alex/catkin_ws/devel/lib/openni2_camera/test_wrapper
+openni2/openni2_camera/CMakeFiles/test_wrapper.dir/build: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/test_wrapper
 
 .PHONY : openni2/openni2_camera/CMakeFiles/test_wrapper.dir/build
 
@@ -145,10 +145,10 @@ openni2/openni2_camera/CMakeFiles/test_wrapper.dir/requires: openni2/openni2_cam
 .PHONY : openni2/openni2_camera/CMakeFiles/test_wrapper.dir/requires
 
 openni2/openni2_camera/CMakeFiles/test_wrapper.dir/clean:
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/test_wrapper.dir/cmake_clean.cmake
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/test_wrapper.dir/cmake_clean.cmake
 .PHONY : openni2/openni2_camera/CMakeFiles/test_wrapper.dir/clean
 
 openni2/openni2_camera/CMakeFiles/test_wrapper.dir/depend:
-	cd /home/alex/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/catkin_ws/src /home/alex/catkin_ws/src/openni2/openni2_camera /home/alex/catkin_ws/build /home/alex/catkin_ws/build/openni2/openni2_camera /home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/test_wrapper.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/test_wrapper.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : openni2/openni2_camera/CMakeFiles/test_wrapper.dir/depend
 

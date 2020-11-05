@@ -1,8 +1,8 @@
-# Install script for directory: /home/alex/catkin_ws/src/pcl_tutorial
+# Install script for directory: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/pcl_tutorial
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/alex/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,41 +38,41 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/pcl_tutorial" TYPE FILE FILES "/home/alex/catkin_ws/devel/include/pcl_tutorial/voxel_filter_nodeConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/pcl_tutorial" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include/pcl_tutorial/voxel_filter_nodeConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/pcl_tutorial" TYPE FILE FILES "/home/alex/catkin_ws/devel/include/pcl_tutorial/passthrough_filter_nodeConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/pcl_tutorial" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include/pcl_tutorial/passthrough_filter_nodeConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/pcl_tutorial" TYPE FILE FILES "/home/alex/catkin_ws/devel/include/pcl_tutorial/plane_segmentation_nodeConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/pcl_tutorial" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include/pcl_tutorial/plane_segmentation_nodeConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages/pcl_tutorial" TYPE FILE FILES "/home/alex/catkin_ws/devel/lib/python2.7/dist-packages/pcl_tutorial/__init__.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages/pcl_tutorial" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/python2.7/dist-packages/pcl_tutorial/__init__.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/alex/catkin_ws/devel/lib/python2.7/dist-packages/pcl_tutorial/cfg")
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/python2.7/dist-packages/pcl_tutorial/cfg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages/pcl_tutorial" TYPE DIRECTORY FILES "/home/alex/catkin_ws/devel/lib/python2.7/dist-packages/pcl_tutorial/cfg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages/pcl_tutorial" TYPE DIRECTORY FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/python2.7/dist-packages/pcl_tutorial/cfg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/alex/catkin_ws/build/pcl_tutorial/catkin_generated/installspace/pcl_tutorial.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/pcl_tutorial/catkin_generated/installspace/pcl_tutorial.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_tutorial/cmake" TYPE FILE FILES
-    "/home/alex/catkin_ws/build/pcl_tutorial/catkin_generated/installspace/pcl_tutorialConfig.cmake"
-    "/home/alex/catkin_ws/build/pcl_tutorial/catkin_generated/installspace/pcl_tutorialConfig-version.cmake"
+    "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/pcl_tutorial/catkin_generated/installspace/pcl_tutorialConfig.cmake"
+    "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/pcl_tutorial/catkin_generated/installspace/pcl_tutorialConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_tutorial" TYPE FILE FILES "/home/alex/catkin_ws/src/pcl_tutorial/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_tutorial" TYPE FILE FILES "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/pcl_tutorial/package.xml")
 endif()
 

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/openni2_camera_generate_messages_nodejs"
-  "/home/alex/catkin_ws/devel/share/gennodejs/ros/openni2_camera/srv/GetSerial.js"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/share/gennodejs/ros/openni2_camera/srv/GetSerial.js"
 )
 
 # Per-language clean rules from dependency scanning.

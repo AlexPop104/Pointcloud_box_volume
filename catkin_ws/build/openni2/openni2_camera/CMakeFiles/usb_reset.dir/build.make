@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alex/catkin_ws/src
+CMAKE_SOURCE_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alex/catkin_ws/build
+CMAKE_BINARY_DIR = /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build
 
 # Include any dependencies generated for this target.
 include openni2/openni2_camera/CMakeFiles/usb_reset.dir/depend.make
@@ -58,17 +58,17 @@ include openni2/openni2_camera/CMakeFiles/usb_reset.dir/progress.make
 include openni2/openni2_camera/CMakeFiles/usb_reset.dir/flags.make
 
 openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o: openni2/openni2_camera/CMakeFiles/usb_reset.dir/flags.make
-openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o: /home/alex/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/usb_reset.dir/src/usb_reset.c.o   -c /home/alex/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c
+openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o"
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/usb_reset.dir/src/usb_reset.c.o   -c /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c
 
 openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/usb_reset.dir/src/usb_reset.c.i"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/alex/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c > CMakeFiles/usb_reset.dir/src/usb_reset.c.i
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c > CMakeFiles/usb_reset.dir/src/usb_reset.c.i
 
 openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/usb_reset.dir/src/usb_reset.c.s"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/alex/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c -o CMakeFiles/usb_reset.dir/src/usb_reset.c.s
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c -o CMakeFiles/usb_reset.dir/src/usb_reset.c.s
 
 openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o.requires:
 
@@ -88,14 +88,14 @@ usb_reset_OBJECTS = \
 # External object files for target usb_reset
 usb_reset_EXTERNAL_OBJECTS =
 
-/home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset: openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o
-/home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset: openni2/openni2_camera/CMakeFiles/usb_reset.dir/build.make
-/home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset: openni2/openni2_camera/CMakeFiles/usb_reset.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alex/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable /home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset"
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/usb_reset.dir/link.txt --verbose=$(VERBOSE)
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset: openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset: openni2/openni2_camera/CMakeFiles/usb_reset.dir/build.make
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset: openni2/openni2_camera/CMakeFiles/usb_reset.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable /home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset"
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/usb_reset.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-openni2/openni2_camera/CMakeFiles/usb_reset.dir/build: /home/alex/catkin_ws/devel/lib/openni2_camera/usb_reset
+openni2/openni2_camera/CMakeFiles/usb_reset.dir/build: /home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/lib/openni2_camera/usb_reset
 
 .PHONY : openni2/openni2_camera/CMakeFiles/usb_reset.dir/build
 
@@ -104,10 +104,10 @@ openni2/openni2_camera/CMakeFiles/usb_reset.dir/requires: openni2/openni2_camera
 .PHONY : openni2/openni2_camera/CMakeFiles/usb_reset.dir/requires
 
 openni2/openni2_camera/CMakeFiles/usb_reset.dir/clean:
-	cd /home/alex/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/usb_reset.dir/cmake_clean.cmake
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera && $(CMAKE_COMMAND) -P CMakeFiles/usb_reset.dir/cmake_clean.cmake
 .PHONY : openni2/openni2_camera/CMakeFiles/usb_reset.dir/clean
 
 openni2/openni2_camera/CMakeFiles/usb_reset.dir/depend:
-	cd /home/alex/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/catkin_ws/src /home/alex/catkin_ws/src/openni2/openni2_camera /home/alex/catkin_ws/build /home/alex/catkin_ws/build/openni2/openni2_camera /home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/usb_reset.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src /home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera /home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/usb_reset.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : openni2/openni2_camera/CMakeFiles/usb_reset.dir/depend
 

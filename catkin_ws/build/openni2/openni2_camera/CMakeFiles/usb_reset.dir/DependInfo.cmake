@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/alex/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c" "/home/alex/catkin_ws/build/openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/src/usb_reset.c" "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/build/openni2/openni2_camera/CMakeFiles/usb_reset.dir/src/usb_reset.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -17,8 +17,8 @@ set(CMAKE_TARGET_DEFINITIONS_C
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "/home/alex/catkin_ws/devel/include"
-  "/home/alex/catkin_ws/src/openni2/openni2_camera/include"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include"
   "/opt/ros/melodic/include"
   "/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/openni2"

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/openni2_camera_generate_messages_cpp"
-  "/home/alex/catkin_ws/devel/include/openni2_camera/GetSerial.h"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/include/openni2_camera/GetSerial.h"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_device.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_device.h
 openni2_camera/openni2_video_mode.h
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_camera/openni2_video_mode.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_camera/openni2_video_mode.h
 openni2_camera/openni2_exception.h
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_camera/openni2_exception.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_camera/openni2_exception.h
 boost/shared_ptr.hpp
 -
 boost/cstdint.hpp
@@ -26,15 +26,15 @@ string
 vector
 -
 
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_device_info.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_device_info.h
 ostream
 -
 boost/cstdint.hpp
 -
 
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_device_manager.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_device_manager.h
 openni2_camera/openni2_device_info.h
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_camera/openni2_device_info.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_camera/openni2_device_info.h
 boost/thread/mutex.hpp
 -
 vector
@@ -44,7 +44,7 @@ string
 ostream
 -
 
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_exception.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_exception.h
 cstdarg
 -
 cstdio
@@ -54,17 +54,17 @@ exception
 string
 -
 
-/home/alex/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_video_mode.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/include/openni2_camera/openni2_video_mode.h
 cstddef
 -
 ostream
 -
 
-/home/alex/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/test_wrapper.cpp
 openni2_camera/openni2_device_manager.h
-/home/alex/catkin_ws/src/openni2/openni2_camera/test/openni2_camera/openni2_device_manager.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/openni2_camera/openni2_device_manager.h
 openni2_camera/openni2_device.h
-/home/alex/catkin_ws/src/openni2/openni2_camera/test/openni2_camera/openni2_device.h
+/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/test/openni2_camera/openni2_device.h
 boost/date_time/posix_time/posix_time.hpp
 -
 boost/thread/thread.hpp

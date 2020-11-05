@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = ""
-services_str = "/home/alex/Volume_Box/catkin_ws/src/openni2/openni2_camera/srv/GetSerial.srv"
+services_str = "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/src/openni2/openni2_camera/srv/GetSerial.srv"
 pkg_name = "openni2_camera"
 dependencies_str = ""
 langs = "gencpp;geneus;genlisp;gennodejs;genpy"

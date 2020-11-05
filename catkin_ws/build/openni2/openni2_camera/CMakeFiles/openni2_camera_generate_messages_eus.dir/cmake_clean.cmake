@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/openni2_camera_generate_messages_eus"
-  "/home/alex/catkin_ws/devel/share/roseus/ros/openni2_camera/srv/GetSerial.l"
-  "/home/alex/catkin_ws/devel/share/roseus/ros/openni2_camera/manifest.l"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/share/roseus/ros/openni2_camera/srv/GetSerial.l"
+  "/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel/share/roseus/ros/openni2_camera/manifest.l"
 )
 
 # Per-language clean rules from dependency scanning.
