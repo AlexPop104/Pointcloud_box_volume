@@ -1,7 +1,0 @@
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/rebuild_cache.dir
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/create_planes.dir
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/openni_grabber.dir
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/linii_final.dir
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/proiectii_final.dir
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/distante_final.dir
-/home/alex/Volume_Box/catkin_ws/src/pcl_demos/build/CMakeFiles/edit_cache.dir
