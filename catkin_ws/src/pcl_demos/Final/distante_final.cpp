@@ -10,6 +10,8 @@ main (int, char**)
   cloud = pcl::PointCloud<pcl::PointXYZ>::Ptr (new pcl::PointCloud<pcl::PointXYZ>);
   
   float Volum=1;
+
+  float muchii[3];
   
   
   int i,j;
@@ -141,6 +143,8 @@ for(int q=0;q<3;q++){
 	
 //std::cout<<t<<"\n";
 
+std::cout<<"Linia "<<i<<"_"<<j<<"\n";
+
 
 int pozitie_min=Puncte[0][t];
 int pozitie_max=Puncte[1][t];
@@ -168,7 +172,7 @@ std::cout<<"Componenta y:"<<distanta_y<<"\n";
 distanta_y= distanta_y*distanta_y;
 std::cout<<"Componenta y la patrat:"<<distanta_y<<"\n";
 
-float distanta_z= (cloud->points[pozitie_max].y-cloud->points[pozitie_min].z);
+float distanta_z= (cloud->points[pozitie_max].z-cloud->points[pozitie_min].z);
 std::cout<<"Componenta z:"<<distanta_z<<"\n";
 distanta_z= distanta_z*distanta_z;
 std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
@@ -181,14 +185,14 @@ std::cout<<"\n";
 
 distanta=distanta_x+distanta_y+distanta_z;
 
-std::cout<<"Distanta inainte de SQRT "<<i<<" "<<j<<" "<<distanta<<"\n";
+std::cout<<"Distanta inainte de SQRT Linia "<<i<<"_"<<j<<" "<<distanta<<"\n";
 
 std::cout<<"\n";
 
 
 distanta=sqrt(distanta_x+distanta_y+distanta_z);
 
-std::cout<<"Distanta finala "<<i<<" "<<j<<" "<<distanta<<"\n";
+std::cout<<"Distanta finala "<<i<<"_"<<j<<" "<<distanta<<"\n";
 
 Volum=Volum*distanta;
 
@@ -224,8 +228,10 @@ pcl::PointCloud<pcl::PointXYZ> new_cloud;
 			
 		}
 	}
+
+
 	
-std::cout<<"Volum final "<<Volum<<"\n";
+std::cout<<"Volum final "<<Volum<<" m^3"<<"\n";
 
 
 

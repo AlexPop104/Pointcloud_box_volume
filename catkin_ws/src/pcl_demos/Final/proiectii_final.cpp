@@ -10,7 +10,9 @@ int
  main (int argc, char** argv)
 {
   
-  
+
+pcl::PCDWriter writer;  
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final (new pcl::PointCloud<pcl::PointXYZ>);
 
 int i,j;
 
@@ -81,7 +83,6 @@ for (std::string line; std::getline(Coeficienti, line);){
 *cloud_c += *cloud_projected;
 
 
-pcl::PCDWriter writer;
  
   std::stringstream ss;
   
@@ -97,6 +98,8 @@ pcl::PCDWriter writer;
   writer.write<pcl::PointXYZ> (ss.str (), *cloud_c, false);
   
   std::cout<<ss.str()<<"\n";
+
+  *cloud_final+=*cloud_c;
   
 				
 				
@@ -121,6 +124,13 @@ pcl::PCDWriter writer;
 	
 	
 }
+ std::stringstream ss2;
+	    
+  ss2 <<"All_projected_lines.pcd";
+  
+  writer.write<pcl::PointXYZ> (ss2.str (), *cloud_final, false);
+  
+  
   
 
   return (0);
