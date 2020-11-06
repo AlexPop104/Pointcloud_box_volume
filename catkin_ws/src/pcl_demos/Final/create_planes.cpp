@@ -17,11 +17,17 @@ main (int argc, char** argv)
 {
 	
   pcl::PCDReader reader;
+   pcl::PCDWriter writer;
 
 // Read in the cloud data
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>), cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
   reader.read ("vedere.pcd", *cloud);
   std::cout << "PointCloud before filtering has: " << cloud->points.size () << " data points." << std::endl; //*
+
+
+ pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final (new pcl::PointCloud<pcl::PointXYZ>);
+
+
 
   
 for(int t=1;t<4;t++){	
@@ -45,7 +51,7 @@ for(int t=1;t<4;t++){
   pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
-  pcl::PCDWriter writer;
+ 
   seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
@@ -154,6 +160,8 @@ for(int t=1;t<4;t++){
   
   fisier <<"coeficienti_plan_"<<t<<".txt";
   
+*cloud_final+=*cloud_segmented;
+
   
   std::ofstream myfile;
   myfile.open (fisier.str());
@@ -166,6 +174,14 @@ for(int t=1;t<4;t++){
 
   
 }
+
+
+std::stringstream ss2;
+  
+  ss2 << "All_planes"<< ".pcd";
+  
+  writer.write<pcl::PointXYZ> (ss2.str (), *cloud_final, false);
+
 
   return (0);
 }
