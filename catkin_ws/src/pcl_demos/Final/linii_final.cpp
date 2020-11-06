@@ -13,7 +13,9 @@ int
   
 		  
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PCDWriter writer;
 
 
   
@@ -69,13 +71,17 @@ for (std::string line; std::getline(Coeficienti, line);){
 
                         
   PCL_INFO("Saving the projected Pointcloud \n");
-  pcl::PCDWriter writer;
+  
  
   std::stringstream ss;
   
   ss << "Linie_"<<std::to_string(i)<<"_"<<std::to_string(j)<< ".pcd";
   
   writer.write<pcl::PointXYZ> (ss.str (), *cloud_projected, false);
+
+  *cloud_final=*cloud_final+*cloud_projected;
+
+ 
 		  
 		  
 		  
@@ -83,6 +89,12 @@ for (std::string line; std::getline(Coeficienti, line);){
 	}	  
  }
 }	
+
+ std::stringstream ss2;
+  
+  ss2 << "All_lines.pcd";
+  
+  writer.write<pcl::PointXYZ> (ss2.str (), *cloud_final, false);
 
 
   return (0);
