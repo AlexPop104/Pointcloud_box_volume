@@ -20,6 +20,9 @@ target_link_libraries (create_planes ${PCL_LIBRARIES})
 add_executable (compute_volume Final/compute_volume.cpp)
 target_link_libraries (compute_volume ${PCL_LIBRARIES})
 
+add_executable (compute_volume_2 Final/compute_volume_2.cpp)
+target_link_libraries (compute_volume_2 ${PCL_LIBRARIES})
+
 
 add_executable (distante_final Final/distante_final.cpp)
 target_link_libraries (distante_final ${PCL_LIBRARIES})
