@@ -30,6 +30,9 @@ pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
 pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
 
+pcl::PointCloud<pcl::PointXYZ>::Ptr all_lines[4][4];
+
+
 float Coeficients[3][4];
 
 
@@ -199,7 +202,7 @@ void create_lines() {
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
   coefficients->values.resize (4);
   
-  for(j=1;(j<4) ;j++){
+  for(j=1;j<4;j++){
   if (j!=i){
 
     std::cout<<"\n";
@@ -254,8 +257,11 @@ for (std::string line; std::getline(Coeficienti, line);){
  std::stringstream ss;
   
   ss << "Linie_"<<std::to_string(i)<<"_"<<std::to_string(j)<< ".pcd";
+
+  all_lines[i][j]= cloud_projected;
   
-  writer3.write<pcl::PointXYZ> (ss.str (), *cloud_projected, false);
+  writer3.write<pcl::PointXYZ> (ss.str (),  *all_lines[i][j], false);
+  //writer3.write<pcl::PointXYZ> (ss.str (),  *cloud_projected, false);
 
   *cloud_linii=*cloud_linii+*cloud_projected;
 
