@@ -202,13 +202,15 @@ void create_lines() {
   for(j=1;(j<4) ;j++){
   if (j!=i){
 
+    std::cout<<"\n";
+    std::cout<<"plan "<<j<<"\n";
+
     coefficients->values[0]=Coeficients[j-1][0];   
     coefficients->values[1]=Coeficients[j-1][1];
     coefficients->values[2]=Coeficients[j-1][2];
     coefficients->values[3]=Coeficients[j-1][3];
 
-    std::cout<<"\n";
-    std::cout<<"plan "<<j<<"\n";
+    
 
     for (int t=0;t<4;t++){
 
@@ -281,6 +283,23 @@ int aux;
 	// Create a set of planar coefficients with X=Y=0,Z=1
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
   coefficients->values.resize (4);
+
+  std::cout<<"\n";
+    std::cout<<"plan "<<j<<"\n";
+
+    coefficients->values[0]=Coeficients[aux-1][0];   
+    coefficients->values[1]=Coeficients[aux-1][1];
+    coefficients->values[2]=Coeficients[aux-1][2];
+    coefficients->values[3]=Coeficients[aux-1][3];
+
+    
+
+    for (int t=0;t<4;t++){
+    std::cout<<coefficients->values[t]<<"\n";
+    }
+
+
+ /*
   
   std::stringstream str2;
   
@@ -300,6 +319,8 @@ for (std::string line; std::getline(Coeficienti, line);){
 	 //std::cout<<coefficients->values[t];
 	 t++;
 	}
+
+  */
 	
 	int aux2;
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_c (new pcl::PointCloud<pcl::PointXYZ>);
