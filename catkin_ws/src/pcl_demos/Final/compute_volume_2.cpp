@@ -31,6 +31,8 @@ pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr all_lines[4][4];
+pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4];
+pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4];
 
 
 float Coeficients[3][4];
@@ -145,34 +147,40 @@ void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int t) {
 pcl::PCDWriter writer2;
  std::stringstream ss;
   
+  /*
   ss << "plan_" <<t << ".pcd";
   
   writer2.write<pcl::PointXYZ> (ss.str (), *cloud_segmented, false); 
 
 
    std::stringstream fisier;
+
+   
   
   fisier <<"coeficienti_plan_"<<t<<".txt";
 
   std::ofstream myfile;
   myfile.open (fisier.str());
-
+ 
+ */
 
   Coeficients[t-1][0]=coefficients->values[0];
   Coeficients[t-1][1]=coefficients->values[1];
   Coeficients[t-1][2]=coefficients->values[2];
   Coeficients[t-1][3]=coefficients->values[3];
 
-  
+  /*
   myfile<<coefficients->values[0] << '\n' 
   << coefficients->values[1] << "\n"
   << coefficients->values[2] << "\n "
   << coefficients->values[3] ; 
 	myfile.close();
-  
+  */
  
  
   *cloud_final+=*cloud_segmented;
+
+  all_planes[t]=cloud_segmented;
 
 
 }
@@ -189,14 +197,17 @@ void create_lines() {
  int i,j;
   
   for(i=1;i<4;i++){
-	  
+
+  /*  
 	std::cout<<"i="<<i<<" ";	  
     str="plan_"+std::to_string(i)+".pcd";
 
    // Fill in the cloud data
   pcl::PCDReader reader;
   reader.read (str, *cloud);
+  */
 
+  cloud=all_planes[i];
 
   // Create a set of planar coefficients with X=Y=0,Z=1
   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
