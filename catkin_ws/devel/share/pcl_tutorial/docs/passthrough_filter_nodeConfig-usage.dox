@@ -1,8 +1,0 @@
-\subsubsection usage Usage
-\verbatim
-<node name="pcl_tutorial" pkg="pcl_tutorial" type="pcl_tutorial">
-  <param name="lower_limit" type="double" value="0.0" />
-  <param name="upper_limit" type="double" value="3.0" />
-</node>
-\endverbatim
-
