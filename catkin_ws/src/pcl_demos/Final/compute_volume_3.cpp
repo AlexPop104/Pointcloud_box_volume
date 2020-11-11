@@ -11,6 +11,7 @@
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/filters/project_inliers.h>
 
+
 // Read in the cloud data
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>), cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -30,7 +31,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4];
 
 float Coeficients[3][4];
 
-float Volum = 1;
+float Volum;
 
 
 
@@ -44,7 +45,7 @@ void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
   vg.setInputCloud(cloud);
   vg.setLeafSize(0.01f, 0.01f, 0.01f);
   vg.filter(*cloud_filtered);
-  std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << std::endl; //*
+ // std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << std::endl; //*
 
   // Create the segmentation object for the planar model and set all the parameters
 
@@ -77,7 +78,7 @@ void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 
   // Write the planar inliers to disk
   extract.filter(*cloud_plane);
-  std::cout << "PointCloud representing the planar component: " << cloud_plane->points.size() << " data points." << std::endl;
+  //std::cout << "PointCloud representing the planar component: " << cloud_plane->points.size() << " data points." << std::endl;
 
   // Remove the planar inliers, extract the rest
   extract.setNegative(true);
@@ -141,7 +142,7 @@ void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int t)
   Coeficients[t - 1][1] = coefficients->values[1];
   Coeficients[t - 1][2] = coefficients->values[2];
   Coeficients[t - 1][3] = coefficients->values[3];
-
+ /*
   std::cout << "\n";
 
   std::cout << "Coeficienti plan " << t << "\n";
@@ -149,7 +150,7 @@ void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int t)
   std::cout << "Coeficient b=" << coefficients->values[1] << "\n";
   std::cout << "Coeficient c=" << coefficients->values[2] << "\n";
   std::cout << "Coeficient d=" << coefficients->values[3] << "\n";
-
+*/
   *cloud_final += *cloud_segmented;
 
   all_planes[t] = cloud_segmented;
@@ -178,18 +179,19 @@ void create_lines()
     {
       if (j != i)
       {
-
+        /*
         std::cout << "\n";
         std::cout << "plan " << i << "\n";
-
+         */
         coefficients->values[0] = Coeficients[j - 1][0];
         coefficients->values[1] = Coeficients[j - 1][1];
         coefficients->values[2] = Coeficients[j - 1][2];
         coefficients->values[3] = Coeficients[j - 1][3];
-
+         
+          /*  
         std::cout << "Projecting plane " << i << " to plane " << j << "\n";
         std::cout << "Saving line " << i << "_" << j << "\n";
-
+         */
         // Create the filtering object
         pcl::ProjectInliers<pcl::PointXYZ> proj;
         proj.setModelType(pcl::SACMODEL_PLANE);
@@ -197,7 +199,7 @@ void create_lines()
         proj.setModelCoefficients(coefficients);
         proj.filter(*cloud_projected);
 
-        PCL_INFO("Saving the projected Pointcloud \n");
+        //PCL_INFO("Saving the projected Pointcloud \n");
 
 
         all_lines[i][j] = *cloud_projected;
@@ -246,12 +248,13 @@ void project_line_2_plane()
 
           pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected(new pcl::PointCloud<pcl::PointXYZ>);
           //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2 (new pcl::PointCloud<pcl::PointXYZ>);
-
+            /*
           std::cout << "\n";
           std::cout << "linie " << i << " " << j << "\n";
           std::cout << "plan " << aux << "\n";
           std::cout << "Projecting line " << i << " " << j << " to "
                     << "plan " << aux << "\n";
+            */
 
           *cloud = all_lines[i][j];
 
@@ -392,16 +395,16 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
             t = q;
           }
         }
-
+         /*
         //std::cout<<"\n";
 
         //std::cout<<t<<"\n";
-
+     
         std::cout << "Linia " << i << "_" << j << "\n";
-
+         */
         int pozitie_min = Puncte[0][t];
         int pozitie_max = Puncte[1][t];
-
+        /*
         //std::cout<<"Pozitie punct minim:"<<  pozitie_min  <<"\n";
         //std::cout<<"Pozitie punctul maxim:"<<pozitie_max;
 
@@ -411,7 +414,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
         std::cout << "Coordonate punct maxim:" << cloud->points[pozitie_max].x << " " << cloud->points[pozitie_max].y << " " << cloud->points[pozitie_max].z;
 
         std::cout << "\n";
-
+           */
         float distanta;
 
         float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
@@ -428,25 +431,25 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
         //std::cout<<"Componenta z:"<<distanta_z<<"\n";
         distanta_z = distanta_z * distanta_z;
         //std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
-
+           /*
         std::cout << "\n";
         std::cout << "Componenta x la patrat:" << distanta_x << "\n";
         std::cout << "Componenta y la patrat:" << distanta_y << "\n";
         std::cout << "Componenta z la patrat:" << distanta_z << "\n";
         std::cout << "\n";
-
+          */
         distanta = distanta_x + distanta_y + distanta_z;
 
         //std::cout<<"Distanta inainte de SQRT Linia "<<i<<"_"<<j<<" "<<distanta<<"\n";
-
-        std::cout << "\n";
+         
+        //std::cout << "\n";
 
         distanta = sqrt(distanta_x + distanta_y + distanta_z);
-
+       /*
         std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
 
         std::cout << "\n";
-
+       */
         Volum = Volum * distanta;
 
       }
@@ -475,7 +478,7 @@ void compute_all( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud ){
   compute_volume();
 
   std::stringstream ss2, ss3, ss4;
-
+  /*
   ss2 << "All_planes"
       << ".pcd";
 
@@ -485,7 +488,7 @@ void compute_all( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud ){
       << ".pcd";
 
   writer.write<pcl::PointXYZ>(ss3.str(), *cloud_linii, false);
-
+  */
   ss4 << "All_projections"
       << ".pcd";
 
@@ -498,13 +501,13 @@ int main(int argc, char **argv)
 
   pcl::PCDReader reader;
   
+  for (int q=1;q<100;q++){
+    Volum=1;
+    reader.read("vedere.pcd", *cloud); 
+     compute_all(cloud);
+  }
 
-  reader.read("vedere.pcd", *cloud);
-  std::cout << "PointCloud before filtering has: " << cloud->points.size() << " data points." << std::endl; //*
-
-
- 
-  compute_all(cloud);  
+  
  
 
   return (0);
