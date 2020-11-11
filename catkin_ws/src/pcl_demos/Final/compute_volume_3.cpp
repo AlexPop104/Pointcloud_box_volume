@@ -32,6 +32,9 @@ float Coeficients[3][4];
 
 float Volum = 1;
 
+
+
+
 void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
 
@@ -455,13 +458,10 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
 }
 
 
-void compute_all(){
- pcl::PCDReader reader;
-  pcl::PCDWriter writer;
+void compute_all( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud ){
 
-  reader.read("vedere.pcd", *cloud);
-  std::cout << "PointCloud before filtering has: " << cloud->points.size() << " data points." << std::endl; //*
-
+ pcl::PCDWriter writer;
+  
   for (int t = 1; t < 4; t++)
   {
     euclidean_segmenting(cloud);
@@ -496,8 +496,15 @@ void compute_all(){
 int main(int argc, char **argv)
 {
 
+  pcl::PCDReader reader;
+  
+
+  reader.read("vedere.pcd", *cloud);
+  std::cout << "PointCloud before filtering has: " << cloud->points.size() << " data points." << std::endl; //*
+
+
  
-  compute_all();  
+  compute_all(cloud);  
  
 
   return (0);
