@@ -10,7 +10,7 @@
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/filters/project_inliers.h>
-
+#include <ros/ros.h>
 
 // Read in the cloud data
 
@@ -33,9 +33,6 @@ float Coeficients[3][4];
 
 float Volum;
 
-
-
-
 void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
 
@@ -45,7 +42,7 @@ void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
   vg.setInputCloud(cloud);
   vg.setLeafSize(0.01f, 0.01f, 0.01f);
   vg.filter(*cloud_filtered);
- // std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << std::endl; //*
+  // std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size() << " data points." << std::endl; //*
 
   // Create the segmentation object for the planar model and set all the parameters
 
@@ -142,7 +139,7 @@ void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int t)
   Coeficients[t - 1][1] = coefficients->values[1];
   Coeficients[t - 1][2] = coefficients->values[2];
   Coeficients[t - 1][3] = coefficients->values[3];
- /*
+  /*
   std::cout << "\n";
 
   std::cout << "Coeficienti plan " << t << "\n";
@@ -187,8 +184,8 @@ void create_lines()
         coefficients->values[1] = Coeficients[j - 1][1];
         coefficients->values[2] = Coeficients[j - 1][2];
         coefficients->values[3] = Coeficients[j - 1][3];
-         
-          /*  
+
+        /*  
         std::cout << "Projecting plane " << i << " to plane " << j << "\n";
         std::cout << "Saving line " << i << "_" << j << "\n";
          */
@@ -200,7 +197,6 @@ void create_lines()
         proj.filter(*cloud_projected);
 
         //PCL_INFO("Saving the projected Pointcloud \n");
-
 
         all_lines[i][j] = *cloud_projected;
 
@@ -248,7 +244,7 @@ void project_line_2_plane()
 
           pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected(new pcl::PointCloud<pcl::PointXYZ>);
           //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2 (new pcl::PointCloud<pcl::PointXYZ>);
-            /*
+          /*
           std::cout << "\n";
           std::cout << "linie " << i << " " << j << "\n";
           std::cout << "plan " << aux << "\n";
@@ -264,7 +260,6 @@ void project_line_2_plane()
           proj.setInputCloud(cloud);
           proj.setModelCoefficients(coefficients2);
           proj.filter(*cloud_projected);
-         
 
           *cloud_c += *cloud;
           *cloud_c += *cloud_projected;
@@ -281,8 +276,6 @@ void project_line_2_plane()
 void compute_volume()
 {
 
-  
-
   float muchii[3];
 
   int i, j;
@@ -294,7 +287,6 @@ void compute_volume()
 
       if (i < j)
       {
-       
 
         cloud = all_projected_lines[i][j];
 
@@ -395,7 +387,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
             t = q;
           }
         }
-         /*
+        /*
         //std::cout<<"\n";
 
         //std::cout<<t<<"\n";
@@ -431,7 +423,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
         //std::cout<<"Componenta z:"<<distanta_z<<"\n";
         distanta_z = distanta_z * distanta_z;
         //std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
-           /*
+        /*
         std::cout << "\n";
         std::cout << "Componenta x la patrat:" << distanta_x << "\n";
         std::cout << "Componenta y la patrat:" << distanta_y << "\n";
@@ -441,17 +433,16 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
         distanta = distanta_x + distanta_y + distanta_z;
 
         //std::cout<<"Distanta inainte de SQRT Linia "<<i<<"_"<<j<<" "<<distanta<<"\n";
-         
+
         //std::cout << "\n";
 
         distanta = sqrt(distanta_x + distanta_y + distanta_z);
-       /*
+        /*
         std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
 
         std::cout << "\n";
        */
         Volum = Volum * distanta;
-
       }
     }
   }
@@ -460,11 +451,11 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
             << "\n";
 }
 
+void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+{
 
-void compute_all( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud ){
+  pcl::PCDWriter writer;
 
- pcl::PCDWriter writer;
-  
   for (int t = 1; t < 4; t++)
   {
     euclidean_segmenting(cloud);
@@ -493,22 +484,44 @@ void compute_all( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud ){
       << ".pcd";
 
   writer.write<pcl::PointXYZ>(ss4.str(), *cloud_proiectii, false);
-
 }
+
+void cloudCallback(const PointCloud::ConstPtr& cloud)
+{
+  ROS_INFO("I received the pointcloud");
+    
+    /*
+    Volum = 1;
+    compute_all(cloud);
+   */
+}
+
+
 
 int main(int argc, char **argv)
 {
-
+  /*
   pcl::PCDReader reader;
-  
-  for (int q=1;q<100;q++){
-    Volum=1;
-    reader.read("vedere.pcd", *cloud); 
-     compute_all(cloud);
-  }
+  reader.read("vedere.pcd", *cloud);
+  */
+
+    ros::init(argc, argv, "listener");
+
+ 
+    ros::NodeHandle n;
+
+
+    ros::Subscriber sub = n.subscribe("/pf_out", 1000, cloudCallback);
+
+    
+
+ 
+    ros::spin();
+
+
+
 
   
- 
 
   return (0);
 }
