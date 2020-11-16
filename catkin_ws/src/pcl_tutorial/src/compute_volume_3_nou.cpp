@@ -16,13 +16,14 @@
 // PCL specific includes
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_conversions/pcl_conversions.h>
+
+#include <pcl_ros/point_cloud.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
 
 
-ros::Publisher pub;
-ros::Publisher pub2; 
+ros::Publisher pub,pub2;
 
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>), cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -277,6 +278,7 @@ float Volum=1;
 
             *cloud_proiectii += *cloud_c;
           }
+          
 
           all_projected_lines[i][j] = cloud_c;
         }
@@ -451,6 +453,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
           
         std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
 
+       //
         std::cout << "\n";
        
           Volum = Volum * distanta;
@@ -481,23 +484,26 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
     compute_volume();
 
     std::stringstream ss2, ss3, ss4;
-    /*
-  ss2 << "All_planes"
+      ss2 << "All_planes"
       << ".pcd";
 
+      
+
   writer.write<pcl::PointXYZ>(ss2.str(), *cloud_final, false);
+
+  
 
   ss3 << "All_lines"
       << ".pcd";
 
   writer.write<pcl::PointXYZ>(ss3.str(), *cloud_linii, false);
-  */
- /*
+  
+ 
     ss4 << "All_projections"
         << ".pcd";
 
     writer.write<pcl::PointXYZ>(ss4.str(), *cloud_proiectii, false);
-    */
+    
   }
 
 void cloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
@@ -516,41 +522,24 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   
   compute_all(cloudPTR);
 
-  
-  
-  //sensor_msgs::PointCloud2::Ptr tempROSMsg(new sensor_msgs::PointCloud2);
-  sensor_msgs::PointCloud2 tempROSMsg;
-   sensor_msgs::PointCloud2 tempROSMsg2;
-
-
-  pcl::toROSMsg(*cloud_final, tempROSMsg);
-  pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
-
-  
-  pcl::PointCloud<pcl::PointXYZ> cloudpcl;
-  pcl::PointCloud<pcl::PointXYZ> cloudpcl2;
-
-
-  pcl::fromROSMsg (tempROSMsg,cloudpcl);
-  pcl::fromROSMsg (tempROSMsg2,cloudpcl2);
-
-
-
-  pcl::io::savePCDFileASCII ("Pointcloud_test_plan.pcd", cloudpcl);
-  pcl::io::savePCDFileASCII ("Pointcloud_test_proiectii.pcd", cloudpcl2);
-
-
-  
+  /*
+  sensor_msgs::PointCloud2 output;
+  pcl::toPCLPointCloud2(*cloud_final, output);
+  */
    //Publish the data
 
-   pub.publish(tempROSMsg);
-   pub2.publish(tempROSMsg2);
+  pcl::PCLPointCloud2Ptr cloud_unfiltered(new pcl::PCLPointCloud2());
+  pcl::toPCLPointCloud2(*cloud_proiectii, *cloud_unfiltered);
+
+
+
   
-     cloud_final->clear();
+  pub.publish(cloud_unfiltered);
+  //pub2.publish(cloud_final);
+  
+    cloud_final->clear();
     cloud_linii->clear();
     cloud_proiectii->clear();
-  
-    
 
 }
 
@@ -572,9 +561,12 @@ int main(int argc, char **argv)
     ros::Subscriber sub = n.subscribe("/pf_out", 1000, cloudCallback);
 
     // Create a ROS publisher for the output point cloud
-    pub = n.advertise<sensor_msgs::PointCloud2> ("/output_plan", 1);
+    pub = n.advertise<sensor_msgs::PointCloud2>("/output_linii", 1);
 
-    pub2 = n.advertise<sensor_msgs::PointCloud2> ("/output_proiectii", 1);
+    pub2 = n.advertise<sensor_msgs::PointCloud2>("/output_planes", 1);
+    
+
+     
     
 
     ros::spin();
