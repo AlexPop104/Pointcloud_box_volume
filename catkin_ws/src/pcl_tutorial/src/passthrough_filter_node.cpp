@@ -25,17 +25,34 @@ public:
     sub_ = nh_.subscribe ("point_cloud_in", 1,  &PassthroughFilterNode::cloudCallback, this);
     config_server_.setCallback(boost::bind(&PassthroughFilterNode::dynReconfCallback, this, _1, _2));
 
-    double upper_limit, lower_limit;
+    double z_upper_limit, z_lower_limit;
+    double x_upper_limit, x_lower_limit;
+    double y_upper_limit, y_lower_limit;
 
     // "~" means, that the node hand is opened within the private namespace (to get the "own" paraemters)
     ros::NodeHandle private_nh("~");
 
     //read parameters with default value
-    private_nh.param("lower_limit", lower_limit, 2.);
-    private_nh.param("upper_limit", upper_limit, 5.);
+    private_nh.param("z_lower_limit", z_lower_limit, 2.);
+    private_nh.param("z_upper_limit", z_upper_limit, 5.);
 
     pt_.setFilterFieldName ("z");
-    pt_.setFilterLimits (lower_limit, upper_limit);
+    pt_.setFilterLimits (z_lower_limit, z_upper_limit);
+    
+     //read parameters with default value
+    private_nh.param("x_lower_limit", x_lower_limit, 2.);
+    private_nh.param("x_upper_limit", x_upper_limit, 5.);
+
+    pt_.setFilterFieldName ("x");
+    pt_.setFilterLimits (x_lower_limit, x_upper_limit);
+    
+    //read parameters with default value
+    private_nh.param("y_lower_limit", y_lower_limit, 2.);
+    private_nh.param("y_upper_limit", y_upper_limit, 5.);
+
+    pt_.setFilterFieldName ("y");
+    pt_.setFilterLimits (y_lower_limit, y_upper_limit);
+    
   }
 
   ~PassthroughFilterNode() {}
@@ -43,7 +60,7 @@ public:
   void
   dynReconfCallback(pcl_tutorial::passthrough_filter_nodeConfig &config, uint32_t level)
   {
-    pt_.setFilterLimits(config.lower_limit, config.upper_limit);
+    pt_.setFilterLimits(config.z_lower_limit, config.z_upper_limit);
   }
 
   void

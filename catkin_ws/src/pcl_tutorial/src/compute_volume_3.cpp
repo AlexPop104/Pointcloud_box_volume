@@ -91,7 +91,7 @@ float Volum=1;
     // Remove the planar inliers, extract the rest
     extract.setNegative(true);
     extract.filter(*cloud_f);
-    *cloud_filtered = *cloud_f;
+    *cloud_filtered = *cloud_f; //     HERE IS THE CLOUD FILTERED EXTRACTED
 
     // Creating the KdTree object for the search method of the extraction
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
@@ -466,19 +466,44 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
   {
     Volum=1;
 
+    bool ok=1;
+
     pcl::PCDWriter writer;
 
-    for (int t = 1; t < 4; t++)
-    {
-      euclidean_segmenting(cloud);
-      planar_segmenting(cloud_f, t);
-
-      cloud = cloud_f;
+    if (cloud->size()==0){
+      ok=0;
     }
 
-    create_lines();
-    project_line_2_plane();
-    compute_volume();
+    for (int t = 1; (t < 4) && ok; t++)
+    {
+      
+      
+      euclidean_segmenting(cloud);
+
+      if (cloud_f->size()==0){
+      ok=0;
+      }
+
+
+      planar_segmenting(cloud_f, t);  //cloud_f is global, so the modifications stay
+
+      cloud = cloud_f;  // Cloud is now the extracted pointcloud
+
+      if (cloud->size()==0){
+      ok=0;
+      }
+    }
+
+    if (ok){
+      create_lines();
+      project_line_2_plane();
+      compute_volume();
+    }
+    else {
+      std::cout<<"Not enough planes";
+    }
+
+    
 
     std::stringstream ss2, ss3, ss4;
     /*
@@ -526,20 +551,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   pcl::toROSMsg(*cloud_final, tempROSMsg);
   pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
 
-  
-  pcl::PointCloud<pcl::PointXYZ> cloudpcl;
-  pcl::PointCloud<pcl::PointXYZ> cloudpcl2;
 
-
-  pcl::fromROSMsg (tempROSMsg,cloudpcl);
-  pcl::fromROSMsg (tempROSMsg2,cloudpcl2);
-
-
-
-  pcl::io::savePCDFileASCII ("Pointcloud_test_plan.pcd", cloudpcl);
-  pcl::io::savePCDFileASCII ("Pointcloud_test_proiectii.pcd", cloudpcl2);
-
-
+   tempROSMsg.header.frame_id="camera_depth_optical_frame";
+   tempROSMsg2.header.frame_id="camera_depth_optical_frame";
   
    //Publish the data
 
