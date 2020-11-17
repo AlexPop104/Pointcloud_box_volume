@@ -36,22 +36,22 @@ public:
     private_nh.param("z_lower_limit", z_lower_limit, 2.);
     private_nh.param("z_upper_limit", z_upper_limit, 5.);
 
-    pt_.setFilterFieldName ("z");
-    pt_.setFilterLimits (z_lower_limit, z_upper_limit);
+    pt1_.setFilterFieldName ("z");
+    pt1_.setFilterLimits (z_lower_limit, z_upper_limit);
     
-     //read parameters with default value
-   // private_nh.param("x_lower_limit", x_lower_limit, 2.);
-   // private_nh.param("x_upper_limit", x_upper_limit, 5.);
+    // read parameters with default value
+    private_nh.param("x_lower_limit", x_lower_limit, 2.);
+    private_nh.param("x_upper_limit", x_upper_limit, 5.);
 
-    //pt_.setFilterFieldName ("x");
-    //pt_.setFilterLimits (x_lower_limit, x_upper_limit);
+    pt2_.setFilterFieldName ("x");
+    pt2_.setFilterLimits (x_lower_limit, x_upper_limit);
     
     //read parameters with default value
-    //private_nh.param("y_lower_limit", y_lower_limit, 2.);
-    //private_nh.param("y_upper_limit", y_upper_limit, 5.);
+    private_nh.param("y_lower_limit", y_lower_limit, 2.);
+    private_nh.param("y_upper_limit", y_upper_limit, 5.);
 
-    //pt_.setFilterFieldName ("y");
-   // pt_.setFilterLimits (y_lower_limit, y_upper_limit);
+    pt3_.setFilterFieldName ("y");
+    pt3_.setFilterLimits (y_lower_limit, y_upper_limit);
     
   }
 
@@ -60,18 +60,36 @@ public:
   void
   dynReconfCallback(pcl_tutorial::passthrough_filter_nodeConfig &config, uint32_t level)
   {
-    //pt_.setFilterLimits(config.z_lower_limit, config.z_upper_limit);
-    pt_.setFilterLimits(config.x_lower_limit, config.x_upper_limit);
-   // pt_.setFilterLimits(config.y_lower_limit, config.y_upper_limit);
+    pt1_.setFilterLimits(config.z_lower_limit, config.z_upper_limit);
+    pt2_.setFilterLimits(config.x_lower_limit, config.x_upper_limit);
+    pt3_.setFilterLimits(config.y_lower_limit, config.y_upper_limit);
   }
 
   void
   cloudCallback(const PointCloud::ConstPtr& cloud_in)
   {
-    pt_.setInputCloud(cloud_in);
-    PointCloud cloud_out;
-    pt_.filter(cloud_out);
-    pub_.publish(cloud_out);
+    pt1_.setInputCloud(cloud_in);
+    PointCloud cloud_out1;
+    pt1_.filter(cloud_out1);
+    
+    
+   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_in_2(new pcl::PointCloud<pcl::PointXYZRGB>);
+  *cloud_in_2 = cloud_out1;
+ 
+	pt2_.setInputCloud(cloud_in_2);
+    PointCloud cloud_out2;
+    pt2_.filter(cloud_out2);
+    
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_in_3(new pcl::PointCloud<pcl::PointXYZRGB>);
+  *cloud_in_3 = cloud_out2;
+ 
+	pt3_.setInputCloud(cloud_in_3);
+    PointCloud cloud_out3;
+    pt3_.filter(cloud_out3);
+    
+    
+    
+    pub_.publish(cloud_out3);
   }
 
 private:
@@ -80,7 +98,7 @@ private:
   ros::Publisher pub_;
   dynamic_reconfigure::Server<pcl_tutorial::passthrough_filter_nodeConfig> config_server_;
 
-  pcl::PassThrough<Point> pt_;
+  pcl::PassThrough<Point> pt1_,pt2_,pt3_;
 
 };
 

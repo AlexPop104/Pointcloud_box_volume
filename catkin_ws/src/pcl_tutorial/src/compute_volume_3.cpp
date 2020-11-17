@@ -153,7 +153,10 @@ float Volum=1;
     {
 
       PCL_ERROR("Could not estimate a planar model for the given dataset.");
+      ok2=0;
     }
+
+    else{
 
     Coeficients[t - 1][0] = coefficients->values[0];
     Coeficients[t - 1][1] = coefficients->values[1];
@@ -168,6 +171,11 @@ float Volum=1;
     *cloud_final += *cloud_segmented;
 
     all_planes[t] = cloud_segmented;
+
+    ok2=1;
+
+    }
+
   }
 
   void create_lines()
@@ -180,10 +188,14 @@ float Volum=1;
 
     int i, j;
 
-    for (i = 1; i < 4; i++)
+     if (ok2!=0) {
+
+       for (i = 1; i < 4; i++)
     {
 
       cloud = all_planes[i];
+
+      
 
       // Create a set of planar coefficients with X=Y=0,Z=1
       pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients());
@@ -221,6 +233,14 @@ float Volum=1;
         }
       }
     }
+
+
+     }
+     else {
+       std::cout<<"Cannot segment"<<"\n";
+     }
+
+    
   }
 
   void project_line_2_plane()
@@ -229,6 +249,15 @@ float Volum=1;
     int i, j;
 
     int aux;
+
+    for (i = 1; i < 3; i++)
+    {
+      for (j = i; j < 4; j++)
+      {
+
+      }
+    }
+
 
     for (i = 1; i < 3; i++)
     {
