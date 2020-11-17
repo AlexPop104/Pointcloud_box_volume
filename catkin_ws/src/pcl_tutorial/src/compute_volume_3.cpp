@@ -24,6 +24,8 @@
 ros::Publisher pub;
 ros::Publisher pub2; 
 
+bool ok2;
+
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>), cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
@@ -93,7 +95,8 @@ float Volum=1;
     extract.filter(*cloud_f);
     *cloud_filtered = *cloud_f; //     HERE IS THE CLOUD FILTERED EXTRACTED
 
-    // Creating the KdTree object for the search method of the extraction
+    if(cloud_filtered->size()!=0){
+         // Creating the KdTree object for the search method of the extraction
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
     tree->setInputCloud(cloud_filtered);
 
@@ -116,10 +119,16 @@ float Volum=1;
       cloud_cluster->is_dense = true;
 
       cloud = cloud_cluster;
+      ok2=1;
     }
 
     ////////////////////////////////////
   }
+  else 
+  {
+    ok2=0;
+  }
+}
 
   void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int t)
   {
@@ -150,15 +159,12 @@ float Volum=1;
     Coeficients[t - 1][1] = coefficients->values[1];
     Coeficients[t - 1][2] = coefficients->values[2];
     Coeficients[t - 1][3] = coefficients->values[3];
-    /*
-  std::cout << "\n";
 
-  std::cout << "Coeficienti plan " << t << "\n";
-  std::cout << "Coeficient a=" << coefficients->values[0] << "\n";
-  std::cout << "Coeficient b=" << coefficients->values[1] << "\n";
-  std::cout << "Coeficient c=" << coefficients->values[2] << "\n";
-  std::cout << "Coeficient d=" << coefficients->values[3] << "\n";
-*/
+    
+
+   
+
+
     *cloud_final += *cloud_segmented;
 
     all_planes[t] = cloud_segmented;
@@ -423,17 +429,17 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
           float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
           //std::cout<<"Componenta x:"<<distanta_x<<"\n";
           distanta_x = distanta_x * distanta_x;
-          std::cout<<"Componenta x la patrat:"<<distanta_x<<"\n";
+          //std::cout<<"Componenta x la patrat:"<<distanta_x<<"\n";
 
           float distanta_y = (cloud->points[pozitie_max].y - cloud->points[pozitie_min].y);
           //std::cout<<"Componenta y:"<<distanta_y<<"\n";
           distanta_y = distanta_y * distanta_y;
-          std::cout<<"Componenta y la patrat:"<<distanta_y<<"\n";
+          //std::cout<<"Componenta y la patrat:"<<distanta_y<<"\n";
 
           float distanta_z = (cloud->points[pozitie_max].z - cloud->points[pozitie_min].z);
           //std::cout<<"Componenta z:"<<distanta_z<<"\n";
           distanta_z = distanta_z * distanta_z;
-          std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
+          //std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
           /*
         std::cout << "\n";
         std::cout << "Componenta x la patrat:" << distanta_x << "\n";
@@ -451,7 +457,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
           
         std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
 
-        std::cout << "\n";
+        //std::cout << "\n";
        
           Volum = Volum * distanta;
         }
@@ -484,7 +490,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
       ok=0;
       }
 
-
+      if (ok2!=0) {
       planar_segmenting(cloud_f, t);  //cloud_f is global, so the modifications stay
 
       cloud = cloud_f;  // Cloud is now the extracted pointcloud
@@ -492,9 +498,13 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
       if (cloud->size()==0){
       ok=0;
       }
+      }
+
+
+      
     }
 
-    if (ok){
+    if (ok && ok2){
       create_lines();
       project_line_2_plane();
       compute_volume();
@@ -535,8 +545,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
   *cloudPTR = cloud_Test;
 
-  std::cout<<"AM primit pointcloud"<<"\n";
-  std::cout<<"\n";
+  //std::cout<<"AM primit pointcloud"<<"\n";
+ // std::cout<<"\n";
 
   
   compute_all(cloudPTR);

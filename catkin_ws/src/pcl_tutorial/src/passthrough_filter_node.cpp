@@ -40,18 +40,18 @@ public:
     pt_.setFilterLimits (z_lower_limit, z_upper_limit);
     
      //read parameters with default value
-    private_nh.param("x_lower_limit", x_lower_limit, 2.);
-    private_nh.param("x_upper_limit", x_upper_limit, 5.);
+   // private_nh.param("x_lower_limit", x_lower_limit, 2.);
+   // private_nh.param("x_upper_limit", x_upper_limit, 5.);
 
-    pt_.setFilterFieldName ("x");
-    pt_.setFilterLimits (x_lower_limit, x_upper_limit);
+    //pt_.setFilterFieldName ("x");
+    //pt_.setFilterLimits (x_lower_limit, x_upper_limit);
     
     //read parameters with default value
-    private_nh.param("y_lower_limit", y_lower_limit, 2.);
-    private_nh.param("y_upper_limit", y_upper_limit, 5.);
+    //private_nh.param("y_lower_limit", y_lower_limit, 2.);
+    //private_nh.param("y_upper_limit", y_upper_limit, 5.);
 
-    pt_.setFilterFieldName ("y");
-    pt_.setFilterLimits (y_lower_limit, y_upper_limit);
+    //pt_.setFilterFieldName ("y");
+   // pt_.setFilterLimits (y_lower_limit, y_upper_limit);
     
   }
 
@@ -60,7 +60,9 @@ public:
   void
   dynReconfCallback(pcl_tutorial::passthrough_filter_nodeConfig &config, uint32_t level)
   {
-    pt_.setFilterLimits(config.z_lower_limit, config.z_upper_limit);
+    //pt_.setFilterLimits(config.z_lower_limit, config.z_upper_limit);
+    pt_.setFilterLimits(config.x_lower_limit, config.x_upper_limit);
+   // pt_.setFilterLimits(config.y_lower_limit, config.y_upper_limit);
   }
 
   void
