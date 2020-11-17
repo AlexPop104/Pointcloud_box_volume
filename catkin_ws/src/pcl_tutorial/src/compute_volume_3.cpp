@@ -539,7 +539,7 @@ std::cout<<"Inceput maxim z:"<<maxim_z<<" Pozitie "<<index_max_z<<"\n";
       compute_volume();
     }
     else {
-      std::cout<<"Not enough planes";
+      /*std::cout<<"Not enough planes";*/
     }
 
     
