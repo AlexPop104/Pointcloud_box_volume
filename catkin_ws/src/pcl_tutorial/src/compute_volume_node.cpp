@@ -614,7 +614,7 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
 
     std::stringstream ss;
 
-    ss<<"Volumul este "<<Volum;
+    ss<<"Volumul este "<<Volum<<" m3";
 
 
 
