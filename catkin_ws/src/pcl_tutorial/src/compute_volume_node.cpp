@@ -152,7 +152,7 @@ public:
     }
   }
 
-  void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final , int t, bool &ok2)
+  void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final , int t, bool &ok2)
   {
      pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
       pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -196,8 +196,10 @@ public:
     }
   }
 
-  void create_lines()
+  void create_lines(float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,bool &ok2)
   {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
     std::string str;
     std::string str2;
@@ -258,8 +260,10 @@ public:
     }
   }
 
-  void project_line_2_plane()
+  void project_line_2_plane(float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],pcl::PointCloud<pcl::PointXYZ> all_projected_lines[4][4],pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii)
   {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
     int i, j;
 
@@ -326,14 +330,16 @@ public:
             *cloud_proiectii += *cloud_c;
           }
 
-          all_projected_lines[i][j] = cloud_c;
+          all_projected_lines[i][j] = *cloud_c;
         }
       }
     }
   }
 
-  void compute_volume()
+  void compute_volume(pcl::PointCloud<pcl::PointXYZ> all_projected_lines[4][4],float &Volum)
   {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
     float muchii[3];
 
@@ -493,6 +499,8 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
     pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4];
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
 
     Volum=1;
 
@@ -517,7 +525,7 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
       }
 
       if (ok2!=0) {
-      planar_segmenting(cloud_f,all_planes,cloud_final, t, ok2);  //cloud_f is global, so the modifications stay
+      planar_segmenting(cloud_f,Coeficients,all_planes,cloud_final, t, ok2);  //cloud_f is global, so the modifications stay
 
       cloud = cloud_f;  // Cloud is now the extracted pointcloud
 
@@ -530,33 +538,45 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
     }
 
     if (ok && ok2){
-      create_lines();
-      project_line_2_plane();
-      compute_volume();
+
+      
+      std::stringstream ss2, ss3, ss4;
+    
+      ss2 << "All_planes"
+      << ".pcd";
+
+      writer.write<pcl::PointXYZ>(ss2.str(), *cloud_final, false);
+
+      create_lines(Coeficients,all_planes,all_lines,cloud_linii,ok2);
+
+
+      ss3 << "All_lines"
+      << ".pcd";
+
+      writer.write<pcl::PointXYZ>(ss3.str(), *cloud_linii, false);
+
+
+      project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
+
+
+       ss4 << "All_projections"
+        << ".pcd";
+
+       writer.write<pcl::PointXYZ>(ss4.str(), *cloud_proiectii, false);
+
+
+
+      compute_volume(all_projected_lines,Volum);
     }
     else {
       /*std::cout<<"Not enough planes";*/
     }
 
     
-
-    std::stringstream ss2, ss3, ss4;
-    /*
-  ss2 << "All_planes"
-      << ".pcd";
-
-  writer.write<pcl::PointXYZ>(ss2.str(), *cloud_final, false);
-
-  ss3 << "All_lines"
-      << ".pcd";
-
-  writer.write<pcl::PointXYZ>(ss3.str(), *cloud_linii, false);
-  */
+   
+ 
  /*
-    ss4 << "All_projections"
-        << ".pcd";
-
-    writer.write<pcl::PointXYZ>(ss4.str(), *cloud_proiectii, false);
+   
     */
   }
 
