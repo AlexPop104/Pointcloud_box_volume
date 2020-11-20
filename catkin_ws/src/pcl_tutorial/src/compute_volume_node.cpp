@@ -306,14 +306,7 @@ public:
             j = aux2;
 
             pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected(new pcl::PointCloud<pcl::PointXYZ>);
-            //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2 (new pcl::PointCloud<pcl::PointXYZ>);
-            /*
-          std::cout << "\n";
-          std::cout << "linie " << i << " " << j << "\n";
-          std::cout << "plan " << aux << "\n";
-          std::cout << "Projecting line " << i << " " << j << " to "
-                    << "plan " << aux << "\n";
-            */
+           
 
             *cloud = all_lines[i][j];
 
@@ -487,7 +480,7 @@ public:
               << "\n";
   }
 
-void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii)
+void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,float &Volum)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -497,13 +490,8 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
     pcl::PointCloud<pcl::PointXYZ> all_lines[4][4];
     pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4];
     pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4];
-   /*
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
-    */
+  
 
-    Volum=1;
 
     bool ok=1;
 
@@ -577,10 +565,6 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
 
     
    
- 
- /*
-   
-    */
   }
 
 
@@ -595,6 +579,7 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
   void
   cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
   {
+    float Volum=1;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii(new pcl::PointCloud<pcl::PointXYZ>);
@@ -605,7 +590,7 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
 
-    compute_all(cloudPTR,cloud_final,cloud_proiectii,cloud_linii);
+    compute_all(cloudPTR,cloud_final,cloud_proiectii,cloud_linii,Volum);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
@@ -624,6 +609,8 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
     cloud_final->clear();
     cloud_linii->clear();
     cloud_proiectii->clear();
+
+    Volum=1;
   }
 
 private:
