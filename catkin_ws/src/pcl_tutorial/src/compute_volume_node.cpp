@@ -17,6 +17,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <visualization_msgs/Marker.h>
 
 class ComputeVolumeNode
 {
@@ -53,6 +54,10 @@ public:
     pub2_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_proiectii", 1);
     sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
     //config_server_.setCallback(boost::bind(&ComputeVolumeNode::dynReconfCallback, this, _1, _2));
+
+    vis_pub = nh_.advertise<visualization_msgs::Marker>( "/Volum_final", 0 );
+
+    
   }
 
   ~ComputeVolumeNode() {}
@@ -595,16 +600,56 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
 
+  
+
+
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
+
+
+    
 
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
 
-    //Publish the data
+    std::stringstream ss;
 
+    ss<<"Volumul este "<<Volum;
+
+
+
+      visualization_msgs::Marker marker;
+       marker.header.frame_id = "camera_depth_optical_frame";
+      marker.header.stamp = ros::Time::now();
+      marker.pose.position.x = 1;
+      marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+      marker.text=ss.str();
+      marker.action = visualization_msgs::Marker::ADD;
+
+      marker.pose.position.y = 1;
+      marker.pose.position.z = 1;
+      marker.pose.orientation.x = 0.0;
+      marker.pose.orientation.y = 0.0;
+      marker.pose.orientation.z = 0.0;
+      marker.pose.orientation.w = 1.0;
+      marker.scale.x = 1;
+      marker.scale.y = 0.1;
+      marker.scale.z = 0.1;
+      marker.color.a = 1.0; // Don't forget to set the alpha! Otherwise it is invisible
+      marker.color.r = 0.0;
+      marker.color.g = 1.0;
+      marker.color.b = 0.0;
+      marker.lifetime = ros::Duration();
+
+
+
+ 
+
+    //Publish the data
+          
     pub1_.publish(tempROSMsg);
     pub2_.publish(tempROSMsg2);
+    vis_pub.publish( marker);
 
     cloud_final->clear();
     cloud_linii->clear();
@@ -646,7 +691,11 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane;
   ros::Subscriber sub_;
   ros::Publisher pub1_;
   ros::Publisher pub2_;
+
+  ros::Publisher vis_pub;
   //dynamic_reconfigure::Server<pcl_tutorial::compute_volume_nodeConfig> config_server_;
+
+  //ros::Publisher vis_pub = node_handle.advertise<visualization_msgs::Marker>( "visualization_marker", 0 );
 };
 
 int main(int argc, char **argv)
