@@ -155,7 +155,9 @@ add_executable(plane_segmentation_node src/plane_segmentation_node.cpp)
 add_executable(trianglemesh_node src/trianglemesh_node.cpp)
 
 add_executable(compute_volume_3 src/compute_volume_3.cpp)
-##add_executable(test_compute_2 src/test_compute_2.cpp)
+
+add_executable(compute_volume_node src/compute_volume_node.cpp)
+
 
 
 target_link_libraries(voxel_filter_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
@@ -164,7 +166,9 @@ target_link_libraries(plane_segmentation_node ${catkin_LIBRARIES} ${Boost_LIBRAR
 target_link_libraries(trianglemesh_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${PCL_LIBRARIES})
 
 target_link_libraries(compute_volume_3 ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${PCL_LIBRARIES})
-##target_link_libraries(test_compute_2 ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${PCL_LIBRARIES})
+
+target_link_libraries(compute_volume_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${PCL_LIBRARIES})
+
 
 add_dependencies(voxel_filter_node ${PROJECT_NAME}_gencfg)
 add_dependencies(passthrough_filter_node ${PROJECT_NAME}_gencfg)
@@ -172,7 +176,7 @@ add_dependencies(plane_segmentation_node ${PROJECT_NAME}_gencfg)
 add_dependencies(trianglemesh_node ${PROJECT_NAME}_gencfg)
 
 add_dependencies(compute_volume_3 ${PROJECT_NAME}_gencfg)
-##add_dependencies(test_compute_2 ${PROJECT_NAME}_gencfg)
 
+add_dependencies(compute_volume_node ${PROJECT_NAME}_gencfg)
 
 
