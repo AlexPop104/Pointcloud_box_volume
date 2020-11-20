@@ -57,17 +57,19 @@ public:
 
   ~ComputeVolumeNode() {}
 
-  void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f)
+  void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f, bool &ok2)
   {
+
 
     // Create the filtering object: downsample the dataset using a leaf size of 1cm
     pcl::VoxelGrid<pcl::PointXYZ> vg;
+    pcl::SACSegmentation<pcl::PointXYZ> seg;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane(new pcl::PointCloud<pcl::PointXYZ>());
-    pcl::SACSegmentation<pcl::PointXYZ> seg;
+    
 
 
 
@@ -150,7 +152,7 @@ public:
     }
   }
 
-  void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final , int t, bool ok2)
+  void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final , int t, bool &ok2)
   {
      pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
       pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -483,24 +485,20 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
-  
-    pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
-    pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane(new pcl::PointCloud<pcl::PointXYZ>());
-
    
+    float Coeficients[3][4];
+  
     pcl::PointCloud<pcl::PointXYZ> all_lines[4][4];
     pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4];
     pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4];
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final;
-
-
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
 
     Volum=1;
 
     bool ok=1;
+
+    bool ok2;
 
     pcl::PCDWriter writer;
 
@@ -512,14 +510,14 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
     {
       
       
-      euclidean_segmenting(cloud,cloud_f);
+      euclidean_segmenting(cloud,cloud_f,ok2);
 
       if (cloud_f->size()==0){
       ok=0;
       }
 
       if (ok2!=0) {
-      planar_segmenting(cloud_f, t);  //cloud_f is global, so the modifications stay
+      planar_segmenting(cloud_f,all_planes,cloud_final, t, ok2);  //cloud_f is global, so the modifications stay
 
       cloud = cloud_f;  // Cloud is now the extracted pointcloud
 
@@ -527,7 +525,6 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
       ok=0;
       }
       }
-
 
       
     }
