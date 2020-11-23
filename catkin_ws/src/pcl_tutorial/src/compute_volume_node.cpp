@@ -485,7 +485,7 @@ public:
               << "\n";
   }
 
-void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,float &Volum)
+void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,float &Volum , int &t)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -506,9 +506,10 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
 
     if (cloud->size()==0){
       ok=0;
+      t=0;
     }
 
-    for (int t = 1; (t < 4) && ok; t++)
+    for (t = 1; (t < 4) && ok; t++)
     {
       
       
@@ -585,6 +586,9 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
   cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
   {
     float Volum=1;
+    int t=0;
+
+
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii(new pcl::PointCloud<pcl::PointXYZ>);
@@ -595,7 +599,7 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
 
-    compute_all(cloudPTR,cloud_final,cloud_proiectii,cloud_linii,Volum);
+    compute_all(cloudPTR,cloud_final,cloud_proiectii,cloud_linii,Volum,t);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
@@ -612,13 +616,18 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
 
-    std::stringstream ss;
-
-    ss<<"Volumul este "<<Volum<<" m3";
+    
 
 
+      //Vizualizare Volum
 
-      visualization_msgs::Marker marker;
+      std::stringstream ss;
+
+       ss<<"Volumul este "<<Volum<<" m3";
+
+
+
+      visualization_msgs::Marker marker;  
        marker.header.frame_id = "camera_depth_optical_frame";
       marker.header.stamp = ros::Time::now();
       marker.pose.position.x = 1;
@@ -642,6 +651,22 @@ void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::
       marker.lifetime = ros::Duration();
 
 
+    //////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
  
 
