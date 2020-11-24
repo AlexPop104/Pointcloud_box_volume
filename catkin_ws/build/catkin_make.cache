@@ -1,0 +1,2 @@
+openni2/openni2_camera:openni2/openni2_launch:pcl_tutorial
+-DCATKIN_DEVEL_PREFIX=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install -G Unix Makefiles

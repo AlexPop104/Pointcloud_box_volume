@@ -1,9 +1,3 @@
-/*
- * passthrough_filter.cpp
- *
- *  Created on: 06.09.2013
- *      Author: goa
- */
 
 #include <ros/ros.h>
 #include <dynamic_reconfigure/server.h>

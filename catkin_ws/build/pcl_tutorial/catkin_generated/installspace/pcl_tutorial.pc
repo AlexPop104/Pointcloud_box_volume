@@ -1,0 +1,8 @@
+prefix=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install
+
+Name: pcl_tutorial
+Description: Description of pcl_tutorial
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

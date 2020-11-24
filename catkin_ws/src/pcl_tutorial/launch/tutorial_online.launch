@@ -16,8 +16,9 @@
 <remap from="pf_out" to="/pcl_meshtriangle" />
 </node>
 
-<node pkg="pcl_tutorial" type="compute_volume_node" name="compute_volume_node" output="screen" >
+ <node pkg="pcl_tutorial" type="compute_volume_node" name="compute_volume_node" output="screen">
 </node>
+
 
  <node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find pcl_tutorial)/cfg/rviz.rviz"/>
 

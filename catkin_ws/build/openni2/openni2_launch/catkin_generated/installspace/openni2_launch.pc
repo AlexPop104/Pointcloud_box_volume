@@ -1,0 +1,8 @@
+prefix=/home/alex/workspace/volume_box/Volume_Box/catkin_ws/install
+
+Name: openni2_launch
+Description: Description of openni2_launch
+Version: 1.4.2
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
