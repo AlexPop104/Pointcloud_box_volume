@@ -18,6 +18,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <visualization_msgs/Marker.h>
+#include <string>
 
 class ComputeVolumeNode
 {
@@ -54,19 +55,18 @@ public:
     pub2_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_proiectii", 1);
     pub3_ = nh_.advertise<sensor_msgs::PointCloud2>("/cloud_floor", 1);
     sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
-    
 
     vis_pub = nh_.advertise<visualization_msgs::Marker>("/Volum_final", 0);
     vis2_pub = nh_.advertise<visualization_msgs::Marker>("/Nr_of_planes", 0);
+    vis3_pub = nh_.advertise<visualization_msgs::Marker>("/Mesaj_planuri", 0);
   }
 
   ~ComputeVolumeNode() {}
 
-  void planar_segmenting_single_time(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_segmented,pcl::ModelCoefficients::Ptr coefficients)
+  void planar_segmenting_single_time(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_segmented, pcl::ModelCoefficients::Ptr coefficients)
   {
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
-    
-    
+
     pcl::PointCloud<pcl::PointXYZ>::Ptr outliers(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr outliers_segmented(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::SACSegmentation<pcl::PointXYZ> seg;
@@ -89,7 +89,6 @@ public:
       PCL_ERROR("Could not estimate a planar model for the given dataset.");
       ok2 = 0;
     }
-
   }
 
   void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f, bool &ok2)
@@ -182,7 +181,7 @@ public:
       ok2 = 0;
     }
   }
-  
+
   void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4], pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final, int t, bool &ok2)
   {
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
@@ -497,7 +496,7 @@ public:
 
           distanta = sqrt(distanta_x + distanta_y + distanta_z);
 
-          std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
+          // std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
 
           //std::cout << "\n";
 
@@ -506,11 +505,18 @@ public:
       }
     }
 
-    std::cout << "Volum final " << Volum << " m^3"
-              << "\n";
+    // std::cout << "Volum final " << Volum << " m^3"
+    //         << "\n";
   }
 
-  void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii, float &Volum, int &p)
+  void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor,
+                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
+                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
+                  float &Volum,
+                  int &p,
+                  std::string text_planuri)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -522,8 +528,6 @@ public:
     pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4];
 
     pcl::ModelCoefficients::Ptr coefficients_floor(new pcl::ModelCoefficients);
-
-    
 
     bool ok = 1;
 
@@ -537,13 +541,11 @@ public:
       p = 0; // NO PLANE
     }
 
-    planar_segmenting_single_time(cloud,cloud_floor,coefficients_floor);
-
-
+    planar_segmenting_single_time(cloud, cloud_floor, coefficients_floor);
 
     Eigen::Vector3f normal_floor;
     normal_floor << coefficients_floor->values[0], coefficients_floor->values[1], coefficients_floor->values[2];
-    if(coefficients_floor->values[3] < 0)
+    if (coefficients_floor->values[3] < 0)
     {
       normal_floor *= -1;
     }
@@ -579,56 +581,87 @@ public:
 
     if (ok && ok2)
     {
-
-      /*     
-      std::stringstream ss2, ss3, ss4;
-     
-      ss2 << "All_planes"
-      << ".pcd";
-
-      writer.write<pcl::PointXYZ>(ss2.str(), *cloud_final, false);
-
-      */
-
       create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2);
 
-      /*
-      ss3 << "All_lines"
-      << ".pcd";
-
-      writer.write<pcl::PointXYZ>(ss3.str(), *cloud_linii, false);
-      */
-
       project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii);
-
-      /*
-       ss4 << "All_projections"
-        << ".pcd";
-
-       writer.write<pcl::PointXYZ>(ss4.str(), *cloud_proiectii, false);
-                  */
 
       compute_volume(all_projected_lines, Volum);
     }
     else
     {
-      /*std::cout<<"Not enough planes";*/
+      ///////////////////////////////////////////////////////////////////////////////////////////
+      //Cases when the volume cannot be computed directly but othr methods can be tried
+      ////////////
+
+      float epsilon_parallel = 0.5;
+      float epsilon_perpendicular = 0.5;
+
+      //   CAses where not enough planes
+      if (p == 2)
+      {
+        // Ground plane and 1 plane
+        Eigen::Vector3f normal_plane_1;
+        normal_plane_1 << Coeficients[0][0], Coeficients[0][1], Coeficients[0][2];
+        if (Coeficients[0][3] < 0)
+        {
+          normal_plane_1 *= -1;
+        }
+
+        float aux1 = abs(normal_floor(0) / normal_plane_1(0) - normal_floor(1) / normal_plane_1(1));
+        float aux2 = abs(normal_floor(2) / normal_plane_1(2) - normal_floor(1) / normal_plane_1(1));
+        float aux3 = abs(normal_floor(0) / normal_plane_1(0) - normal_floor(2) / normal_plane_1(2));
+
+        if ((aux1 < epsilon_parallel) && (aux2 < epsilon_parallel) && (aux3 < epsilon_parallel))
+        {
+
+          text_planuri= "Planul este paralel cu podeaua \n";
+        }
+
+        float verificare_perpendicular = normal_floor(0) * normal_plane_1(0) + normal_floor(1) * normal_plane_1(1) + normal_floor(2) * normal_plane_1(2);
+
+        if (abs(verificare_perpendicular) < epsilon_perpendicular)
+        {
+         text_planuri= "Planul este perpendicular cu podeaua \n";
+        }
+      }
+
+      if (p == 3) // Sunt 2 PLanuri si Ground plane
+      {
+        Eigen::Vector3f normal_plane_1;
+        normal_plane_1 << Coeficients[0][0], Coeficients[0][1], Coeficients[0][2];
+        if (Coeficients[0][3] < 0)
+        {
+          normal_plane_1 *= -1;
+        }
+
+        Eigen::Vector3f normal_plane_2;
+        normal_plane_2 << Coeficients[1][0], Coeficients[1][1], Coeficients[1][2];
+        if (Coeficients[1][3] < 0)
+        {
+          normal_plane_2 *= -1;
+        }
+
+        text_planuri= "Sunt 2 planuri";
+
+
+      }
     }
   }
 
-  
   void
   dynReconfCallback()
   {
-
   }
-  
 
   void
   cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
   {
     float Volum = 1;
     int p = 0;
+
+
+    std::string text_planuri;
+    
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
@@ -642,13 +675,11 @@ public:
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
 
-    compute_all(cloudPTR,cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p);
-
-    
+    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p,text_planuri);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
-     sensor_msgs::PointCloud2 tempROSMsg3;
+    sensor_msgs::PointCloud2 tempROSMsg3;
 
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
@@ -657,9 +688,11 @@ public:
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg3.header.frame_id = "camera_depth_optical_frame";
-   
+
+    
+
     //Message Marker Volume
-    ////////////////////////////////////////    
+    ////////////////////////////////////////
     std::stringstream ss;
 
     ss << "Volumul este " << Volum << " m3";
@@ -689,35 +722,33 @@ public:
 
     //////////////////////////////////////////////////////////////////////////////////
 
-     //Message Marker Volume
-    ////////////////////////////////////////    
+    //Message Marker Volume
+    ////////////////////////////////////////
     std::stringstream ss2;
 
     switch (p)
     {
     case 0:
       ss2 << "No plane detected"
-                << "\n";
+          << "\n";
       break;
     case 1:
-      ss2  << "Only ground plane detected"
-                << "\n";
+      ss2 << "Only ground plane detected"
+          << "\n";
       break;
     case 2:
-      ss2  << "Ground plane and 1 plane detected"
-                << "\n";
+      ss2 << "Ground plane and 1 plane detected"
+          << "\n";
       break;
     case 3:
-      ss2  << "Ground plane and 2 planes detected"
-                << "\n";
+      ss2 << "Ground plane and 2 planes detected"
+          << "\n";
       break;
     case 4:
-      ss2  << "Ground plane and 3 planes detected"
-                << "\n";
+      ss2 << "Ground plane and 3 planes detected"
+          << "\n";
       break;
     }
-
-    
 
     visualization_msgs::Marker marker2;
     marker2.header.frame_id = "camera_depth_optical_frame";
@@ -744,8 +775,35 @@ public:
 
     //////////////////////////////////////////////////////////////////////////////////
 
+    visualization_msgs::Marker marker3;
+    marker3.header.frame_id = "camera_depth_optical_frame";
+    marker3.header.stamp = ros::Time::now();
+    marker3.pose.position.x = 1;
+    marker3.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+    marker3.text = text_planuri;
+    marker3.action = visualization_msgs::Marker::ADD;
+
+    marker3.pose.position.y = 1;
+    marker3.pose.position.z = 1;
+    marker3.pose.orientation.x = 0.0;
+    marker3.pose.orientation.y = 0.0;
+    marker3.pose.orientation.z = 0.0;
+    marker3.pose.orientation.w = 1.0;
+    marker3.scale.x = 1;
+    marker3.scale.y = 0.1;
+    marker3.scale.z = 0.1;
+    marker3.color.a = 1.0; // Don't forget to set the alpha! Otherwise it is invisible
+    marker3.color.r = 0.0;
+    marker3.color.g = 1.0;
+    marker3.color.b = 0.0;
+    marker3.lifetime = ros::Duration();
 
 
+
+
+
+
+    ////////////////////////////////////////
 
     //Publish the data
 
@@ -753,9 +811,9 @@ public:
     pub2_.publish(tempROSMsg2);
     pub3_.publish(tempROSMsg3);
 
-
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
+    vis3_pub.publish(marker3);
 
     cloud_final->clear();
     cloud_linii->clear();
@@ -798,9 +856,8 @@ private:
 
   ros::Publisher vis_pub;
   ros::Publisher vis2_pub;
+  ros::Publisher vis3_pub;
   //dynamic_reconfigure::Server<pcl_tutorial::compute_volume_nodeConfig> config_server_;
-
-  
 };
 
 int main(int argc, char **argv)
