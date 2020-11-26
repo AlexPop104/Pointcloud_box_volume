@@ -516,7 +516,7 @@ public:
                   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
                   float &Volum,
                   int &p,
-                  std::string text_planuri)
+                  std::string &text_planuri)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
