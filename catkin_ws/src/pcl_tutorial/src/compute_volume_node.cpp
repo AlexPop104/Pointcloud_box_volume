@@ -63,7 +63,9 @@ public:
 
   ~ComputeVolumeNode() {}
 
-  void planar_segmenting_single_time(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_segmented, pcl::ModelCoefficients::Ptr coefficients)
+  void planar_segmenting_single_time(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+                                     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_segmented,
+                                     pcl::ModelCoefficients::Ptr coefficients)
   {
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
 
@@ -91,7 +93,9 @@ public:
     }
   }
 
-  void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f, bool &ok2)
+  void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f,
+                            bool &ok2)
   {
 
     // Create the filtering object: downsample the dataset using a leaf size of 1cm
@@ -182,7 +186,13 @@ public:
     }
   }
 
-  void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4], pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final, int t, bool &ok2)
+  void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+                         int dimension_cloud,
+                         float Coeficients[3][4],
+                         pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                         int t,
+                         bool &ok2)
   {
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -203,11 +213,21 @@ public:
     seg.segment(*inliers, *coefficients);
     pcl::copyPointCloud<pcl::PointXYZ>(*cloud, *inliers, *cloud_segmented);
 
-    if (inliers->indices.size() == 0)
+    if (inliers->indices.size() < 100)
     {
-
-      PCL_ERROR("Could not estimate a planar model for the given dataset.");
       ok2 = 0;
+
+      if (inliers->indices.size() == 0)
+      {
+
+        //PCL_ERROR("Could not estimate a planar model for the given dataset.");
+        std::cout<<"Could not estimate a planar model for the given dataset."<<"\n";
+      }
+      else
+      {
+        //PCL_ERROR("Very few points in principal plane");
+        std::cout<<"Very few points in principal plane"<<"\n";
+      }
     }
 
     else
@@ -226,7 +246,11 @@ public:
     }
   }
 
-  void create_lines(float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4], pcl::PointCloud<pcl::PointXYZ> all_lines[4][4], pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii, bool &ok2)
+  void create_lines(float Coeficients[3][4],
+                    pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                    pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
+                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
+                    bool &ok2)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -290,7 +314,11 @@ public:
     }
   }
 
-  void project_line_2_plane(float Coeficients[3][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4], pcl::PointCloud<pcl::PointXYZ> all_lines[4][4], pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4], pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii)
+  void project_line_2_plane(float Coeficients[3][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                            pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -358,7 +386,8 @@ public:
     }
   }
 
-  void compute_volume(pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4], float &Volum)
+  void compute_volume(pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
+                      float &Volum)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -374,8 +403,15 @@ public:
 
         if (i < j)
         {
+          float distanta=0;
 
           cloud = all_projected_lines[i][j];
+
+          compute_length_line(cloud,distanta);
+
+         Volum = Volum * distanta;
+
+        /*
 
           float minim_x = cloud->points[0].x;
           int index_min_x = 0;
@@ -465,7 +501,7 @@ public:
           int pozitie_min = Puncte[0][t];
           int pozitie_max = Puncte[1][t];
 
-          float distanta;
+          
 
           float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
           //std::cout<<"Componenta x:"<<distanta_x<<"\n";
@@ -481,13 +517,13 @@ public:
           //std::cout<<"Componenta z:"<<distanta_z<<"\n";
           distanta_z = distanta_z * distanta_z;
           //std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
-          /*
+          
         std::cout << "\n";
         std::cout << "Componenta x la patrat:" << distanta_x << "\n";
         std::cout << "Componenta y la patrat:" << distanta_y << "\n";
         std::cout << "Componenta z la patrat:" << distanta_z << "\n";
         std::cout << "\n";
-          */
+          
           distanta = distanta_x + distanta_y + distanta_z;
 
           //std::cout<<"Distanta inainte de SQRT Linia "<<i<<"_"<<j<<" "<<distanta<<"\n";
@@ -500,7 +536,11 @@ public:
 
           //std::cout << "\n";
 
+          
+
           Volum = Volum * distanta;
+
+          */
         }
       }
     }
@@ -509,14 +549,145 @@ public:
     //         << "\n";
   }
 
+  
+  void compute_length_line(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, float &distanta)
+  {
+
+          float minim_x = cloud->points[0].x;
+          int index_min_x = 0;
+
+          float minim_y = cloud->points[0].y;
+          int index_min_y = 0;
+
+          float minim_z = cloud->points[0].z;
+          int index_min_z = 0;
+
+          float maxim_x = cloud->points[0].x;
+          int index_max_x = 0;
+
+          float maxim_y = cloud->points[0].y;
+          int index_max_y = 0;
+
+          float maxim_z = cloud->points[0].z;
+          int index_max_z = 0;
+
+          for (int nIndex = 0; nIndex < cloud->points.size(); nIndex++)
+          {
+            if (minim_x > cloud->points[nIndex].x)
+            {
+              minim_x = cloud->points[nIndex].x;
+              index_min_x = nIndex;
+            }
+
+            if (minim_y > cloud->points[nIndex].y)
+            {
+              minim_y = cloud->points[nIndex].y;
+              index_min_y = nIndex;
+            }
+
+            if (minim_z > cloud->points[nIndex].z)
+            {
+              minim_z = cloud->points[nIndex].z;
+              index_min_z = nIndex;
+            }
+
+            if (maxim_x < cloud->points[nIndex].x)
+            {
+              maxim_x = cloud->points[nIndex].x;
+              index_max_x = nIndex;
+            }
+
+            if (maxim_y < cloud->points[nIndex].y)
+            {
+              maxim_y = cloud->points[nIndex].y;
+              index_max_y = nIndex;
+            }
+
+            if (maxim_z < cloud->points[nIndex].z)
+            {
+              maxim_z = cloud->points[nIndex].z;
+              index_max_z = nIndex;
+            }
+          }
+
+          float Sortare[3];
+
+          Sortare[0] = abs(maxim_x - minim_x);
+          Sortare[1] = abs(maxim_y - minim_y);
+          Sortare[2] = abs(maxim_z - minim_z);
+
+          float maximum = Sortare[0];
+
+          float Puncte[2][3];
+
+          int t = 0;
+
+          Puncte[0][0] = index_min_x;
+          Puncte[1][0] = index_max_x;
+          Puncte[0][1] = index_min_y;
+          Puncte[1][1] = index_max_y;
+          Puncte[0][2] = index_min_z;
+          Puncte[1][2] = index_max_z;
+
+          for (int q = 0; q < 3; q++)
+          {
+            if (maximum < Sortare[q])
+            {
+              maximum = Sortare[q];
+              t = q;
+            }
+          }
+
+          int pozitie_min = Puncte[0][t];
+          int pozitie_max = Puncte[1][t];
+
+          float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
+          
+          distanta_x = distanta_x * distanta_x;
+          
+
+          float distanta_y = (cloud->points[pozitie_max].y - cloud->points[pozitie_min].y);
+         
+          distanta_y = distanta_y * distanta_y;
+         
+
+          float distanta_z = (cloud->points[pozitie_max].z - cloud->points[pozitie_min].z);
+          
+          distanta_z = distanta_z * distanta_z;
+         
+          distanta = distanta_x + distanta_y + distanta_z;
+
+        
+
+          distanta = sqrt(distanta_x + distanta_y + distanta_z);
+
+         
+
+         
+  }
+  
+  
+  void compute_third_perpendicular_plane(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane_1,
+                                     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane_2,
+                                     float Coeficients[3][4],
+                                     pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
+                                     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii
+                                     )
+  {
+      
+
+
+  }
+  
+  
   void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
-                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor,
-                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
-                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
-                  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
-                  float &Volum,
-                  int &p,
-                  std::string &text_planuri)
+                   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor,
+                   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
+                   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
+                   float &Volum,
+                   int &p,
+                   std::string &text_planuri)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -541,6 +712,8 @@ public:
       p = 0; // NO PLANE
     }
 
+    int dimension_cloud = cloud->width * cloud->height;
+
     planar_segmenting_single_time(cloud, cloud_floor, coefficients_floor);
 
     Eigen::Vector3f normal_floor;
@@ -562,7 +735,7 @@ public:
 
       if (ok2 != 0)
       {
-        planar_segmenting(cloud_f, Coeficients, all_planes, cloud_final, t, ok2); //cloud_f is global, so the modifications stay
+        planar_segmenting(cloud_f, dimension_cloud, Coeficients, all_planes, cloud_final, t, ok2); //cloud_f is global, so the modifications stay
 
         cloud = cloud_f; // Cloud is now the extracted pointcloud
 
@@ -614,14 +787,14 @@ public:
         if ((aux1 < epsilon_parallel) && (aux2 < epsilon_parallel) && (aux3 < epsilon_parallel))
         {
 
-          text_planuri= "Planul este paralel cu podeaua \n";
+          text_planuri = "Planul este paralel cu podeaua \n";
         }
 
         float verificare_perpendicular = normal_floor(0) * normal_plane_1(0) + normal_floor(1) * normal_plane_1(1) + normal_floor(2) * normal_plane_1(2);
 
         if (abs(verificare_perpendicular) < epsilon_perpendicular)
         {
-         text_planuri= "Planul este perpendicular cu podeaua \n";
+          text_planuri = "Planul este perpendicular cu podeaua \n";
         }
       }
 
@@ -641,9 +814,7 @@ public:
           normal_plane_2 *= -1;
         }
 
-        text_planuri= "Sunt 2 planuri";
-
-
+        text_planuri = "Sunt 2 planuri";
       }
     }
   }
@@ -659,9 +830,7 @@ public:
     float Volum = 1;
     int p = 0;
 
-
-    std::string text_planuri;
-    
+    std::string text_planuri="No text";
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
@@ -675,7 +844,7 @@ public:
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
 
-    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p,text_planuri);
+    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, text_planuri);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
@@ -688,8 +857,6 @@ public:
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg3.header.frame_id = "camera_depth_optical_frame";
-
-    
 
     //Message Marker Volume
     ////////////////////////////////////////
@@ -797,11 +964,6 @@ public:
     marker3.color.g = 1.0;
     marker3.color.b = 0.0;
     marker3.lifetime = ros::Duration();
-
-
-
-
-
 
     ////////////////////////////////////////
 
