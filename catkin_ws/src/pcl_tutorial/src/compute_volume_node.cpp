@@ -733,7 +733,11 @@ public:
       {
         normal_floor *= -1;
       }
+      p=1;
     }
+
+    /*
+
 
     for (int t = 1; (t < 4) && ok; t++)
     {
@@ -767,7 +771,7 @@ public:
     if (ok && ok2)
     {
 
-      /*     
+           
       std::stringstream ss2, ss3, ss4;
      
       ss2 << "All_planes"
@@ -775,25 +779,25 @@ public:
 
       writer.write<pcl::PointXYZ>(ss2.str(), *cloud_final, false);
 
-      */
+      
 
       create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2);
 
-      /*
+      
       ss3 << "All_lines"
       << ".pcd";
 
       writer.write<pcl::PointXYZ>(ss3.str(), *cloud_linii, false);
-      */
+      
 
       project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii);
 
-      /*
+      
        ss4 << "All_projections"
         << ".pcd";
 
        writer.write<pcl::PointXYZ>(ss4.str(), *cloud_proiectii, false);
-                  */
+                  
 
       compute_volume(all_projected_lines, Volum);
     }
@@ -836,6 +840,8 @@ public:
 
       }
     }
+
+    */
   }
 
   void
