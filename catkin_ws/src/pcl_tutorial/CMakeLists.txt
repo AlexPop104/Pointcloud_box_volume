@@ -95,6 +95,7 @@ generate_dynamic_reconfigure_options(
   cfg/voxel_filter_node.cfg
   cfg/passthrough_filter_node.cfg
   cfg/plane_segmentation_node.cfg
+  cfg/compute_volume_node.cfg
 )
 
 
