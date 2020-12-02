@@ -97,10 +97,38 @@ public:
     {
 
       PCL_ERROR("Could not estimate a planar model for the given dataset.");
-      ok2 = 0;
+      //ok2 = 0;
     }
   }
 
+
+  void third_perpendicular_plane(float Coeficients[3][4],
+                                  int i,
+                                  int j,
+                                  float x0,
+                                  float y0,
+                                  float z0)
+  {
+
+      float a1= Coeficients[i-1][0];
+      float b1= Coeficients[i-1][1];
+      float c1= Coeficients[i-1][2];
+
+      float a2= Coeficients[j-1][0];
+      float b2= Coeficients[j-1][1];
+      float c2= Coeficients[j-1][2];
+
+      float a3=b1*c2-c1*b2;
+      float b3=c1*a2-a1*c2;
+      float c3=a1*b2-a2*b1;
+
+      float d3= a3*x0+b3*y0+c3*z0;
+      
+      Coeficients[3-(i-1)-(j-1)][0]=a3;
+      Coeficients[3-(i-1)-(j-1)][1]=b3;
+      Coeficients[3-(i-1)-(j-1)][2]=c3;
+      Coeficients[3-(i-1)-(j-1)][3]=-d3;
+  }
 
 
   void euclidean_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
@@ -196,6 +224,154 @@ public:
     }
   }
 
+void compute_length_line(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+                           float &distanta,
+                           float &coordonate_punct_minim_x,
+                           float &coordonate_punct_minim_y,
+                           float &coordonate_punct_minim_z,
+                           float &coordonate_punct_maxim_x,
+                           float &coordonate_punct_maxim_y,
+                           float &coordonate_punct_maxim_z)
+  {
+
+    float minim_x = cloud->points[0].x;
+    int index_min_x = 0;
+
+    float minim_y = cloud->points[0].y;
+    int index_min_y = 0;
+
+    float minim_z = cloud->points[0].z;
+    int index_min_z = 0;
+
+    float maxim_x = cloud->points[0].x;
+    int index_max_x = 0;
+
+    float maxim_y = cloud->points[0].y;
+    int index_max_y = 0;
+
+    float maxim_z = cloud->points[0].z;
+    int index_max_z = 0;
+
+    for (int nIndex = 0; nIndex < cloud->points.size(); nIndex++)
+    {
+      if (minim_x > cloud->points[nIndex].x)
+      {
+        minim_x = cloud->points[nIndex].x;
+        index_min_x = nIndex;
+      }
+
+      if (minim_y > cloud->points[nIndex].y)
+      {
+        minim_y = cloud->points[nIndex].y;
+        index_min_y = nIndex;
+      }
+
+      if (minim_z > cloud->points[nIndex].z)
+      {
+        minim_z = cloud->points[nIndex].z;
+        index_min_z = nIndex;
+      }
+
+      if (maxim_x < cloud->points[nIndex].x)
+      {
+        maxim_x = cloud->points[nIndex].x;
+        index_max_x = nIndex;
+      }
+
+      if (maxim_y < cloud->points[nIndex].y)
+      {
+        maxim_y = cloud->points[nIndex].y;
+        index_max_y = nIndex;
+      }
+
+      if (maxim_z < cloud->points[nIndex].z)
+      {
+        maxim_z = cloud->points[nIndex].z;
+        index_max_z = nIndex;
+      }
+    }
+
+    float Sortare[3];
+
+    Sortare[0] = abs(maxim_x - minim_x);
+    Sortare[1] = abs(maxim_y - minim_y);
+    Sortare[2] = abs(maxim_z - minim_z);
+
+    float maximum = Sortare[0];
+
+    float Puncte[2][3];
+
+    int t = 0;
+
+    Puncte[0][0] = index_min_x;
+    Puncte[1][0] = index_max_x;
+    Puncte[0][1] = index_min_y;
+    Puncte[1][1] = index_max_y;
+    Puncte[0][2] = index_min_z;
+    Puncte[1][2] = index_max_z;
+
+    for (int q = 0; q < 3; q++)
+    {
+      if (maximum < Sortare[q])
+      {
+        maximum = Sortare[q];
+        t = q;
+      }
+    }
+
+    int pozitie_min = Puncte[0][t];
+    int pozitie_max = Puncte[1][t];
+
+    float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
+
+    distanta_x = distanta_x * distanta_x;
+
+    float distanta_y = (cloud->points[pozitie_max].y - cloud->points[pozitie_min].y);
+
+    distanta_y = distanta_y * distanta_y;
+
+    float distanta_z = (cloud->points[pozitie_max].z - cloud->points[pozitie_min].z);
+
+    distanta_z = distanta_z * distanta_z;
+
+    distanta = distanta_x + distanta_y + distanta_z;
+
+    distanta = sqrt(distanta_x + distanta_y + distanta_z);
+
+    coordonate_punct_minim_x = cloud->points[pozitie_min].x;
+    coordonate_punct_minim_y = cloud->points[pozitie_min].y;
+    coordonate_punct_minim_z = cloud->points[pozitie_min].z;
+
+    coordonate_punct_maxim_x = cloud->points[pozitie_max].x;
+    coordonate_punct_maxim_y = cloud->points[pozitie_max].y;
+    coordonate_punct_maxim_z = cloud->points[pozitie_max].z;
+  }
+
+
+
+   void project_plane_2_plane_single(pcl::PointCloud<pcl::PointXYZ>::Ptr plane,
+                                    float Coeficients[3][4],
+                                    int j,                              
+                                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected)
+  {
+
+    pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients());
+    coefficients->values.resize(4);
+
+    coefficients->values[0] = Coeficients[j - 1][0];
+    coefficients->values[1] = Coeficients[j - 1][1];
+    coefficients->values[2] = Coeficients[j - 1][2];
+    coefficients->values[3] = Coeficients[j - 1][3];
+
+    pcl::ProjectInliers<pcl::PointXYZ> proj;
+    proj.setModelType(pcl::SACMODEL_PLANE);
+    proj.setInputCloud(plane);
+    proj.setModelCoefficients(coefficients);
+    proj.filter(*cloud_projected);
+
+  }
+
+
    void planar_segmenting(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                          float Coeficients[3][4],
                          pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
@@ -244,6 +420,300 @@ public:
       ok2 = 1;
     }
   }
+
+void create_lines(float Coeficients[3][4],
+                    pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                    pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
+                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
+                    bool &ok2)
+  {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+    std::string str;
+    std::string str2;
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected(new pcl::PointCloud<pcl::PointXYZ>);
+
+    int i, j;
+
+    if (ok2 != 0)
+    {
+
+      for (i = 1; i < 4; i++)
+      {
+
+        cloud = all_planes[i];
+
+        // Create a set of planar coefficients with X=Y=0,Z=1
+        pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients());
+        coefficients->values.resize(4);
+
+        for (j = 1; j < 4; j++)
+        {
+          if (j != i)
+          {
+            /*
+        std::cout << "\n";
+        std::cout << "plan " << i << "\n";
+         */
+            coefficients->values[0] = Coeficients[j - 1][0];
+            coefficients->values[1] = Coeficients[j - 1][1];
+            coefficients->values[2] = Coeficients[j - 1][2];
+            coefficients->values[3] = Coeficients[j - 1][3];
+
+            /*  
+        std::cout << "Projecting plane " << i << " to plane " << j << "\n";
+        std::cout << "Saving line " << i << "_" << j << "\n";
+         */
+            // Create the filtering object
+            pcl::ProjectInliers<pcl::PointXYZ> proj;
+            proj.setModelType(pcl::SACMODEL_PLANE);
+            proj.setInputCloud(cloud);
+            proj.setModelCoefficients(coefficients);
+            proj.filter(*cloud_projected);
+
+            //PCL_INFO("Saving the projected Pointcloud \n");
+
+            all_lines[i][j] = *cloud_projected;
+
+            *cloud_linii = *cloud_linii + *cloud_projected;
+          }
+        }
+      }
+    }
+    else
+    {
+      std::cout << "Cannot segment"
+                << "\n";
+    }
+  }
+
+ void project_line_2_plane(float Coeficients[3][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                            pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii)
+  {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+    int i, j;
+
+    int aux;
+
+    for (i = 1; i < 3; i++)
+    {
+      for (j = i; j < 4; j++)
+      {
+      }
+    }
+
+    for (i = 1; i < 3; i++)
+    {
+      for (j = i; j < 4; j++)
+      {
+
+        if (i != j)
+        {
+
+          aux = (6 - i - j);
+
+          // Create a set of planar coefficients with X=Y=0,Z=1
+          pcl::ModelCoefficients::Ptr coefficients2(new pcl::ModelCoefficients());
+          coefficients2->values.resize(4);
+
+          coefficients2->values[0] = Coeficients[aux - 1][0];
+          coefficients2->values[1] = Coeficients[aux - 1][1];
+          coefficients2->values[2] = Coeficients[aux - 1][2];
+          coefficients2->values[3] = Coeficients[aux - 1][3];
+
+          int aux2;
+          pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_c(new pcl::PointCloud<pcl::PointXYZ>);
+
+          for (int z = 1; z < 3; z++)
+          {
+
+            aux2 = i;
+            i = j;
+            j = aux2;
+
+            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected(new pcl::PointCloud<pcl::PointXYZ>);
+
+            *cloud = all_lines[i][j];
+
+            // Create the filtering object
+            pcl::ProjectInliers<pcl::PointXYZ> proj;
+            proj.setModelType(pcl::SACMODEL_PLANE);
+            proj.setInputCloud(cloud);
+            proj.setModelCoefficients(coefficients2);
+            proj.filter(*cloud_projected);
+
+            *cloud_c += *cloud;
+            *cloud_c += *cloud_projected;
+
+            *cloud_proiectii += *cloud_c;
+          }
+
+          all_projected_lines[i][j] = cloud_c;
+        }
+      }
+    }
+  }
+
+  void compute_volume(pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
+                      float &Volum)
+  {
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+    float muchii[3];
+
+    int i, j;
+
+    for (i = 1; i < 3; i++)
+    {
+      for (j = 1; j < 4; j++)
+      {
+
+        if (i < j)
+        {
+
+          cloud = all_projected_lines[i][j];
+
+          float minim_x = cloud->points[0].x;
+          int index_min_x = 0;
+
+          float minim_y = cloud->points[0].y;
+          int index_min_y = 0;
+
+          float minim_z = cloud->points[0].z;
+          int index_min_z = 0;
+
+          float maxim_x = cloud->points[0].x;
+          int index_max_x = 0;
+
+          float maxim_y = cloud->points[0].y;
+          int index_max_y = 0;
+
+          float maxim_z = cloud->points[0].z;
+          int index_max_z = 0;
+
+          for (int nIndex = 0; nIndex < cloud->points.size(); nIndex++)
+          {
+            if (minim_x > cloud->points[nIndex].x)
+            {
+              minim_x = cloud->points[nIndex].x;
+              index_min_x = nIndex;
+            }
+
+            if (minim_y > cloud->points[nIndex].y)
+            {
+              minim_y = cloud->points[nIndex].y;
+              index_min_y = nIndex;
+            }
+
+            if (minim_z > cloud->points[nIndex].z)
+            {
+              minim_z = cloud->points[nIndex].z;
+              index_min_z = nIndex;
+            }
+
+            if (maxim_x < cloud->points[nIndex].x)
+            {
+              maxim_x = cloud->points[nIndex].x;
+              index_max_x = nIndex;
+            }
+
+            if (maxim_y < cloud->points[nIndex].y)
+            {
+              maxim_y = cloud->points[nIndex].y;
+              index_max_y = nIndex;
+            }
+
+            if (maxim_z < cloud->points[nIndex].z)
+            {
+              maxim_z = cloud->points[nIndex].z;
+              index_max_z = nIndex;
+            }
+          }
+
+          float Sortare[3];
+
+          Sortare[0] = abs(maxim_x - minim_x);
+          Sortare[1] = abs(maxim_y - minim_y);
+          Sortare[2] = abs(maxim_z - minim_z);
+
+          float maximum = Sortare[0];
+
+          float Puncte[2][3];
+
+          int t = 0;
+
+          Puncte[0][0] = index_min_x;
+          Puncte[1][0] = index_max_x;
+          Puncte[0][1] = index_min_y;
+          Puncte[1][1] = index_max_y;
+          Puncte[0][2] = index_min_z;
+          Puncte[1][2] = index_max_z;
+
+          for (int q = 0; q < 3; q++)
+          {
+            if (maximum < Sortare[q])
+            {
+              maximum = Sortare[q];
+              t = q;
+            }
+          }
+
+          int pozitie_min = Puncte[0][t];
+          int pozitie_max = Puncte[1][t];
+
+          float distanta;
+
+          float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
+          //std::cout<<"Componenta x:"<<distanta_x<<"\n";
+          distanta_x = distanta_x * distanta_x;
+          //std::cout<<"Componenta x la patrat:"<<distanta_x<<"\n";
+
+          float distanta_y = (cloud->points[pozitie_max].y - cloud->points[pozitie_min].y);
+          //std::cout<<"Componenta y:"<<distanta_y<<"\n";
+          distanta_y = distanta_y * distanta_y;
+          //std::cout<<"Componenta y la patrat:"<<distanta_y<<"\n";
+
+          float distanta_z = (cloud->points[pozitie_max].z - cloud->points[pozitie_min].z);
+          //std::cout<<"Componenta z:"<<distanta_z<<"\n";
+          distanta_z = distanta_z * distanta_z;
+          //std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
+          /*
+        std::cout << "\n";
+        std::cout << "Componenta x la patrat:" << distanta_x << "\n";
+        std::cout << "Componenta y la patrat:" << distanta_y << "\n";
+        std::cout << "Componenta z la patrat:" << distanta_z << "\n";
+        std::cout << "\n";
+          */
+          distanta = distanta_x + distanta_y + distanta_z;
+
+          //std::cout<<"Distanta inainte de SQRT Linia "<<i<<"_"<<j<<" "<<distanta<<"\n";
+
+          //std::cout << "\n";
+
+          distanta = sqrt(distanta_x + distanta_y + distanta_z);
+
+          std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
+
+          //std::cout << "\n";
+
+          Volum = Volum * distanta;
+        }
+      }
+    }
+
+    std::cout << "Volum final " << Volum << " m^3"
+              << "\n";
+  }
+
+
 
   void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor,
@@ -317,6 +787,93 @@ public:
         
         
       }
+      
+      if (p==3)
+      {
+          pcl::PointCloud<pcl::PointXYZ>::Ptr projection(new pcl::PointCloud<pcl::PointXYZ>);
+
+          pcl::PointCloud<pcl::PointXYZ>::Ptr plane(new pcl::PointCloud<pcl::PointXYZ>);
+
+          pcl::PointCloud<pcl::PointXYZ>::Ptr line(new pcl::PointCloud<pcl::PointXYZ>);
+
+          
+
+          plane=all_planes[1];
+
+          
+
+          project_plane_2_plane_single(plane,Coeficients,2,projection);
+
+          
+
+          *line+=*projection;
+
+          all_lines[1][2]=*projection;
+          
+          //projection->clear();
+          
+
+          plane=all_planes[2];
+
+          project_plane_2_plane_single(plane,Coeficients,1,projection);
+
+          *line+=*projection;
+
+          all_lines[2][1]=*projection;
+
+          
+          float coordonate_punct_minim_x;
+          float coordonate_punct_minim_y;
+          float coordonate_punct_minim_z;
+          float coordonate_punct_maxim_x;
+          float coordonate_punct_maxim_y;
+          float coordonate_punct_maxim_z;
+
+          float distanta;
+            
+          compute_length_line(line,
+                           distanta,
+                           coordonate_punct_minim_x,
+                           coordonate_punct_minim_y,
+                           coordonate_punct_minim_z,
+                           coordonate_punct_maxim_x,
+                           coordonate_punct_maxim_y,
+                           coordonate_punct_maxim_z);
+
+          third_perpendicular_plane(Coeficients,1,2,coordonate_punct_maxim_x,coordonate_punct_maxim_y,coordonate_punct_maxim_z);
+          
+          plane=all_planes[1];
+          
+          project_plane_2_plane_single(plane,Coeficients,3,projection);
+
+
+          all_lines[1][3]=*projection;
+          all_lines[3][1]=*projection;
+
+          
+          
+          plane=all_planes[2];
+
+          project_plane_2_plane_single(plane,Coeficients,3,projection);
+
+
+          all_lines[2][3]=*projection;
+          all_lines[3][2]=*projection;
+
+          project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
+
+          compute_volume(all_projected_lines,Volum);
+          
+      }
+
+      if (p==4)
+      {
+          create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2);
+          project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii);
+          compute_volume(all_projected_lines, Volum);
+      }
+      
+      
     }
 
 
@@ -355,15 +912,14 @@ public:
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
-    sensor_msgs::PointCloud2 tempROSMsg3;
+    
 
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
-    pcl::toROSMsg(*cloud_floor, tempROSMsg3);
+    
 
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
-    tempROSMsg3.header.frame_id = "camera_depth_optical_frame";
 
     //Message Marker Volume
     ////////////////////////////////////////
