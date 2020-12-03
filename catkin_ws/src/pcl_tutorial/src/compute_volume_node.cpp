@@ -55,7 +55,7 @@ public:
 
     pub1_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_plan", 1);
     pub2_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_proiectii", 1);
-    
+    pub3_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_linii", 1);
 
 
 
@@ -613,6 +613,7 @@ void create_lines(float Coeficients[3][4],
                             pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
                             pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
                             pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
                             float &Volum)
   {
         pcl::PointCloud<pcl::PointXYZ>::Ptr projection(new pcl::PointCloud<pcl::PointXYZ>);
@@ -633,16 +634,17 @@ void create_lines(float Coeficients[3][4],
 
           *line+=*projection;
 
-          all_lines[1][2]=*projection;
-          
-          //projection->clear();
-          
+          *cloud_linii+=*projection;
+
+          all_lines[1][2]=*projection;          
 
           plane=all_planes[2];
 
           project_plane_2_plane_single(plane,Coeficients,1,projection);
 
           *line+=*projection;
+
+          *cloud_linii+=*projection;
 
           all_lines[2][1]=*projection;
 
@@ -675,7 +677,7 @@ void create_lines(float Coeficients[3][4],
           all_lines[1][3]=*projection;
           all_lines[3][1]=*projection;
 
-          
+          *cloud_linii+=*projection;
           
           plane=all_planes[2];
 
@@ -684,6 +686,8 @@ void create_lines(float Coeficients[3][4],
 
           all_lines[2][3]=*projection;
           all_lines[3][2]=*projection;
+
+          *cloud_linii+=*projection;
 
           project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
 
@@ -766,88 +770,14 @@ void create_lines(float Coeficients[3][4],
       
       if (p==3)
       {
-        /*
-          pcl::PointCloud<pcl::PointXYZ>::Ptr projection(new pcl::PointCloud<pcl::PointXYZ>);
-
-          pcl::PointCloud<pcl::PointXYZ>::Ptr plane(new pcl::PointCloud<pcl::PointXYZ>);
-
-          pcl::PointCloud<pcl::PointXYZ>::Ptr line(new pcl::PointCloud<pcl::PointXYZ>);
-
-          
-
-          plane=all_planes[1];
-
-          
-
-          project_plane_2_plane_single(plane,Coeficients,2,projection);
-
-          
-
-          *line+=*projection;
-
-          all_lines[1][2]=*projection;
-          
-          //projection->clear();
-          
-
-          plane=all_planes[2];
-
-          project_plane_2_plane_single(plane,Coeficients,1,projection);
-
-          *line+=*projection;
-
-          all_lines[2][1]=*projection;
-
-          
-          float coordonate_punct_minim_x;
-          float coordonate_punct_minim_y;
-          float coordonate_punct_minim_z;
-          float coordonate_punct_maxim_x;
-          float coordonate_punct_maxim_y;
-          float coordonate_punct_maxim_z;
-
-          float distanta;
-            
-          compute_length_line(line,
-                           distanta,
-                           coordonate_punct_minim_x,
-                           coordonate_punct_minim_y,
-                           coordonate_punct_minim_z,
-                           coordonate_punct_maxim_x,
-                           coordonate_punct_maxim_y,
-                           coordonate_punct_maxim_z);
-
-          third_perpendicular_plane(Coeficients,1,2,coordonate_punct_maxim_x,coordonate_punct_maxim_y,coordonate_punct_maxim_z);
-          
-          plane=all_planes[1];
-          
-          project_plane_2_plane_single(plane,Coeficients,3,projection);
-
-
-          all_lines[1][3]=*projection;
-          all_lines[3][1]=*projection;
-
-          
-          
-          plane=all_planes[2];
-
-          project_plane_2_plane_single(plane,Coeficients,3,projection);
-
-
-          all_lines[2][3]=*projection;
-          all_lines[3][2]=*projection;
-
-          project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
-
-          compute_volume(all_projected_lines,Volum);
-
-          */
+        
 
          compute_volume_2_planes(Coeficients,
                             all_planes,
                             all_lines,
                             all_projected_lines,
                             cloud_proiectii,
+                            cloud_linii,
                             Volum);
           
       }
@@ -877,6 +807,30 @@ void create_lines(float Coeficients[3][4],
   }
 
   void
+  set_marker(visualization_msgs::Marker &marker)
+  {
+      marker.header.stamp = ros::Time::now();
+      marker.pose.position.x = 1;
+      marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+      marker.action = visualization_msgs::Marker::ADD;
+
+      marker.pose.position.y = 1;
+      marker.pose.position.z = 1;
+      marker.pose.orientation.x = 0.0;
+      marker.pose.orientation.y = 0.0;
+      marker.pose.orientation.z = 0.0;
+      marker.pose.orientation.w = 1.0;
+      marker.scale.x = 1;
+      marker.scale.y = 0.1;
+      marker.scale.z = 0.1;
+      marker.color.a = 1.0; // Don't forget to set the alpha! Otherwise it is invisible
+      marker.color.r = 0.0;
+      marker.color.g = 1.0;
+      marker.color.b = 0.0;
+      marker.lifetime = ros::Duration();
+  }
+
+  void
   cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
   {
     float Volum = 1;
@@ -898,14 +852,17 @@ void create_lines(float Coeficients[3][4],
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
+    sensor_msgs::PointCloud2 tempROSMsg3;
     
 
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
+    pcl::toROSMsg(*cloud_linii, tempROSMsg3);
     
 
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
+    tempROSMsg3.header.frame_id = "camera_depth_optical_frame";
 
     //Message Marker Volume
     ////////////////////////////////////////
@@ -915,26 +872,13 @@ void create_lines(float Coeficients[3][4],
 
     visualization_msgs::Marker marker;
     marker.header.frame_id = "camera_depth_optical_frame";
-    marker.header.stamp = ros::Time::now();
-    marker.pose.position.x = 1;
-    marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
-    marker.text = ss.str();
-    marker.action = visualization_msgs::Marker::ADD;
 
-    marker.pose.position.y = 1;
-    marker.pose.position.z = 1;
-    marker.pose.orientation.x = 0.0;
-    marker.pose.orientation.y = 0.0;
-    marker.pose.orientation.z = 0.0;
-    marker.pose.orientation.w = 1.0;
-    marker.scale.x = 1;
-    marker.scale.y = 0.1;
-    marker.scale.z = 0.1;
-    marker.color.a = 1.0; // Don't forget to set the alpha! Otherwise it is invisible
-    marker.color.r = 0.0;
-    marker.color.g = 1.0;
-    marker.color.b = 0.0;
-    marker.lifetime = ros::Duration();
+    marker.text = ss.str();
+
+    set_marker(marker);
+    
+
+  
 
     //////////////////////////////////////////////////////////////////////////////////
 
@@ -968,10 +912,16 @@ void create_lines(float Coeficients[3][4],
 
     visualization_msgs::Marker marker2;
     marker2.header.frame_id = "camera_depth_optical_frame";
+
+    marker2.text = ss2.str();
+
+    set_marker(marker2);
+
+  /*
     marker2.header.stamp = ros::Time::now();
     marker2.pose.position.x = 1;
     marker2.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
-    marker2.text = ss2.str();
+    
     marker2.action = visualization_msgs::Marker::ADD;
 
     marker2.pose.position.y = 1;
@@ -988,13 +938,14 @@ void create_lines(float Coeficients[3][4],
     marker2.color.g = 1.0;
     marker2.color.b = 0.0;
     marker2.lifetime = ros::Duration();
-
+   */
     //////////////////////////////////////////////////////////////////////////////////
 
     //Publish the data
 
     pub1_.publish(tempROSMsg);
     pub2_.publish(tempROSMsg2);
+    pub3_.publish(tempROSMsg3);
 
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
@@ -1040,6 +991,7 @@ private:
   ros::Subscriber sub_;
   ros::Publisher pub1_;
   ros::Publisher pub2_;
+  ros::Publisher pub3_;
  
 
   ros::Publisher vis_pub;
