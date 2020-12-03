@@ -581,130 +581,25 @@ void create_lines(float Coeficients[3][4],
 
           cloud = all_projected_lines[i][j];
 
-          float minim_x = cloud->points[0].x;
-          int index_min_x = 0;
-
-          float minim_y = cloud->points[0].y;
-          int index_min_y = 0;
-
-          float minim_z = cloud->points[0].z;
-          int index_min_z = 0;
-
-          float maxim_x = cloud->points[0].x;
-          int index_max_x = 0;
-
-          float maxim_y = cloud->points[0].y;
-          int index_max_y = 0;
-
-          float maxim_z = cloud->points[0].z;
-          int index_max_z = 0;
-
-          for (int nIndex = 0; nIndex < cloud->points.size(); nIndex++)
-          {
-            if (minim_x > cloud->points[nIndex].x)
-            {
-              minim_x = cloud->points[nIndex].x;
-              index_min_x = nIndex;
-            }
-
-            if (minim_y > cloud->points[nIndex].y)
-            {
-              minim_y = cloud->points[nIndex].y;
-              index_min_y = nIndex;
-            }
-
-            if (minim_z > cloud->points[nIndex].z)
-            {
-              minim_z = cloud->points[nIndex].z;
-              index_min_z = nIndex;
-            }
-
-            if (maxim_x < cloud->points[nIndex].x)
-            {
-              maxim_x = cloud->points[nIndex].x;
-              index_max_x = nIndex;
-            }
-
-            if (maxim_y < cloud->points[nIndex].y)
-            {
-              maxim_y = cloud->points[nIndex].y;
-              index_max_y = nIndex;
-            }
-
-            if (maxim_z < cloud->points[nIndex].z)
-            {
-              maxim_z = cloud->points[nIndex].z;
-              index_max_z = nIndex;
-            }
-          }
-
-          float Sortare[3];
-
-          Sortare[0] = abs(maxim_x - minim_x);
-          Sortare[1] = abs(maxim_y - minim_y);
-          Sortare[2] = abs(maxim_z - minim_z);
-
-          float maximum = Sortare[0];
-
-          float Puncte[2][3];
-
-          int t = 0;
-
-          Puncte[0][0] = index_min_x;
-          Puncte[1][0] = index_max_x;
-          Puncte[0][1] = index_min_y;
-          Puncte[1][1] = index_max_y;
-          Puncte[0][2] = index_min_z;
-          Puncte[1][2] = index_max_z;
-
-          for (int q = 0; q < 3; q++)
-          {
-            if (maximum < Sortare[q])
-            {
-              maximum = Sortare[q];
-              t = q;
-            }
-          }
-
-          int pozitie_min = Puncte[0][t];
-          int pozitie_max = Puncte[1][t];
+          float coordonate_punct_minim_x;
+          float coordonate_punct_minim_y;
+          float coordonate_punct_minim_z;
+          float coordonate_punct_maxim_x;
+          float coordonate_punct_maxim_y;
+          float coordonate_punct_maxim_z;
 
           float distanta;
 
-          float distanta_x = (cloud->points[pozitie_max].x - cloud->points[pozitie_min].x);
-          //std::cout<<"Componenta x:"<<distanta_x<<"\n";
-          distanta_x = distanta_x * distanta_x;
-          //std::cout<<"Componenta x la patrat:"<<distanta_x<<"\n";
-
-          float distanta_y = (cloud->points[pozitie_max].y - cloud->points[pozitie_min].y);
-          //std::cout<<"Componenta y:"<<distanta_y<<"\n";
-          distanta_y = distanta_y * distanta_y;
-          //std::cout<<"Componenta y la patrat:"<<distanta_y<<"\n";
-
-          float distanta_z = (cloud->points[pozitie_max].z - cloud->points[pozitie_min].z);
-          //std::cout<<"Componenta z:"<<distanta_z<<"\n";
-          distanta_z = distanta_z * distanta_z;
-          //std::cout<<"Componenta z la patrat:"<<distanta_z<<"\n";
-          /*
-        std::cout << "\n";
-        std::cout << "Componenta x la patrat:" << distanta_x << "\n";
-        std::cout << "Componenta y la patrat:" << distanta_y << "\n";
-        std::cout << "Componenta z la patrat:" << distanta_z << "\n";
-        std::cout << "\n";
-          */
-          distanta = distanta_x + distanta_y + distanta_z;
-
-          //std::cout<<"Distanta inainte de SQRT Linia "<<i<<"_"<<j<<" "<<distanta<<"\n";
-
-          //std::cout << "\n";
-
-          distanta = sqrt(distanta_x + distanta_y + distanta_z);
-
-          std::cout << "Distanta finala " << i << "_" << j << " " << distanta << "\n";
-
-          //std::cout << "\n";
+          compute_length_line(cloud,distanta,
+                              coordonate_punct_minim_x,
+                              coordonate_punct_minim_y,
+                              coordonate_punct_minim_z,
+                              coordonate_punct_maxim_x,
+                              coordonate_punct_maxim_y,
+                              coordonate_punct_maxim_z);
 
           Volum = Volum * distanta;
+          
         }
       }
     }
