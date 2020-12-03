@@ -608,6 +608,87 @@ void create_lines(float Coeficients[3][4],
               << "\n";
   }
 
+  void compute_volume_2_planes(float Coeficients[3][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                            pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
+                            float &Volum)
+  {
+        pcl::PointCloud<pcl::PointXYZ>::Ptr projection(new pcl::PointCloud<pcl::PointXYZ>);
+
+          pcl::PointCloud<pcl::PointXYZ>::Ptr plane(new pcl::PointCloud<pcl::PointXYZ>);
+
+          pcl::PointCloud<pcl::PointXYZ>::Ptr line(new pcl::PointCloud<pcl::PointXYZ>);
+
+          
+
+          plane=all_planes[1];
+
+          
+
+          project_plane_2_plane_single(plane,Coeficients,2,projection);
+
+          
+
+          *line+=*projection;
+
+          all_lines[1][2]=*projection;
+          
+          //projection->clear();
+          
+
+          plane=all_planes[2];
+
+          project_plane_2_plane_single(plane,Coeficients,1,projection);
+
+          *line+=*projection;
+
+          all_lines[2][1]=*projection;
+
+          
+          float coordonate_punct_minim_x;
+          float coordonate_punct_minim_y;
+          float coordonate_punct_minim_z;
+          float coordonate_punct_maxim_x;
+          float coordonate_punct_maxim_y;
+          float coordonate_punct_maxim_z;
+
+          float distanta;
+            
+          compute_length_line(line,
+                           distanta,
+                           coordonate_punct_minim_x,
+                           coordonate_punct_minim_y,
+                           coordonate_punct_minim_z,
+                           coordonate_punct_maxim_x,
+                           coordonate_punct_maxim_y,
+                           coordonate_punct_maxim_z);
+
+          third_perpendicular_plane(Coeficients,1,2,coordonate_punct_maxim_x,coordonate_punct_maxim_y,coordonate_punct_maxim_z);
+          
+          plane=all_planes[1];
+          
+          project_plane_2_plane_single(plane,Coeficients,3,projection);
+
+
+          all_lines[1][3]=*projection;
+          all_lines[3][1]=*projection;
+
+          
+          
+          plane=all_planes[2];
+
+          project_plane_2_plane_single(plane,Coeficients,3,projection);
+
+
+          all_lines[2][3]=*projection;
+          all_lines[3][2]=*projection;
+
+          project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
+
+          compute_volume(all_projected_lines,Volum);
+  }
 
 
   void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
@@ -685,6 +766,7 @@ void create_lines(float Coeficients[3][4],
       
       if (p==3)
       {
+        /*
           pcl::PointCloud<pcl::PointXYZ>::Ptr projection(new pcl::PointCloud<pcl::PointXYZ>);
 
           pcl::PointCloud<pcl::PointXYZ>::Ptr plane(new pcl::PointCloud<pcl::PointXYZ>);
@@ -758,6 +840,15 @@ void create_lines(float Coeficients[3][4],
           project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
 
           compute_volume(all_projected_lines,Volum);
+
+          */
+
+         compute_volume_2_planes(Coeficients,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            Volum);
           
       }
 
