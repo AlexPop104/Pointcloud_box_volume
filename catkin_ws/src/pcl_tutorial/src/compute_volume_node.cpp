@@ -750,7 +750,7 @@ void create_lines(float Coeficients[3][4],
 
       if (ok2 != 0)
       {
-        planar_segmenting(cloud_f, Coeficients, all_planes, cloud_final, t, ok2); //cloud_f is global, so the modifications stay
+        planar_segmenting(cloud_f, Coeficients, all_planes, cloud_final, t, ok2); 
 
         cloud = cloud_f; // Cloud is now the extracted pointcloud
 
@@ -768,7 +768,12 @@ void create_lines(float Coeficients[3][4],
         
       }
       
-      if (p==3)
+      
+      
+      
+    }
+
+    if (p==3)
       {
         
 
@@ -788,18 +793,11 @@ void create_lines(float Coeficients[3][4],
           project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii);
           compute_volume(all_projected_lines, Volum);
       }
-      
-      
-    }
 
 
 
   }
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
+
   void
   dynReconfCallback(pcl_tutorial::compute_volume_nodeConfig &config, uint32_t level)
   {
@@ -839,9 +837,7 @@ void create_lines(float Coeficients[3][4],
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii(new pcl::PointCloud<pcl::PointXYZ>);
-
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor(new pcl::PointCloud<pcl::PointXYZ>);
-
     pcl::PointCloud<pcl::PointXYZ> cloud_Test;
     pcl::fromROSMsg(*cloud_msg, cloud_Test);
 
@@ -854,12 +850,10 @@ void create_lines(float Coeficients[3][4],
     sensor_msgs::PointCloud2 tempROSMsg2;
     sensor_msgs::PointCloud2 tempROSMsg3;
     
-
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
     pcl::toROSMsg(*cloud_linii, tempROSMsg3);
     
-
     tempROSMsg.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
     tempROSMsg3.header.frame_id = "camera_depth_optical_frame";
@@ -872,15 +866,8 @@ void create_lines(float Coeficients[3][4],
 
     visualization_msgs::Marker marker;
     marker.header.frame_id = "camera_depth_optical_frame";
-
     marker.text = ss.str();
-
     set_marker(marker);
-    
-
-  
-
-    //////////////////////////////////////////////////////////////////////////////////
 
     //Message Marker Volume
     ////////////////////////////////////////
@@ -910,36 +897,11 @@ void create_lines(float Coeficients[3][4],
       break;
     }
 
+
     visualization_msgs::Marker marker2;
     marker2.header.frame_id = "camera_depth_optical_frame";
-
     marker2.text = ss2.str();
-
     set_marker(marker2);
-
-  /*
-    marker2.header.stamp = ros::Time::now();
-    marker2.pose.position.x = 1;
-    marker2.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
-    
-    marker2.action = visualization_msgs::Marker::ADD;
-
-    marker2.pose.position.y = 1;
-    marker2.pose.position.z = 1;
-    marker2.pose.orientation.x = 0.0;
-    marker2.pose.orientation.y = 0.0;
-    marker2.pose.orientation.z = 0.0;
-    marker2.pose.orientation.w = 1.0;
-    marker2.scale.x = 1;
-    marker2.scale.y = 0.1;
-    marker2.scale.z = 0.1;
-    marker2.color.a = 1.0; // Don't forget to set the alpha! Otherwise it is invisible
-    marker2.color.r = 0.0;
-    marker2.color.g = 1.0;
-    marker2.color.b = 0.0;
-    marker2.lifetime = ros::Duration();
-   */
-    //////////////////////////////////////////////////////////////////////////////////
 
     //Publish the data
 
@@ -996,7 +958,6 @@ private:
 
   ros::Publisher vis_pub;
   ros::Publisher vis2_pub;
-  //dynamic_reconfigure::Server<pcl_tutorial::compute_volume_nodeConfig> config_server_;
 };
 
 int main(int argc, char **argv)
