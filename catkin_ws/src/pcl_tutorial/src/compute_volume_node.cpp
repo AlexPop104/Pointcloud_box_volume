@@ -65,6 +65,7 @@ public:
 
     vis_pub = nh_.advertise<visualization_msgs::Marker>("/Volum_final", 0);
     vis2_pub = nh_.advertise<visualization_msgs::Marker>("/Nr_of_planes", 0);
+    vis3_pub = nh_.advertise<visualization_msgs::Marker>("/1_plane_cases", 0);
 
     
   }
@@ -347,6 +348,53 @@ void compute_length_line(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
     coordonate_punct_maxim_z = cloud->points[pozitie_max].z;
   }
 
+void check_perpendicular(pcl::ModelCoefficients::Ptr plane_1,
+                         pcl::ModelCoefficients::Ptr plane_2, 
+                         double perpendicular_threshold,
+                         bool &perp_ok)
+
+{
+    perp_ok=0;
+
+    float a1=plane_1->values[0];
+    float b1=plane_1->values[1];
+    float c1=plane_1->values[2];
+    
+    float a2=plane_2->values[0];
+    float b2=plane_2->values[1];
+    float c2=plane_2->values[2];
+
+
+    if (abs(a1*a2+b1*b2+c1*c2)<perpendicular_threshold)
+    {
+      std::cout<<"Perpendicular"<<'\n';
+      perp_ok=1;
+    }
+}
+
+void check_parallel(pcl::ModelCoefficients::Ptr plane_1,
+                         pcl::ModelCoefficients::Ptr plane_2, 
+                         double parallel_threshold,
+                         bool &paral_ok)
+
+{
+    paral_ok=0;
+
+    float a1=plane_1->values[0];
+    float b1=plane_1->values[1];
+    float c1=plane_1->values[2];
+    
+    float a2=plane_2->values[0];
+    float b2=plane_2->values[1];
+    float c2=plane_2->values[2];
+
+    if( (abs(a1/a2 - b1/b2)<  parallel_threshold ) && (abs(b1/b2 - c1/c2)<  parallel_threshold) && (abs(a1/a2 - c1/c2)<  parallel_threshold) )
+     {
+       std::cout<<"Paralel"<<'\n';
+        paral_ok=1;
+     }
+    
+}
 
 
    void project_plane_2_plane_single(pcl::PointCloud<pcl::PointXYZ>::Ptr plane,
@@ -700,7 +748,7 @@ void create_lines(float Coeficients[3][4],
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
-                   float &Volum, int &p)
+                   float &Volum, int &p, bool &perp_ok,bool &paral_ok)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
@@ -754,7 +802,7 @@ void create_lines(float Coeficients[3][4],
 
         cloud = cloud_f; // Cloud is now the extracted pointcloud
 
-        if (cloud->size() < nivel_initial/3)
+        if (cloud->size() < nivel_initial/dividing_number)
         {
           ok = 0;
           if (t == 1)
@@ -771,6 +819,29 @@ void create_lines(float Coeficients[3][4],
       
       
       
+    }
+
+
+    if(p==2)
+    {
+        pcl::ModelCoefficients::Ptr coefficients_plane(new pcl::ModelCoefficients);
+        coefficients_plane->values.resize(4);
+
+        coefficients_plane->values[0]=Coeficients[0][0];
+        coefficients_plane->values[1]=Coeficients[0][1];
+        coefficients_plane->values[2]=Coeficients[0][2];
+        coefficients_plane->values[3]=Coeficients[0][3];
+
+        check_parallel(coefficients_floor,
+                       coefficients_plane,
+                       parallel_threshold,
+                       paral_ok);
+
+        check_perpendicular(coefficients_floor,
+                       coefficients_plane,
+                       parallel_threshold,
+                       perp_ok);
+
     }
 
     if (p==3)
@@ -802,6 +873,9 @@ void create_lines(float Coeficients[3][4],
   dynReconfCallback(pcl_tutorial::compute_volume_nodeConfig &config, uint32_t level)
   {
      nivel_initial=config.nr_points_initial;
+     dividing_number=config.dividing_number;
+     perpendicular_threshold=config.perpendicular_threshold;
+     parallel_threshold=config.parallel_threshold;
   }
 
   void
@@ -834,6 +908,9 @@ void create_lines(float Coeficients[3][4],
     float Volum = 1;
     int p = 0;
 
+    bool paral_ok=0;
+    bool perp_ok=0;;
+
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii(new pcl::PointCloud<pcl::PointXYZ>);
@@ -844,7 +921,7 @@ void create_lines(float Coeficients[3][4],
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
 
-    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p);
+    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p,perp_ok,paral_ok);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
@@ -903,6 +980,49 @@ void create_lines(float Coeficients[3][4],
     marker2.text = ss2.str();
     set_marker(marker2);
 
+
+   //////////////////////
+     std::stringstream ss3;
+
+      ss3<<"Perpendicular "<<perp_ok<<" si Paralel "<<paral_ok;
+
+
+/*
+    if (perp_ok && paral_ok)
+    {
+          ss3<<"Planul e paralel si perpendicular cu podeaua"
+    }
+    else
+    {
+      if (perp_ok)
+        {
+          ss3<<"Planul e perpendicular cu podeaua"
+        }
+      else
+        {
+          if (paral_ok)
+          {
+            ss3<<"Planul e paralel cu podeaua"
+          }
+          else
+          {
+            ss3<<"Planul nu are legatura cu podeaua"
+          }
+        }
+    }
+
+    */
+
+
+
+
+    visualization_msgs::Marker marker3;
+    marker3.header.frame_id = "camera_depth_optical_frame";
+    marker3.text = ss3.str();
+    set_marker(marker3);
+
+    ///////////////
+
     //Publish the data
 
     pub1_.publish(tempROSMsg);
@@ -911,6 +1031,7 @@ void create_lines(float Coeficients[3][4],
 
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
+    vis3_pub.publish(marker3);
 
     cloud_final->clear();
     cloud_linii->clear();
@@ -945,9 +1066,15 @@ private:
 
   float Volum;
 
+  bool paral_ok;
+  bool perp_ok;
+
   dynamic_reconfigure::Server<pcl_tutorial::compute_volume_nodeConfig> config_server_;
 
   double nivel_initial;
+  double dividing_number;
+  double perpendicular_threshold;
+  double parallel_threshold;
 
   ros::NodeHandle nh_;
   ros::Subscriber sub_;
@@ -958,6 +1085,7 @@ private:
 
   ros::Publisher vis_pub;
   ros::Publisher vis2_pub;
+  ros::Publisher vis3_pub;
 };
 
 int main(int argc, char **argv)
