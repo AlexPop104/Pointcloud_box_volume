@@ -473,7 +473,8 @@ void create_lines(float Coeficients[3][4],
                     pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                     pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
                     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
-                    bool &ok2)
+                    bool &ok2,
+                    bool &ok_lines)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -526,6 +527,13 @@ void create_lines(float Coeficients[3][4],
             all_lines[i][j] = *cloud_projected;
 
             *cloud_linii = *cloud_linii + *cloud_projected;
+
+            if (all_lines[i][j].width<10)
+            {
+              ok_lines=0;
+            }
+
+            
           }
         }
       }
@@ -541,7 +549,8 @@ void create_lines(float Coeficients[3][4],
                             pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                             pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
                             pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
-                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii)
+                            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
+                            bool &ok_lines)
   {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -604,6 +613,11 @@ void create_lines(float Coeficients[3][4],
           }
 
           all_projected_lines[i][j] = cloud_c;
+
+           if (all_projected_lines[i][j]->width<10)
+            {
+              ok_lines=0;
+            }
         }
       }
     }
@@ -662,6 +676,7 @@ void create_lines(float Coeficients[3][4],
                             pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
                             pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
                             pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
+                            bool &ok_lines,
                             float &Volum)
   {
         pcl::PointCloud<pcl::PointXYZ>::Ptr projection(new pcl::PointCloud<pcl::PointXYZ>);
@@ -670,6 +685,7 @@ void create_lines(float Coeficients[3][4],
 
           pcl::PointCloud<pcl::PointXYZ>::Ptr line(new pcl::PointCloud<pcl::PointXYZ>);
 
+            
           
 
           plane=all_planes[1];
@@ -705,8 +721,10 @@ void create_lines(float Coeficients[3][4],
           float coordonate_punct_maxim_z;
 
           float distanta;
-            
-          compute_length_line(line,
+
+          if(line->width>10)
+          {
+              compute_length_line(line,
                            distanta,
                            coordonate_punct_minim_x,
                            coordonate_punct_minim_y,
@@ -737,9 +755,20 @@ void create_lines(float Coeficients[3][4],
 
           *cloud_linii+=*projection;
 
-          project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii);
+          project_line_2_plane(Coeficients,all_planes,all_lines,all_projected_lines,cloud_proiectii ,ok_lines);
 
-          compute_volume(all_projected_lines,Volum);
+            if(ok_lines)
+            {
+                compute_volume(all_projected_lines,Volum);
+            }
+          
+          }
+          else
+          {
+            std::cout<<"Cannot create line"<<'\n';
+          }
+            
+          
   }
 
 
@@ -767,6 +796,8 @@ void create_lines(float Coeficients[3][4],
 
     bool ok2 = 1;
 
+    bool  ok_lines=1;
+
     pcl::PCDWriter writer;
 
     if (cloud->size() < nivel_initial)
@@ -791,7 +822,7 @@ void create_lines(float Coeficients[3][4],
 
       euclidean_segmenting(cloud, cloud_f, ok2);
 
-      if (cloud_f->size() == 0)
+      if (cloud_f->size() < nivel_initial/dividing_number)
       {
         ok = 0; //No more planes to cut out
       }
@@ -846,6 +877,8 @@ void create_lines(float Coeficients[3][4],
 
     if (p==3)
       {
+
+        std::cout<<"2 Planuri"<<'\n';
         
 
          compute_volume_2_planes(Coeficients,
@@ -854,15 +887,44 @@ void create_lines(float Coeficients[3][4],
                             all_projected_lines,
                             cloud_proiectii,
                             cloud_linii,
+                            ok_lines,
                             Volum);
           
       }
 
       if (p==4)
       {
-          create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2);
-          project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii);
-          compute_volume(all_projected_lines, Volum);
+          std::cout<<"3 Planuri"<<'\n';
+
+         
+
+          
+        
+          create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2, ok_lines);
+
+          /*compute_volume_2_planes(Coeficients,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            cloud_linii,
+                            Volum);
+                            */
+           
+              project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii, ok_lines);
+
+              if( ok_lines)
+              {
+                  compute_volume(all_projected_lines, Volum);
+              }
+              
+            
+
+
+              
+        
+
+          
       }
 
 
