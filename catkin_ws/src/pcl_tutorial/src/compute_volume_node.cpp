@@ -66,6 +66,7 @@ public:
     vis_pub = nh_.advertise<visualization_msgs::Marker>("/Volum_final", 0);
     vis2_pub = nh_.advertise<visualization_msgs::Marker>("/Nr_of_planes", 0);
     vis3_pub = nh_.advertise<visualization_msgs::Marker>("/1_plane_cases", 0);
+    vis4_pub = nh_.advertise<visualization_msgs::Marker>("/camera_type", 0);
 
     
   }
@@ -934,6 +935,8 @@ void create_lines(float Coeficients[3][4],
   void
   dynReconfCallback(pcl_tutorial::compute_volume_nodeConfig &config, uint32_t level)
   {
+     selection_camera=config.selection_camera;
+     
      nivel_initial=config.nr_points_initial;
      dividing_number=config.dividing_number;
      perpendicular_threshold=config.perpendicular_threshold;
@@ -992,10 +995,36 @@ void create_lines(float Coeficients[3][4],
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
     pcl::toROSMsg(*cloud_linii, tempROSMsg3);
+
+
+    //Camera_type
+    ////////////////////////////////////////
+    std::stringstream ss_camera;
+    std::stringstream header_camera;
+
+    if (selection_camera<1.5)
+    {
+        ss_camera<<"Openni";
+        header_camera<<"camera_depth_optical_frame";
+    }
+    else
+    {
+        ss_camera<<"Pico";
+        header_camera<<"pico_zense_depth_frame";
+    }
     
-    tempROSMsg.header.frame_id = "camera_depth_optical_frame";
-    tempROSMsg2.header.frame_id = "camera_depth_optical_frame";
-    tempROSMsg3.header.frame_id = "camera_depth_optical_frame";
+    visualization_msgs::Marker marker_camera;
+    marker_camera.header.frame_id = header_camera.str();
+    marker_camera.text = ss_camera.str();
+    set_marker(marker_camera);
+
+
+
+
+    
+    tempROSMsg.header.frame_id = header_camera.str();
+    tempROSMsg2.header.frame_id = header_camera.str();
+    tempROSMsg3.header.frame_id = header_camera.str();
 
     //Message Marker Volume
     ////////////////////////////////////////
@@ -1004,7 +1033,7 @@ void create_lines(float Coeficients[3][4],
     ss << "Volumul este " << Volum << " m3";
 
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "camera_depth_optical_frame";
+    marker.header.frame_id = header_camera.str();
     marker.text = ss.str();
     set_marker(marker);
 
@@ -1038,7 +1067,7 @@ void create_lines(float Coeficients[3][4],
 
 
     visualization_msgs::Marker marker2;
-    marker2.header.frame_id = "camera_depth_optical_frame";
+    marker2.header.frame_id = header_camera.str();
     marker2.text = ss2.str();
     set_marker(marker2);
 
@@ -1079,7 +1108,7 @@ void create_lines(float Coeficients[3][4],
 
 
     visualization_msgs::Marker marker3;
-    marker3.header.frame_id = "camera_depth_optical_frame";
+    marker3.header.frame_id = header_camera.str();
     marker3.text = ss3.str();
     set_marker(marker3);
 
@@ -1094,6 +1123,7 @@ void create_lines(float Coeficients[3][4],
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
     vis3_pub.publish(marker3);
+    vis4_pub.publish(marker_camera);
 
     cloud_final->clear();
     cloud_linii->clear();
@@ -1138,6 +1168,8 @@ private:
   double perpendicular_threshold;
   double parallel_threshold;
 
+  double selection_camera;
+
   ros::NodeHandle nh_;
   ros::Subscriber sub_;
   ros::Publisher pub1_;
@@ -1148,6 +1180,7 @@ private:
   ros::Publisher vis_pub;
   ros::Publisher vis2_pub;
   ros::Publisher vis3_pub;
+  ros::Publisher vis4_pub;
 };
 
 int main(int argc, char **argv)
