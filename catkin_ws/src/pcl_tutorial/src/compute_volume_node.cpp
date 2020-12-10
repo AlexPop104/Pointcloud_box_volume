@@ -879,7 +879,7 @@ void create_lines(float Coeficients[3][4],
     if (p==3)
       {
 
-        std::cout<<"2 Planuri"<<'\n';
+        //std::cout<<"2 Planuri"<<'\n';
         
 
          compute_volume_2_planes(Coeficients,
@@ -895,7 +895,7 @@ void create_lines(float Coeficients[3][4],
 
       if (p==4)
       {
-          std::cout<<"3 Planuri"<<'\n';
+          //std::cout<<"3 Planuri"<<'\n';
 
          
 

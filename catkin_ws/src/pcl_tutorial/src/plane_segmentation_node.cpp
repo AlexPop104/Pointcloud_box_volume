@@ -170,12 +170,12 @@ public:
     extract_.filter(cloud_out_2);
     extract_.setNegative(false);
 
-    ROS_INFO("Segmentation took %f s.", sw.precisionStop());
+    //ROS_INFO("Segmentation took %f s.", sw.precisionStop());
 
     pub_.publish(cloud_out);
     pub_2_.publish(cloud_out_2);
     publishMarker(coefficients, cloud_out, pcl_conversions::fromPCL(cloud_in->header));
-    printf("%d\n",cloud_in->header.seq);
+    //printf("%d\n",cloud_in->header.seq);
   }
 
 private:
