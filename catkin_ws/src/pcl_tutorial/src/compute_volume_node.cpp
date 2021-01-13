@@ -736,7 +736,7 @@ void create_lines(float Coeficients[3][4],
 
           third_perpendicular_plane(Coeficients,1,2,coordonate_punct_maxim_x,coordonate_punct_maxim_y,coordonate_punct_maxim_z);
           
-          /*
+          
           plane=all_planes[1];
           
           project_plane_2_plane_single(plane,Coeficients,3,projection);
@@ -763,7 +763,7 @@ void create_lines(float Coeficients[3][4],
             {
                 compute_volume(all_projected_lines,Volum);
             }
-          */
+          
           }
           else
           {
@@ -857,6 +857,8 @@ void create_lines(float Coeficients[3][4],
 
     if(p==2)
     {
+
+          std::cout<<"1 Planuri"<<'\n';
         pcl::ModelCoefficients::Ptr coefficients_plane(new pcl::ModelCoefficients);
         coefficients_plane->values.resize(4);
 
@@ -880,9 +882,48 @@ void create_lines(float Coeficients[3][4],
     if (p==3)
       {
 
-        //std::cout<<"2 Planuri"<<'\n';
-        
+        std::cout<<"2 Planuri"<<'\n';
 
+        bool is_perp=0;
+          /*
+        pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
+        pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
+
+        plane_1->values[0]=Coeficients[0][0];
+        plane_1->values[1]=Coeficients[0][1];
+        plane_1->values[2]=Coeficients[0][2];
+        plane_1->values[3]=Coeficients[0][3];
+
+        plane_2->values[0]=Coeficients[1][0];
+        plane_2->values[1]=Coeficients[1][1];
+        plane_2->values[2]=Coeficients[1][2];
+        plane_2->values[3]=Coeficients[1][3];
+
+        
+     
+        check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp);
+
+        if(is_perp)
+        {
+          std::cout<<"Perpendicular<<'\n'";
+        }
+        */
+       /*
+        
+        if(is_perp)
+        {
+            compute_volume_2_planes(Coeficients,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            cloud_linii,
+                            ok_lines,
+                            Volum);
+        }
+
+          */
+         
          compute_volume_2_planes(Coeficients,
                             all_planes,
                             all_lines,
@@ -896,7 +937,7 @@ void create_lines(float Coeficients[3][4],
 
       if (p==4)
       {
-          //std::cout<<"3 Planuri"<<'\n';
+          std::cout<<"3 Planuri"<<'\n';
 
          
 
@@ -904,14 +945,16 @@ void create_lines(float Coeficients[3][4],
         
           create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2, ok_lines);
 
-          /*compute_volume_2_planes(Coeficients,
+            /*compute_volume_2_planes(Coeficients,
                             all_planes,
                             all_lines,
                             all_projected_lines,
                             cloud_proiectii,
                             cloud_linii,
-                            Volum);
-                            */
+                            ok_lines,
+                            Volum);*/
+                            
+           
            
               project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii, ok_lines);
 
@@ -919,13 +962,9 @@ void create_lines(float Coeficients[3][4],
               {
                   compute_volume(all_projected_lines, Volum);
               }
-              
-            
-
 
               
-        
-
+              
           
       }
 
@@ -942,6 +981,11 @@ void create_lines(float Coeficients[3][4],
      dividing_number=config.dividing_number;
      perpendicular_threshold=config.perpendicular_threshold;
      parallel_threshold=config.parallel_threshold;
+
+     threshold_x=config.threshold_x;
+     threshold_y=config.threshold_y;
+     threshold_z=config.threshold_z;
+     minimum_nr_points=(int)config.minimum_nr_points;
   }
 
   void
@@ -1171,6 +1215,11 @@ private:
   double dividing_number;
   double perpendicular_threshold;
   double parallel_threshold;
+
+  double threshold_x;
+  double threshold_y;
+  double threshold_z;
+  int minimum_nr_points;
 
   double selection_camera;
 
