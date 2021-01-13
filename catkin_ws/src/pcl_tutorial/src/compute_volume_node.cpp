@@ -819,7 +819,7 @@ void create_lines(float Coeficients[3][4],
       p=1;
     }
 
-    for (int t = 1; (t < 4) && ok; t++)
+    for (int t = 1; (t < 3) && ok; t++)
     {
 
       euclidean_segmenting(cloud, cloud_f, ok2);
