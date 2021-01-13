@@ -736,6 +736,7 @@ void create_lines(float Coeficients[3][4],
 
           third_perpendicular_plane(Coeficients,1,2,coordonate_punct_maxim_x,coordonate_punct_maxim_y,coordonate_punct_maxim_z);
           
+          /*
           plane=all_planes[1];
           
           project_plane_2_plane_single(plane,Coeficients,3,projection);
@@ -762,13 +763,13 @@ void create_lines(float Coeficients[3][4],
             {
                 compute_volume(all_projected_lines,Volum);
             }
-          
+          */
           }
           else
           {
             std::cout<<"Cannot create line"<<'\n';
           }
-            
+           
           
   }
 
@@ -982,6 +983,9 @@ void create_lines(float Coeficients[3][4],
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ> cloud_Test;
     pcl::fromROSMsg(*cloud_msg, cloud_Test);
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plan_1(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plan_2(new pcl::PointCloud<pcl::PointXYZ>);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
