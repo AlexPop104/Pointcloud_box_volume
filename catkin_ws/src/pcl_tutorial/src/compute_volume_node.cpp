@@ -378,7 +378,6 @@ public:
     {
     }
 
-    std::cout << aux << '\n';
   }
 
   void add_normals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
@@ -451,7 +450,7 @@ public:
 
     if ((abs(a1 / a2 - b1 / b2) < parallel_threshold) && (abs(b1 / b2 - c1 / c2) < parallel_threshold) && (abs(a1 / a2 - c1 / c2) < parallel_threshold))
     {
-      std::cout << "Paralel" << '\n';
+      //std::cout << "Paralel" << '\n';
       paral_ok = 1;
     }
   }
@@ -724,6 +723,161 @@ public:
               << "\n";
   }
 
+  void compute_volume_1_plane(  pcl::ModelCoefficients::Ptr coefficients_floor,
+                                pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                                float &Volum)
+  {
+      float point_x=0;
+      float point_y=0;
+      float point_z=0;
+
+      int nIndex;
+
+    for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+        point_x=point_x+cloud_final->points[nIndex].x;
+        point_y=point_y+cloud_final->points[nIndex].y;
+        point_z=point_z+cloud_final->points[nIndex].z;
+      }
+
+      point_x=point_x/nIndex;
+      point_y=point_y/nIndex;
+      point_z=point_z/nIndex;
+
+      float distanta;
+
+      distanta=abs(-(coefficients_floor->values[0] * point_x)-(coefficients_floor->values[1] * point_y)-(coefficients_floor->values[2] * point_z));
+
+      std::cout<<"Coordonate centru"<<point_x<<" "<<point_y<<" "<<point_z<<'\n';
+      
+
+      float distanta_maxima_1=-5000;
+
+      float point_x1;
+      float point_y1;
+      float point_z1;
+
+      for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+        float dist_x=  point_x - cloud_final->points[nIndex].x;
+        float dist_y=  point_y - cloud_final->points[nIndex].y;
+        float dist_z=  point_z - cloud_final->points[nIndex].z;
+
+        float dist_aux = sqrt( dist_x*dist_x + dist_y*dist_y + dist_z*dist_z);
+        if (dist_aux>distanta_maxima_1)
+        {
+          distanta_maxima_1=dist_aux;
+
+          point_x1=cloud_final->points[nIndex].x;
+          point_y1=cloud_final->points[nIndex].y;
+          point_z1=cloud_final->points[nIndex].z;
+        }
+      }
+
+      std::cout<<"Coordonate punct 1 "<<point_x1<<" "<<point_y1<<" "<<point_z1<<'\n';
+
+      float distanta_maxima_2=-5000;
+
+      float point_x2;
+      float point_y2;
+      float point_z2;
+
+      for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+        float dist_x2=  point_x1 - cloud_final->points[nIndex].x;
+        float dist_y2=  point_y1 - cloud_final->points[nIndex].y;
+        float dist_z2=  point_z1 - cloud_final->points[nIndex].z;
+
+        float dist_aux_2 = sqrt( dist_x2*dist_x2 + dist_y2*dist_y2 + dist_z2*dist_z2);
+        if (dist_aux_2>distanta_maxima_2)
+        {
+          distanta_maxima_2=dist_aux_2;
+
+          point_x2=cloud_final->points[nIndex].x;
+          point_y2=cloud_final->points[nIndex].y;
+          point_z2=cloud_final->points[nIndex].z;
+        }
+      }
+
+      std::cout<<"Coordonate punct 2 "<<point_x2<<" "<<point_y2<<" "<<point_z2<<'\n';
+
+
+      float dist_hypo_x= point_x2 -point_x1;
+      float dist_hypo_y= point_y2 -point_y1;
+      float dist_hypo_z= point_z2 -point_z1;
+
+      float hypot =  dist_hypo_x*dist_hypo_x + dist_hypo_y*dist_hypo_y + dist_hypo_z*dist_hypo_z;
+
+      float suma_minima=5000;
+
+      float cateta_1_x;
+      float cateta_1_y;
+      float cateta_1_z;
+      float cateta_2_x;
+      float cateta_2_y;
+      float cateta_2_z;
+
+      float cateta_1;
+      float cateta_2;
+
+      float minimizare;
+
+      float point_x3;
+      float point_y3;
+      float point_z3;
+
+      float cateta_1_final;
+      float cateta_2_final;
+
+      for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+
+          if (((cloud_final->points[nIndex].x != point_x1) || (cloud_final->points[nIndex].y != point_y1) || (cloud_final->points[nIndex].z != point_z1)) &&
+              ((cloud_final->points[nIndex].x != point_x2) || (cloud_final->points[nIndex].y != point_y2) || (cloud_final->points[nIndex].z != point_z2)))  //Daca punctele nu sunt egale cu capetele
+             {
+                  cateta_1_x= point_x1-cloud_final->points[nIndex].x;
+                  cateta_1_y= point_y1-cloud_final->points[nIndex].y;
+                  cateta_1_z= point_z1-cloud_final->points[nIndex].z;
+
+                  cateta_1= (cateta_1_x*cateta_1_x + cateta_1_y*cateta_1_y+cateta_1_z*cateta_1_z);
+
+                  cateta_2_x= point_x2-cloud_final->points[nIndex].x;
+                  cateta_2_y= point_y2-cloud_final->points[nIndex].y;
+                  cateta_2_z= point_z2-cloud_final->points[nIndex].z;
+
+                  cateta_2= (cateta_2_x*cateta_2_x + cateta_2_y*cateta_2_y+cateta_2_z*cateta_2_z);
+
+                  minimizare = cateta_1 + cateta_2 - hypot ;
+
+                  if (abs(minimizare) < suma_minima)
+                  {
+                    suma_minima=minimizare;
+
+                    point_x3=cloud_final->points[nIndex].x;
+                    point_y3=cloud_final->points[nIndex].y;
+                    point_z3=cloud_final->points[nIndex].z;
+
+                    cateta_1_final=cateta_1;
+                    cateta_2_final=cateta_2;
+                  }
+             }
+      }
+
+      std::cout<<"Coordonate punct 3 "<<point_x3<<" "<<point_y3<<" "<<point_z3<<'\n';
+
+      Volum = cateta_1_final * cateta_2_final * distanta;
+
+       std::cout<<"Cateta 1 "<<cateta_1_final<<'\n';
+      std::cout<<"Cateta 2 "<<cateta_2_final<<'\n';
+      std::cout<<"Ipotenuza:"<<hypot<<'\n';
+      std::cout<<"Minimizare:"<<minimizare<<'\n';
+      std::cout<<"Inaltime:"<<distanta<<'\n';
+      std::cout<<"Volum"<<Volum<<'\n';
+      std::cout<<'\n';
+
+  }
+
+
   void compute_volume_2_planes(float Coeficients[3][4],
                                pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
@@ -909,6 +1063,13 @@ public:
                           coefficients_plane,
                           parallel_threshold,
                           perp_ok);
+
+      if (paral_ok){
+        compute_volume_1_plane(coefficients_floor,cloud_final,Volum);
+      }
+      
+
+    
     }
 
     if (p == 3)
@@ -963,8 +1124,6 @@ public:
 
     if (p == 4)
     {
-      std::cout << "3 Planuri" << '\n';
-
 
        bool is_perp_12 = 0;
         bool is_perp_13 = 0;
