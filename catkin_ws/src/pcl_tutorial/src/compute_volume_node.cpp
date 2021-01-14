@@ -21,6 +21,13 @@
 
 #include <pcl_tutorial/compute_volume_nodeConfig.h>
 #include <dynamic_reconfigure/server.h>
+ #include "std_msgs/String.h"
+
+ 
+
+
+
+
 
 class ComputeVolumeNode
 {
@@ -59,6 +66,7 @@ public:
     pub3_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_linii", 1);
 
     sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
+    
 
     config_server_.setCallback(boost::bind(&ComputeVolumeNode::dynReconfCallback, this, _1, _2));
 
@@ -1027,10 +1035,22 @@ public:
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration();
   }
+/*
+  void cloudCallback2(const std_msgs::String::ConstPtr& msg){
+
+      std::stringstream ss(msg->data.c_str());
+      for(int i=0;i<5;i++){
+           ss >> passthrough_limits[i];
+          }
+
+  }
+  */
+
 
   void
   cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
   {
+    
     float Volum = 1;
     int p = 0;
 
@@ -1123,6 +1143,13 @@ public:
       ss2 << "Ground plane and 3 planes detected"
           << "\n";
       break;
+
+
+
+      for(int i=0;i<5;i++){
+       std::cout<<passthrough_limits[i]<<" ";
+          }
+          std::cout<<'\n';
     }
 
     visualization_msgs::Marker marker2;
@@ -1228,10 +1255,13 @@ private:
   double threshold_z;
   int minimum_nr_points;
 
+  float passthrough_limits[6];
+
   double selection_camera;
 
   ros::NodeHandle nh_;
   ros::Subscriber sub_;
+  ros::Subscriber sub_floats;
   ros::Publisher pub1_;
   ros::Publisher pub2_;
   ros::Publisher pub3_;

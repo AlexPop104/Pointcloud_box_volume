@@ -6,6 +6,8 @@
 #include <pcl_ros/point_cloud.h>
 #include <pcl/filters/passthrough.h>
 
+#include "std_msgs/String.h"
+
 
 class PassthroughFilterNode
 {
@@ -16,6 +18,7 @@ public:
   PassthroughFilterNode()
   {
     pub_ = nh_.advertise<PointCloud>("pf_out",1);
+    pub_float_ = nh_.advertise<std_msgs::String>("Dimensions",1);
     sub_ = nh_.subscribe ("point_cloud_in", 1,  &PassthroughFilterNode::cloudCallback, this);
     config_server_.setCallback(boost::bind(&PassthroughFilterNode::dynReconfCallback, this, _1, _2));
 
@@ -57,11 +60,33 @@ public:
     pt1_.setFilterLimits(config.z_lower_limit, config.z_upper_limit);
     pt2_.setFilterLimits(config.x_lower_limit, config.x_upper_limit);
     pt3_.setFilterLimits(config.y_lower_limit, config.y_upper_limit);
+
+     z_lower_limit=config.z_lower_limit;
+     z_upper_limit=config.z_upper_limit;
+     x_lower_limit=config.x_lower_limit;
+     x_upper_limit=config.x_upper_limit;
+     y_lower_limit=config.y_lower_limit;
+     y_upper_limit=config.y_upper_limit;
   }
 
   void
   cloudCallback(const PointCloud::ConstPtr& cloud_in)
   {
+      std::stringstream ss;
+
+    std_msgs::String msg;
+
+    ss<<x_lower_limit<<" "<<x_upper_limit<<" "<<y_lower_limit<<" "<<y_upper_limit<<" "<<z_lower_limit<<" "<<z_upper_limit;
+      
+
+    msg.data=ss.str();
+
+    pub_float_.publish(msg);
+   
+   
+   
+   
+   
     pt1_.setInputCloud(cloud_in);
     PointCloud cloud_out1;
     pt1_.filter(cloud_out1);
@@ -84,6 +109,10 @@ public:
     
     
     pub_.publish(cloud_out3);
+
+    
+
+    
   }
 
 private:
@@ -94,6 +123,15 @@ private:
   dynamic_reconfigure::Server<pcl_tutorial::passthrough_filter_nodeConfig> config_server_;
 
   pcl::PassThrough<Point> pt1_,pt2_,pt3_;
+
+
+  float z_lower_limit;
+  float z_upper_limit;
+  float y_lower_limit;
+  float y_upper_limit;
+  float x_lower_limit;
+  float x_upper_limit;
+
 
 };
 
