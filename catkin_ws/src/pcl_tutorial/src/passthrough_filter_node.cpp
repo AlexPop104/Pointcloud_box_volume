@@ -90,6 +90,7 @@ private:
   ros::NodeHandle nh_;
   ros::Subscriber sub_;
   ros::Publisher pub_;
+  ros::Publisher pub_float_;
   dynamic_reconfigure::Server<pcl_tutorial::passthrough_filter_nodeConfig> config_server_;
 
   pcl::PassThrough<Point> pt1_,pt2_,pt3_;
