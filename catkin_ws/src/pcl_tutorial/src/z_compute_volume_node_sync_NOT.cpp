@@ -23,10 +23,16 @@
 #include <dynamic_reconfigure/server.h>
  #include "std_msgs/String.h"
 
- 
+ #include <message_filters/subscriber.h>
+#include <message_filters/time_synchronizer.h>
+#include <message_filters/synchronizer.h>
+#include <message_filters/sync_policies/approximate_time.h>
+#include <boost/bind.hpp>
 
 
+using namespace message_filters;
 
+ typedef sync_policies::ApproximateTime<sensor_msgs::PointCloud2, std_msgs::String> MySyncPolicy;
 
 
 class ComputeVolumeNode
@@ -37,6 +43,7 @@ public:
   ComputeVolumeNode()
   {
 
+    
     bool ok2;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -65,7 +72,15 @@ public:
     pub2_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_proiectii", 1);
     pub3_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_linii", 1);
 
-    sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
+    message_filters::Subscriber<sensor_msgs::PointCloud2> sub_(nh_, "/pf_out", 1000);
+    message_filters::Subscriber<std_msgs::String> sub_float(nh_, "/Dimensions", 1000);
+
+
+     Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), sub_, sub_float);
+
+     sync.registerCallback(boost::bind(&ComputeVolumeNode::cloudCallback, _1, _2));
+
+    //sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
     
 
     config_server_.setCallback(boost::bind(&ComputeVolumeNode::dynReconfCallback, this, _1, _2));
@@ -372,10 +387,12 @@ public:
 
     if (abs(a1 * a2 + b1 * b2 + c1 * c2) < perpendicular_threshold)
     {
+      //std::cout << "Perpendicular" << '\n';
       perp_ok = 1;
     }
     else
     {
+     // std::cout << "Nu e Perpendicular" << '\n';
     }
 
     std::cout << aux << '\n';
@@ -859,7 +876,7 @@ public:
       p = 1;
     }
 
-    for (int t = 1; (t < 4) && ok; t++)
+    for (int t = 1; (t < 3) && ok; t++)
     {
 
       euclidean_segmenting(cloud, cloud_f, ok2);
@@ -914,10 +931,10 @@ public:
     if (p == 3)
     {
 
-     // std::cout << "2 Planuri" << '\n';
+      std::cout << "2 Planuri" << '\n';
 
       bool is_perp = 0;
-      
+      /* 
         pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
         plane_1->values.resize(4);
 
@@ -929,10 +946,10 @@ public:
         pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
         plane_2->values.resize(4);
 
-        plane_2->values[0]=Coeficients[1][0];
-        plane_2->values[1]=Coeficients[1][1];
-        plane_2->values[2]=Coeficients[1][2];
-        plane_2->values[3]=Coeficients[1][3];
+        plane_2->values[0]=Coeficients[0][0];
+        plane_2->values[1]=Coeficients[0][1];
+        plane_2->values[2]=Coeficients[0][2];
+        plane_2->values[3]=Coeficients[0][3];
        
 
 
@@ -940,8 +957,8 @@ public:
      
         check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp);
 
-        
-      
+        */
+      /*
         
         if(is_perp)
         {
@@ -954,9 +971,18 @@ public:
                             ok_lines,
                             Volum);
         }
-        
+        */
 
-    //add_normals(cloud_final,cloud_normals);
+      compute_volume_2_planes(Coeficients,
+                              all_planes,
+                              all_lines,
+                              all_projected_lines,
+                              cloud_proiectii,
+                              cloud_linii,
+                              ok_lines,
+                              Volum);
+
+    add_normals(cloud_final,cloud_normals);
 
       
     }
@@ -964,43 +990,6 @@ public:
     if (p == 4)
     {
       std::cout << "3 Planuri" << '\n';
-
-
-       bool is_perp_12 = 0;
-        bool is_perp_13 = 0;
-        bool is_perp_23 = 0;
-      
-        pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
-        plane_1->values.resize(4);
-
-        plane_1->values[0]=Coeficients[0][0];
-        plane_1->values[1]=Coeficients[0][1];
-        plane_1->values[2]=Coeficients[0][2];
-        plane_1->values[3]=Coeficients[0][3];
-      
-        pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
-        plane_2->values.resize(4);
-
-        plane_2->values[0]=Coeficients[1][0];
-        plane_2->values[1]=Coeficients[1][1];
-        plane_2->values[2]=Coeficients[1][2];
-        plane_2->values[3]=Coeficients[1][3];
-
-        pcl::ModelCoefficients::Ptr plane_3(new pcl::ModelCoefficients);
-        plane_3->values.resize(4);
-
-        plane_3->values[0]=Coeficients[2][0];
-        plane_3->values[1]=Coeficients[2][1];
-        plane_3->values[2]=Coeficients[2][2];
-        plane_3->values[3]=Coeficients[2][3];
-
-      check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp_12);
-      check_perpendicular(plane_1,plane_3,perpendicular_threshold,is_perp_13);
-      check_perpendicular(plane_2,plane_3,perpendicular_threshold,is_perp_23);
-
-      if (is_perp_12 && is_perp_13 && is_perp_23)
-      {
-     
 
       create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2, ok_lines);
 
@@ -1013,17 +1002,12 @@ public:
                             ok_lines,
                             Volum);*/
 
-        
       project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii, ok_lines);
 
       if (ok_lines)
       {
         compute_volume(all_projected_lines, Volum);
       }
-      }
-
-
-      
     }
   }
 
@@ -1042,7 +1026,7 @@ public:
     threshold_z = config.threshold_z;
     minimum_nr_points = (int)config.minimum_nr_points;
 
-    z_lower_limit=config.z_lower_limit;
+     z_lower_limit=config.z_lower_limit;
      z_upper_limit=config.z_upper_limit;
      x_lower_limit=config.x_lower_limit;
      x_upper_limit=config.x_upper_limit;
@@ -1080,20 +1064,11 @@ public:
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration();
   }
-/*
-  void cloudCallback2(const std_msgs::String::ConstPtr& msg){
 
-      std::stringstream ss(msg->data.c_str());
-      for(int i=0;i<5;i++){
-           ss >> passthrough_limits[i];
-          }
-
-  }
-  */
 
 
   void
-  cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
+  cloudCallback(const sensor_msgs::PointCloud2::ConstPtr &cloud_msg, const std_msgs::StringPtr &msg)
   {
     
     float Volum = 1;
@@ -1191,7 +1166,10 @@ public:
 
 
 
-    
+      for(int i=0;i<5;i++){
+       std::cout<<passthrough_limits[i]<<" ";
+          }
+          std::cout<<'\n';
     }
 
     visualization_msgs::Marker marker2;
@@ -1258,6 +1236,9 @@ public:
 private:
   bool ok2;
 
+ 
+
+
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f;
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered;
@@ -1297,8 +1278,6 @@ private:
   double threshold_z;
   int minimum_nr_points;
 
-  float passthrough_limits[6];
-
   float z_lower_limit;
   float z_upper_limit;
   float y_lower_limit;
@@ -1306,11 +1285,18 @@ private:
   float x_lower_limit;
   float x_upper_limit;
 
+
+
+  float passthrough_limits[6];
+
   double selection_camera;
 
   ros::NodeHandle nh_;
-  ros::Subscriber sub_;
-  ros::Subscriber sub_floats;
+ // ros::Subscriber sub_;
+
+  
+
+  //ros::Subscriber sub_floats;
   ros::Publisher pub1_;
   ros::Publisher pub2_;
   ros::Publisher pub3_;
