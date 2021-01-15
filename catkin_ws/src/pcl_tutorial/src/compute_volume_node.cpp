@@ -1065,7 +1065,7 @@ public:
                           perp_ok);
 
       if (paral_ok){
-        compute_volume_1_plane(coefficients_floor,cloud_final,Volum);
+        compute_volume_1_plane(coefficients_floor,all_planes[1],Volum);
       }
       
 
