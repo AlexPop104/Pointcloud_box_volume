@@ -21,13 +21,7 @@
 
 #include <pcl_tutorial/compute_volume_nodeConfig.h>
 #include <dynamic_reconfigure/server.h>
- #include "std_msgs/String.h"
-
- 
-
-
-
-
+#include "std_msgs/String.h"
 
 class ComputeVolumeNode
 {
@@ -64,9 +58,9 @@ public:
     pub1_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_plan", 1);
     pub2_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_proiectii", 1);
     pub3_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_linii", 1);
+    pub4_ = nh_.advertise<sensor_msgs::PointCloud2>("/Cutof_Object_points", 1);
 
     sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
-    
 
     config_server_.setCallback(boost::bind(&ComputeVolumeNode::dynReconfCallback, this, _1, _2));
 
@@ -377,59 +371,178 @@ public:
     else
     {
     }
-
   }
 
   void add_normals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
                    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals)
   {
-   std::cout<<cloud_final->size()<<'\n';
-    
+    std::cout << cloud_final->size() << '\n';
 
-     // Create the normal estimation class, and pass the input dataset to it
-      pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
-     ne.setInputCloud (cloud_final);
+    // Create the normal estimation class, and pass the input dataset to it
+    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+    ne.setInputCloud(cloud_final);
 
-  // Create an empty kdtree representation, and pass it to the normal estimation object.
-  // Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).
-  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
-  ne.setSearchMethod (tree);
+    // Create an empty kdtree representation, and pass it to the normal estimation object.
+    // Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+    ne.setSearchMethod(tree);
 
-  // Use all neighbors in a sphere of radius 3cm
-  ne.setRadiusSearch (0.03);
+    // Use all neighbors in a sphere of radius 3cm
+    ne.setRadiusSearch(0.03);
 
-  // Compute the features
-  ne.compute (*cloud_normals);
+    // Compute the features
+    ne.compute(*cloud_normals);
 
-  std::cout<<cloud_normals->size()<<'\n';
+    std::cout << cloud_normals->size() << '\n';
 
-  // cloud_normals->size () should have the same size as the input cloud->size ()*
-
+    // cloud_normals->size () should have the same size as the input cloud->size ()*
   }
-
-
-
 
   void check_passthrough_limits(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
                                 float threshold_x,
                                 float threshold_y,
                                 float threshold_z,
-                                int minimum_nr_points)
+                                float z_lower_limit,
+                                float z_upper_limit,
+                                float y_lower_limit,
+                                float y_upper_limit,
+                                float x_lower_limit,
+                                float x_upper_limit,
+                                int minimum_nr_points,
+                                pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
     int nr_puncte[3][2];
 
-    for(int i=0;i<3;i++){
-      for(int j=0;j<2;j++)
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 2; j++)
       {
-        nr_puncte[i][j]=0;
+        nr_puncte[i][j] = 0;
       }
     }
 
-      for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+      if (abs(cloud_final->points[nIndex].x) < abs(x_lower_limit + threshold_x))
       {
-        
+        nr_puncte[0][0] = nr_puncte[0][0] + 1;
+
+        int N=final_pointcloud.width;
+
+          final_pointcloud.width=final_pointcloud.width+1;
+          final_pointcloud.is_dense = false;
+           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
+          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
+         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+
       }
 
+      if (abs(cloud_final->points[nIndex].y) < abs(y_lower_limit + threshold_y))
+      {
+        nr_puncte[1][0] = nr_puncte[1][0] + 1;
+
+         int N=final_pointcloud.width;
+
+          final_pointcloud.width=final_pointcloud.width+1;
+          final_pointcloud.is_dense = false;
+           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
+          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
+         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+      }
+
+      if (abs(cloud_final->points[nIndex].z) < abs(z_lower_limit + threshold_z))
+      {
+        nr_puncte[2][0] = nr_puncte[2][0] + 1;
+
+         int N=final_pointcloud.width;
+
+          final_pointcloud.width=final_pointcloud.width+1;
+          final_pointcloud.is_dense = false;
+           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
+          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
+         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+      }
+
+      if (abs(cloud_final->points[nIndex].x) < abs(x_upper_limit - threshold_x))
+      {
+        nr_puncte[0][1] = nr_puncte[0][1] + 1;
+
+         int N=final_pointcloud.width;
+
+          final_pointcloud.width=final_pointcloud.width+1;
+          final_pointcloud.is_dense = false;
+           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
+          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
+         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+      }
+
+      if (abs(cloud_final->points[nIndex].y) < abs(y_upper_limit - threshold_y))
+      {
+        nr_puncte[1][1] = nr_puncte[1][1] + 1;
+
+         int N=final_pointcloud.width;
+
+          final_pointcloud.width=final_pointcloud.width+1;
+          final_pointcloud.is_dense = false;
+           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
+          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
+         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+      }
+
+      if (abs(cloud_final->points[nIndex].z) < abs(z_upper_limit - threshold_z))
+      {
+        nr_puncte[2][1] = nr_puncte[2][1] + 1;
+
+         int N=final_pointcloud.width;
+
+          final_pointcloud.width=final_pointcloud.width+1;
+          final_pointcloud.is_dense = false;
+           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
+          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
+         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+      }
+    }
+    if (nr_puncte[0][0] >= minimum_nr_points)
+      {
+        std::cout << "Object cut X min. Move towards X_min" << '\n';
+      }
+
+      if (nr_puncte[1][0] >= minimum_nr_points)
+      {
+        std::cout << "Object cut Y min. Move towards Y_min" << '\n';
+      }
+
+      if (nr_puncte[2][0] >= minimum_nr_points)
+      {
+        std::cout << "Object cut Z min. Move towards Z_min" << '\n';
+      }
+
+      if (nr_puncte[0][1] >= minimum_nr_points)
+      {
+        std::cout << "Object cut X max. Move towards X_max" << '\n';
+      }
+
+      if (nr_puncte[1][1] >= minimum_nr_points)
+      {
+        std::cout << "Object cut Y max. Move towards Y_max" << '\n';
+      }
+
+      if (nr_puncte[2][1] >= minimum_nr_points)
+      {
+        std::cout << "Object cut Z max. Move towards Z_max" << '\n';
+      }
   }
 
   void check_parallel(pcl::ModelCoefficients::Ptr plane_1,
@@ -723,164 +836,160 @@ public:
               << "\n";
   }
 
-  void compute_volume_1_plane(  pcl::ModelCoefficients::Ptr coefficients_floor,
-                                pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
-                                float &Volum)
+  void compute_volume_1_plane(pcl::ModelCoefficients::Ptr coefficients_floor,
+                              pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                              float &Volum)
   {
-      float point_x=0;
-      float point_y=0;
-      float point_z=0;
+    float point_x = 0;
+    float point_y = 0;
+    float point_z = 0;
 
-      int nIndex;
+    int nIndex;
 
-    for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
+    for (nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+      point_x = point_x + cloud_final->points[nIndex].x;
+      point_y = point_y + cloud_final->points[nIndex].y;
+      point_z = point_z + cloud_final->points[nIndex].z;
+    }
+
+    point_x = point_x / nIndex;
+    point_y = point_y / nIndex;
+    point_z = point_z / nIndex;
+
+    float distanta;
+
+    distanta = abs(-(coefficients_floor->values[0] * point_x) - (coefficients_floor->values[1] * point_y) - (coefficients_floor->values[2] * point_z));
+
+    //std::cout<<"Coordonate centru"<<point_x<<" "<<point_y<<" "<<point_z<<'\n';
+
+    float distanta_maxima_1 = -5000;
+
+    float point_x1;
+    float point_y1;
+    float point_z1;
+
+    for (nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+      float dist_x = point_x - cloud_final->points[nIndex].x;
+      float dist_y = point_y - cloud_final->points[nIndex].y;
+      float dist_z = point_z - cloud_final->points[nIndex].z;
+
+      float dist_aux = sqrt(dist_x * dist_x + dist_y * dist_y + dist_z * dist_z);
+      if (dist_aux > distanta_maxima_1)
       {
-        point_x=point_x+cloud_final->points[nIndex].x;
-        point_y=point_y+cloud_final->points[nIndex].y;
-        point_z=point_z+cloud_final->points[nIndex].z;
+        distanta_maxima_1 = dist_aux;
+
+        point_x1 = cloud_final->points[nIndex].x;
+        point_y1 = cloud_final->points[nIndex].y;
+        point_z1 = cloud_final->points[nIndex].z;
       }
+    }
 
-      point_x=point_x/nIndex;
-      point_y=point_y/nIndex;
-      point_z=point_z/nIndex;
+    //std::cout<<"Coordonate punct 1 "<<point_x1<<" "<<point_y1<<" "<<point_z1<<'\n';
 
-      float distanta;
+    float distanta_maxima_2 = -5000;
 
-      distanta=abs(-(coefficients_floor->values[0] * point_x)-(coefficients_floor->values[1] * point_y)-(coefficients_floor->values[2] * point_z));
+    float point_x2;
+    float point_y2;
+    float point_z2;
 
-      //std::cout<<"Coordonate centru"<<point_x<<" "<<point_y<<" "<<point_z<<'\n';
-      
+    for (nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+      float dist_x2 = point_x1 - cloud_final->points[nIndex].x;
+      float dist_y2 = point_y1 - cloud_final->points[nIndex].y;
+      float dist_z2 = point_z1 - cloud_final->points[nIndex].z;
 
-      float distanta_maxima_1=-5000;
-
-      float point_x1;
-      float point_y1;
-      float point_z1;
-
-      for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
+      float dist_aux_2 = sqrt(dist_x2 * dist_x2 + dist_y2 * dist_y2 + dist_z2 * dist_z2);
+      if (dist_aux_2 > distanta_maxima_2)
       {
-        float dist_x=  point_x - cloud_final->points[nIndex].x;
-        float dist_y=  point_y - cloud_final->points[nIndex].y;
-        float dist_z=  point_z - cloud_final->points[nIndex].z;
+        distanta_maxima_2 = dist_aux_2;
 
-        float dist_aux = sqrt( dist_x*dist_x + dist_y*dist_y + dist_z*dist_z);
-        if (dist_aux>distanta_maxima_1)
+        point_x2 = cloud_final->points[nIndex].x;
+        point_y2 = cloud_final->points[nIndex].y;
+        point_z2 = cloud_final->points[nIndex].z;
+      }
+    }
+
+    //std::cout<<"Coordonate punct 2 "<<point_x2<<" "<<point_y2<<" "<<point_z2<<'\n';
+
+    float dist_hypo_x = point_x2 - point_x1;
+    float dist_hypo_y = point_y2 - point_y1;
+    float dist_hypo_z = point_z2 - point_z1;
+
+    float hypot = dist_hypo_x * dist_hypo_x + dist_hypo_y * dist_hypo_y + dist_hypo_z * dist_hypo_z;
+
+    float suma_minima = 5000;
+
+    float cateta_1_x;
+    float cateta_1_y;
+    float cateta_1_z;
+    float cateta_2_x;
+    float cateta_2_y;
+    float cateta_2_z;
+
+    float cateta_1;
+    float cateta_2;
+
+    float minimizare;
+
+    float point_x3;
+    float point_y3;
+    float point_z3;
+
+    float cateta_1_final;
+    float cateta_2_final;
+
+    for (nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+
+      if (((cloud_final->points[nIndex].x != point_x1) || (cloud_final->points[nIndex].y != point_y1) || (cloud_final->points[nIndex].z != point_z1)) &&
+          ((cloud_final->points[nIndex].x != point_x2) || (cloud_final->points[nIndex].y != point_y2) || (cloud_final->points[nIndex].z != point_z2))) //Daca punctele nu sunt egale cu capetele
+      {
+        cateta_1_x = point_x1 - cloud_final->points[nIndex].x;
+        cateta_1_y = point_y1 - cloud_final->points[nIndex].y;
+        cateta_1_z = point_z1 - cloud_final->points[nIndex].z;
+
+        cateta_1 = (cateta_1_x * cateta_1_x + cateta_1_y * cateta_1_y + cateta_1_z * cateta_1_z);
+
+        cateta_2_x = point_x2 - cloud_final->points[nIndex].x;
+        cateta_2_y = point_y2 - cloud_final->points[nIndex].y;
+        cateta_2_z = point_z2 - cloud_final->points[nIndex].z;
+
+        cateta_2 = (cateta_2_x * cateta_2_x + cateta_2_y * cateta_2_y + cateta_2_z * cateta_2_z);
+
+        minimizare = cateta_1 + cateta_2 - hypot;
+
+        if (abs(minimizare) < suma_minima)
         {
-          distanta_maxima_1=dist_aux;
+          suma_minima = minimizare;
 
-          point_x1=cloud_final->points[nIndex].x;
-          point_y1=cloud_final->points[nIndex].y;
-          point_z1=cloud_final->points[nIndex].z;
+          point_x3 = cloud_final->points[nIndex].x;
+          point_y3 = cloud_final->points[nIndex].y;
+          point_z3 = cloud_final->points[nIndex].z;
+
+          cateta_1_final = cateta_1;
+          cateta_2_final = cateta_2;
         }
       }
+    }
 
-      //std::cout<<"Coordonate punct 1 "<<point_x1<<" "<<point_y1<<" "<<point_z1<<'\n';
+    //std::cout<<"Coordonate punct 3 "<<point_x3<<" "<<point_y3<<" "<<point_z3<<'\n';
 
-      float distanta_maxima_2=-5000;
+    Volum = cateta_1_final * cateta_2_final * distanta;
 
-      float point_x2;
-      float point_y2;
-      float point_z2;
-
-      for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
-      {
-        float dist_x2=  point_x1 - cloud_final->points[nIndex].x;
-        float dist_y2=  point_y1 - cloud_final->points[nIndex].y;
-        float dist_z2=  point_z1 - cloud_final->points[nIndex].z;
-
-        float dist_aux_2 = sqrt( dist_x2*dist_x2 + dist_y2*dist_y2 + dist_z2*dist_z2);
-        if (dist_aux_2>distanta_maxima_2)
-        {
-          distanta_maxima_2=dist_aux_2;
-
-          point_x2=cloud_final->points[nIndex].x;
-          point_y2=cloud_final->points[nIndex].y;
-          point_z2=cloud_final->points[nIndex].z;
-        }
-      }
-
-      //std::cout<<"Coordonate punct 2 "<<point_x2<<" "<<point_y2<<" "<<point_z2<<'\n';
-
-
-      float dist_hypo_x= point_x2 -point_x1;
-      float dist_hypo_y= point_y2 -point_y1;
-      float dist_hypo_z= point_z2 -point_z1;
-
-      float hypot =  dist_hypo_x*dist_hypo_x + dist_hypo_y*dist_hypo_y + dist_hypo_z*dist_hypo_z;
-
-      float suma_minima=5000;
-
-      float cateta_1_x;
-      float cateta_1_y;
-      float cateta_1_z;
-      float cateta_2_x;
-      float cateta_2_y;
-      float cateta_2_z;
-
-      float cateta_1;
-      float cateta_2;
-
-      float minimizare;
-
-      float point_x3;
-      float point_y3;
-      float point_z3;
-
-      float cateta_1_final;
-      float cateta_2_final;
-
-      for (nIndex= 0; nIndex < cloud_final->points.size(); nIndex++)
-      {
-
-          if (((cloud_final->points[nIndex].x != point_x1) || (cloud_final->points[nIndex].y != point_y1) || (cloud_final->points[nIndex].z != point_z1)) &&
-              ((cloud_final->points[nIndex].x != point_x2) || (cloud_final->points[nIndex].y != point_y2) || (cloud_final->points[nIndex].z != point_z2)))  //Daca punctele nu sunt egale cu capetele
-             {
-                  cateta_1_x= point_x1-cloud_final->points[nIndex].x;
-                  cateta_1_y= point_y1-cloud_final->points[nIndex].y;
-                  cateta_1_z= point_z1-cloud_final->points[nIndex].z;
-
-                  cateta_1= (cateta_1_x*cateta_1_x + cateta_1_y*cateta_1_y+cateta_1_z*cateta_1_z);
-
-                  cateta_2_x= point_x2-cloud_final->points[nIndex].x;
-                  cateta_2_y= point_y2-cloud_final->points[nIndex].y;
-                  cateta_2_z= point_z2-cloud_final->points[nIndex].z;
-
-                  cateta_2= (cateta_2_x*cateta_2_x + cateta_2_y*cateta_2_y+cateta_2_z*cateta_2_z);
-
-                  minimizare = cateta_1 + cateta_2 - hypot ;
-
-                  if (abs(minimizare) < suma_minima)
-                  {
-                    suma_minima=minimizare;
-
-                    point_x3=cloud_final->points[nIndex].x;
-                    point_y3=cloud_final->points[nIndex].y;
-                    point_z3=cloud_final->points[nIndex].z;
-
-                    cateta_1_final=cateta_1;
-                    cateta_2_final=cateta_2;
-                  }
-             }
-      }
-
-      //std::cout<<"Coordonate punct 3 "<<point_x3<<" "<<point_y3<<" "<<point_z3<<'\n';
-
-      Volum = cateta_1_final * cateta_2_final * distanta;
-
-      // std::cout<<"Cateta 1 "<<cateta_1_final<<'\n';
-      //std::cout<<"Cateta 2 "<<cateta_2_final<<'\n';
-      //std::cout<<"Ipotenuza:"<<hypot<<'\n';
-     // std::cout<<"Minimizare:"<<minimizare<<'\n';
-     // std::cout<<"Inaltime:"<<distanta<<'\n';
-      std::cout<<"Volum"<<Volum<<'\n';
-      //std::cout<<'\n';
-
+    // std::cout<<"Cateta 1 "<<cateta_1_final<<'\n';
+    //std::cout<<"Cateta 2 "<<cateta_2_final<<'\n';
+    //std::cout<<"Ipotenuza:"<<hypot<<'\n';
+    // std::cout<<"Minimizare:"<<minimizare<<'\n';
+    // std::cout<<"Inaltime:"<<distanta<<'\n';
+    std::cout << "Volum" << Volum << '\n';
+    //std::cout<<'\n';
   }
 
-
   void compute_volume_2_planes(float Coeficients[3][4],
-                                int i,
-                                int j,
+                               int i,
+                               int j,
                                pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
                                pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
@@ -939,7 +1048,7 @@ public:
 
       plane = all_planes[1];
 
-      int coef_remaining=6-i-j;
+      int coef_remaining = 6 - i - j;
 
       project_plane_2_plane_single(plane, Coeficients, coef_remaining, projection);
 
@@ -975,7 +1084,8 @@ public:
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
-                   float &Volum, int &p, bool &perp_ok, bool &paral_ok)
+                   float &Volum, int &p, bool &perp_ok, bool &paral_ok,
+                   pcl::PointCloud<pcl::PointXYZ> &cloud_proximitate)
   {
 
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
@@ -1045,11 +1155,27 @@ public:
         p = t + 1;
       }
     }
+    if(p>=2)
+    {
+        check_passthrough_limits(cloud_final,
+                                threshold_x,
+                                threshold_y,
+                                threshold_z,
+                                z_lower_limit,
+                                z_upper_limit,
+                                y_lower_limit,
+                                y_upper_limit,
+                                x_lower_limit,
+                                x_upper_limit,
+                                minimum_nr_points,
+                                cloud_proximitate);
+    }
+    
+
 
     if (p == 2)
     {
 
-      
       pcl::ModelCoefficients::Ptr coefficients_plane(new pcl::ModelCoefficients);
       coefficients_plane->values.resize(4);
 
@@ -1068,116 +1194,112 @@ public:
                           parallel_threshold,
                           perp_ok);
 
-      if (paral_ok){
-        compute_volume_1_plane(coefficients_floor,all_planes[1],Volum);
+      if (paral_ok)
+      {
+        compute_volume_1_plane(coefficients_floor, all_planes[1], Volum);
       }
-      
-
-    
     }
 
     if (p == 3)
     {
 
-     // std::cout << "2 Planuri" << '\n';
+      // std::cout << "2 Planuri" << '\n';
+      
 
       bool is_perp = 0;
-      
-        pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
-        plane_1->values.resize(4);
 
-        plane_1->values[0]=Coeficients[0][0];
-        plane_1->values[1]=Coeficients[0][1];
-        plane_1->values[2]=Coeficients[0][2];
-        plane_1->values[3]=Coeficients[0][3];
-      
-        pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
-        plane_2->values.resize(4);
+      pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
+      plane_1->values.resize(4);
 
-        plane_2->values[0]=Coeficients[1][0];
-        plane_2->values[1]=Coeficients[1][1];
-        plane_2->values[2]=Coeficients[1][2];
-        plane_2->values[3]=Coeficients[1][3];
-       
-        check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp);
-       
-        if(is_perp)
-        {
-            compute_volume_2_planes(Coeficients,
-                            1,
-                            2,
-                            all_planes,
-                            all_lines,
-                            all_projected_lines,
-                            cloud_proiectii,
-                            cloud_linii,
-                            ok_lines,
-                            Volum);
-        }
-        
+      plane_1->values[0] = Coeficients[0][0];
+      plane_1->values[1] = Coeficients[0][1];
+      plane_1->values[2] = Coeficients[0][2];
+      plane_1->values[3] = Coeficients[0][3];
 
-        bool paral_floor_1=0;
-        bool paral_floor_2=0;
+      pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
+      plane_2->values.resize(4);
 
-        check_parallel(coefficients_floor,plane_1,perpendicular_threshold,paral_floor_1);
-        check_parallel(coefficients_floor,plane_2,perpendicular_threshold,paral_floor_2);
+      plane_2->values[0] = Coeficients[1][0];
+      plane_2->values[1] = Coeficients[1][1];
+      plane_2->values[2] = Coeficients[1][2];
+      plane_2->values[3] = Coeficients[1][3];
 
-        if (paral_floor_1 )
-        {
-          compute_volume_1_plane(coefficients_floor,all_planes[1],Volum);
-          std::cout<<"2 Planuri neperpendiculare, 1 plan paralel cu podeaua"<<'\n';
-        }
+      check_perpendicular(plane_1, plane_2, perpendicular_threshold, is_perp);
 
-        if (paral_floor_2 )
-        {
-          compute_volume_1_plane(coefficients_floor,all_planes[2],Volum);
-          std::cout<<"2 Planuri neperpendiculare, 1 plan paralel cu podeaua"<<'\n';
-        }
+      if (is_perp)
+      {
+        compute_volume_2_planes(Coeficients,
+                                1,
+                                2,
+                                all_planes,
+                                all_lines,
+                                all_projected_lines,
+                                cloud_proiectii,
+                                cloud_linii,
+                                ok_lines,
+                                Volum);
+      }
 
-    //add_normals(cloud_final,cloud_normals);
+      bool paral_floor_1 = 0;
+      bool paral_floor_2 = 0;
 
-      
+      check_parallel(coefficients_floor, plane_1, perpendicular_threshold, paral_floor_1);
+      check_parallel(coefficients_floor, plane_2, perpendicular_threshold, paral_floor_2);
+
+      if (paral_floor_1)
+      {
+        compute_volume_1_plane(coefficients_floor, all_planes[1], Volum);
+        std::cout << "2 Planuri neperpendiculare, 1 plan paralel cu podeaua" << '\n';
+      }
+
+      if (paral_floor_2)
+      {
+        compute_volume_1_plane(coefficients_floor, all_planes[2], Volum);
+        std::cout << "2 Planuri neperpendiculare, 1 plan paralel cu podeaua" << '\n';
+      }
+
+      //add_normals(cloud_final,cloud_normals);
     }
 
     if (p == 4)
     {
 
-       bool is_perp_12 = 0;
-        bool is_perp_13 = 0;
-        bool is_perp_23 = 0;
-      
-        pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
-        plane_1->values.resize(4);
+      bool is_perp_12 = 0;
+      bool is_perp_13 = 0;
+      bool is_perp_23 = 0;
 
-        plane_1->values[0]=Coeficients[0][0];
-        plane_1->values[1]=Coeficients[0][1];
-        plane_1->values[2]=Coeficients[0][2];
-        plane_1->values[3]=Coeficients[0][3];
-      
-        pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
-        plane_2->values.resize(4);
+      pcl::ModelCoefficients::Ptr plane_1(new pcl::ModelCoefficients);
+      plane_1->values.resize(4);
 
-        plane_2->values[0]=Coeficients[1][0];
-        plane_2->values[1]=Coeficients[1][1];
-        plane_2->values[2]=Coeficients[1][2];
-        plane_2->values[3]=Coeficients[1][3];
+      plane_1->values[0] = Coeficients[0][0];
+      plane_1->values[1] = Coeficients[0][1];
+      plane_1->values[2] = Coeficients[0][2];
+      plane_1->values[3] = Coeficients[0][3];
 
-        pcl::ModelCoefficients::Ptr plane_3(new pcl::ModelCoefficients);
-        plane_3->values.resize(4);
+      pcl::ModelCoefficients::Ptr plane_2(new pcl::ModelCoefficients);
+      plane_2->values.resize(4);
 
-        plane_3->values[0]=Coeficients[2][0];
-        plane_3->values[1]=Coeficients[2][1];
-        plane_3->values[2]=Coeficients[2][2];
-        plane_3->values[3]=Coeficients[2][3];
+      plane_2->values[0] = Coeficients[1][0];
+      plane_2->values[1] = Coeficients[1][1];
+      plane_2->values[2] = Coeficients[1][2];
+      plane_2->values[3] = Coeficients[1][3];
 
-      check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp_12);
-      check_perpendicular(plane_1,plane_3,perpendicular_threshold,is_perp_13);
-      check_perpendicular(plane_2,plane_3,perpendicular_threshold,is_perp_23);
-  
+      pcl::ModelCoefficients::Ptr plane_3(new pcl::ModelCoefficients);
+      plane_3->values.resize(4);
+
+      plane_3->values[0] = Coeficients[2][0];
+      plane_3->values[1] = Coeficients[2][1];
+      plane_3->values[2] = Coeficients[2][2];
+      plane_3->values[3] = Coeficients[2][3];
+
+      check_perpendicular(plane_1, plane_2, perpendicular_threshold, is_perp_12);
+      check_perpendicular(plane_1, plane_3, perpendicular_threshold, is_perp_13);
+      check_perpendicular(plane_2, plane_3, perpendicular_threshold, is_perp_23);
+
       if (is_perp_12 && is_perp_13 && is_perp_23)
       {
-       
-       /*
+
+        /*
 
       create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2, ok_lines);
 
@@ -1191,70 +1313,65 @@ public:
         compute_volume(all_projected_lines, Volum);
       }
       */
-      compute_volume_2_planes(Coeficients,
-                            1,
-                            2,
-                            all_planes,
-                            all_lines,
-                            all_projected_lines,
-                            cloud_proiectii,
-                            cloud_linii,
-                            ok_lines,
-                            Volum);
-
+        compute_volume_2_planes(Coeficients,
+                                1,
+                                2,
+                                all_planes,
+                                all_lines,
+                                all_projected_lines,
+                                cloud_proiectii,
+                                cloud_linii,
+                                ok_lines,
+                                Volum);
       }
       else
       {
-         if (is_perp_12)
-         {
-           compute_volume_2_planes(Coeficients,
-                            1,
-                            2,
-                            all_planes,
-                            all_lines,
-                            all_projected_lines,
-                            cloud_proiectii,
-                            cloud_linii,
-                            ok_lines,
-                            Volum);
-         }
-         else
-         {
-           if (is_perp_13)
-         {
-           compute_volume_2_planes(Coeficients,
-                            1,
-                            3,
-                            all_planes,
-                            all_lines,
-                            all_projected_lines,
-                            cloud_proiectii,
-                            cloud_linii,
-                            ok_lines,
-                            Volum);
-         }
-         else
-         {
-           if (is_perp_23)
-         {
-           compute_volume_2_planes(Coeficients,
-                            2,
-                            3,
-                            all_planes,
-                            all_lines,
-                            all_projected_lines,
-                            cloud_proiectii,
-                            cloud_linii,
-                            ok_lines,
-                            Volum);
-         }
-         }
-         }
-        
+        if (is_perp_12)
+        {
+          compute_volume_2_planes(Coeficients,
+                                  1,
+                                  2,
+                                  all_planes,
+                                  all_lines,
+                                  all_projected_lines,
+                                  cloud_proiectii,
+                                  cloud_linii,
+                                  ok_lines,
+                                  Volum);
+        }
+        else
+        {
+          if (is_perp_13)
+          {
+            compute_volume_2_planes(Coeficients,
+                                    1,
+                                    3,
+                                    all_planes,
+                                    all_lines,
+                                    all_projected_lines,
+                                    cloud_proiectii,
+                                    cloud_linii,
+                                    ok_lines,
+                                    Volum);
+          }
+          else
+          {
+            if (is_perp_23)
+            {
+              compute_volume_2_planes(Coeficients,
+                                      2,
+                                      3,
+                                      all_planes,
+                                      all_lines,
+                                      all_projected_lines,
+                                      cloud_proiectii,
+                                      cloud_linii,
+                                      ok_lines,
+                                      Volum);
+            }
+          }
+        }
       }
-
-      
-      
     }
   }
 
@@ -1273,19 +1390,19 @@ public:
     threshold_z = config.threshold_z;
     minimum_nr_points = (int)config.minimum_nr_points;
 
-    z_lower_limit=config.z_lower_limit;
-     z_upper_limit=config.z_upper_limit;
-     x_lower_limit=config.x_lower_limit;
-     x_upper_limit=config.x_upper_limit;
-     y_lower_limit=config.y_lower_limit;
-     y_upper_limit=config.y_upper_limit;
+    z_lower_limit = config.z_lower_limit;
+    z_upper_limit = config.z_upper_limit;
+    x_lower_limit = config.x_lower_limit;
+    x_upper_limit = config.x_upper_limit;
+    y_lower_limit = config.y_lower_limit;
+    y_upper_limit = config.y_upper_limit;
 
-     passthrough_limits[0]=config.x_lower_limit;
-     passthrough_limits[1]=config.x_upper_limit;
-     passthrough_limits[2]=config.y_lower_limit;
-     passthrough_limits[3]=config.y_upper_limit;
-     passthrough_limits[4]=config.z_lower_limit;
-     passthrough_limits[5]=config.z_upper_limit;
+    passthrough_limits[0] = config.x_lower_limit;
+    passthrough_limits[1] = config.x_upper_limit;
+    passthrough_limits[2] = config.y_lower_limit;
+    passthrough_limits[3] = config.y_upper_limit;
+    passthrough_limits[4] = config.z_lower_limit;
+    passthrough_limits[5] = config.z_upper_limit;
   }
 
   void
@@ -1311,7 +1428,7 @@ public:
     marker.color.b = 0.0;
     marker.lifetime = ros::Duration();
   }
-/*
+  /*
   void cloudCallback2(const std_msgs::String::ConstPtr& msg){
 
       std::stringstream ss(msg->data.c_str());
@@ -1322,11 +1439,10 @@ public:
   }
   */
 
-
   void
   cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg)
   {
-    
+
     float Volum = 1;
     int p = 0;
 
@@ -1347,15 +1463,24 @@ public:
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPTR(new pcl::PointCloud<pcl::PointXYZ>);
     *cloudPTR = cloud_Test;
 
-    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, perp_ok, paral_ok);
+    pcl::PointCloud<pcl::PointXYZ> cloud_passthrough_thresshold;
+
+    cloud_passthrough_thresshold.width = 0;
+    cloud_passthrough_thresshold.height = 1;
+    cloud_passthrough_thresshold.is_dense = false;
+    cloud_passthrough_thresshold.resize(cloud_passthrough_thresshold.width * cloud_passthrough_thresshold.height);
+
+    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, perp_ok, paral_ok,cloud_passthrough_thresshold);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
     sensor_msgs::PointCloud2 tempROSMsg3;
+    sensor_msgs::PointCloud2 tempROSMsg4;
 
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
     pcl::toROSMsg(*cloud_linii, tempROSMsg3);
+    pcl::toROSMsg(cloud_passthrough_thresshold, tempROSMsg4);
 
     //Camera_type
     ////////////////////////////////////////
@@ -1381,6 +1506,7 @@ public:
     tempROSMsg.header.frame_id = header_camera.str();
     tempROSMsg2.header.frame_id = header_camera.str();
     tempROSMsg3.header.frame_id = header_camera.str();
+    tempROSMsg4.header.frame_id = header_camera.str();
 
     //Message Marker Volume
     ////////////////////////////////////////
@@ -1419,10 +1545,6 @@ public:
       ss2 << "Ground plane and 3 planes detected"
           << "\n";
       break;
-
-
-
-    
     }
 
     visualization_msgs::Marker marker2;
@@ -1473,6 +1595,7 @@ public:
     pub1_.publish(tempROSMsg);
     pub2_.publish(tempROSMsg2);
     pub3_.publish(tempROSMsg3);
+    pub4_.publish(tempROSMsg3);
 
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
@@ -1545,6 +1668,7 @@ private:
   ros::Publisher pub1_;
   ros::Publisher pub2_;
   ros::Publisher pub3_;
+  ros::Publisher pub4_;
 
   ros::Publisher vis_pub;
   ros::Publisher vis2_pub;
