@@ -748,7 +748,7 @@ public:
 
       distanta=abs(-(coefficients_floor->values[0] * point_x)-(coefficients_floor->values[1] * point_y)-(coefficients_floor->values[2] * point_z));
 
-      std::cout<<"Coordonate centru"<<point_x<<" "<<point_y<<" "<<point_z<<'\n';
+      //std::cout<<"Coordonate centru"<<point_x<<" "<<point_y<<" "<<point_z<<'\n';
       
 
       float distanta_maxima_1=-5000;
@@ -774,7 +774,7 @@ public:
         }
       }
 
-      std::cout<<"Coordonate punct 1 "<<point_x1<<" "<<point_y1<<" "<<point_z1<<'\n';
+      //std::cout<<"Coordonate punct 1 "<<point_x1<<" "<<point_y1<<" "<<point_z1<<'\n';
 
       float distanta_maxima_2=-5000;
 
@@ -799,7 +799,7 @@ public:
         }
       }
 
-      std::cout<<"Coordonate punct 2 "<<point_x2<<" "<<point_y2<<" "<<point_z2<<'\n';
+      //std::cout<<"Coordonate punct 2 "<<point_x2<<" "<<point_y2<<" "<<point_z2<<'\n';
 
 
       float dist_hypo_x= point_x2 -point_x1;
@@ -863,17 +863,17 @@ public:
              }
       }
 
-      std::cout<<"Coordonate punct 3 "<<point_x3<<" "<<point_y3<<" "<<point_z3<<'\n';
+      //std::cout<<"Coordonate punct 3 "<<point_x3<<" "<<point_y3<<" "<<point_z3<<'\n';
 
       Volum = cateta_1_final * cateta_2_final * distanta;
 
-       std::cout<<"Cateta 1 "<<cateta_1_final<<'\n';
-      std::cout<<"Cateta 2 "<<cateta_2_final<<'\n';
-      std::cout<<"Ipotenuza:"<<hypot<<'\n';
-      std::cout<<"Minimizare:"<<minimizare<<'\n';
-      std::cout<<"Inaltime:"<<distanta<<'\n';
+      // std::cout<<"Cateta 1 "<<cateta_1_final<<'\n';
+      //std::cout<<"Cateta 2 "<<cateta_2_final<<'\n';
+      //std::cout<<"Ipotenuza:"<<hypot<<'\n';
+     // std::cout<<"Minimizare:"<<minimizare<<'\n';
+     // std::cout<<"Inaltime:"<<distanta<<'\n';
       std::cout<<"Volum"<<Volum<<'\n';
-      std::cout<<'\n';
+      //std::cout<<'\n';
 
   }
 
@@ -1095,15 +1095,8 @@ public:
         plane_2->values[2]=Coeficients[1][2];
         plane_2->values[3]=Coeficients[1][3];
        
-
-
-      
-     
         check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp);
-
-        
-      
-        
+       
         if(is_perp)
         {
             compute_volume_2_planes(Coeficients,
@@ -1116,6 +1109,24 @@ public:
                             Volum);
         }
         
+
+        bool paral_floor_1=0;
+        bool paral_floor_2=0;
+
+        check_parallel(coefficients_floor,plane_1,perpendicular_threshold,paral_floor_1);
+        check_parallel(coefficients_floor,plane_2,perpendicular_threshold,paral_floor_2);
+
+        if (paral_floor_1 )
+        {
+          compute_volume_1_plane(coefficients_floor,all_planes[1],Volum);
+          std::cout<<"2 Planuri neperpendiculare, 1 plan paralel cu podeaua"<<'\n';
+        }
+
+        if (paral_floor_2 )
+        {
+          compute_volume_1_plane(coefficients_floor,all_planes[2],Volum);
+          std::cout<<"2 Planuri neperpendiculare, 1 plan paralel cu podeaua"<<'\n';
+        }
 
     //add_normals(cloud_final,cloud_normals);
 
@@ -1156,21 +1167,15 @@ public:
       check_perpendicular(plane_1,plane_2,perpendicular_threshold,is_perp_12);
       check_perpendicular(plane_1,plane_3,perpendicular_threshold,is_perp_13);
       check_perpendicular(plane_2,plane_3,perpendicular_threshold,is_perp_23);
-
+  
       if (is_perp_12 && is_perp_13 && is_perp_23)
       {
-     
+       
+       /*
 
       create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2, ok_lines);
 
-      /*compute_volume_2_planes(Coeficients,
-                            all_planes,
-                            all_lines,
-                            all_projected_lines,
-                            cloud_proiectii,
-                            cloud_linii,
-                            ok_lines,
-                            Volum);*/
+      
 
         
       project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii, ok_lines);
@@ -1179,9 +1184,34 @@ public:
       {
         compute_volume(all_projected_lines, Volum);
       }
+      */
+      compute_volume_2_planes(Coeficients,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            cloud_linii,
+                            ok_lines,
+                            Volum);
+
+      }
+      else
+      {
+         if (is_perp_12)
+         {
+           compute_volume_2_planes(Coeficients,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            cloud_linii,
+                            ok_lines,
+                            Volum);
+         }
+        
       }
 
-
+      
       
     }
   }
