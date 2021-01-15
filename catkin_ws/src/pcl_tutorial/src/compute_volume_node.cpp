@@ -879,6 +879,8 @@ public:
 
 
   void compute_volume_2_planes(float Coeficients[3][4],
+                                int i,
+                                int j,
                                pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                pcl::PointCloud<pcl::PointXYZ> all_lines[4][4],
                                pcl::PointCloud<pcl::PointXYZ>::Ptr all_projected_lines[4][4],
@@ -893,25 +895,25 @@ public:
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr line(new pcl::PointCloud<pcl::PointXYZ>);
 
-    plane = all_planes[1];
+    plane = all_planes[i];
 
-    project_plane_2_plane_single(plane, Coeficients, 2, projection);
-
-    *line += *projection;
-
-    *cloud_linii += *projection;
-
-    all_lines[1][2] = *projection;
-
-    plane = all_planes[2];
-
-    project_plane_2_plane_single(plane, Coeficients, 1, projection);
+    project_plane_2_plane_single(plane, Coeficients, j, projection);
 
     *line += *projection;
 
     *cloud_linii += *projection;
 
-    all_lines[2][1] = *projection;
+    all_lines[i][j] = *projection;
+
+    plane = all_planes[j];
+
+    project_plane_2_plane_single(plane, Coeficients, i, projection);
+
+    *line += *projection;
+
+    *cloud_linii += *projection;
+
+    all_lines[j][i] = *projection;
 
     float coordonate_punct_minim_x;
     float coordonate_punct_minim_y;
@@ -933,23 +935,25 @@ public:
                           coordonate_punct_maxim_y,
                           coordonate_punct_maxim_z);
 
-      third_perpendicular_plane(Coeficients, 1, 2, coordonate_punct_maxim_x, coordonate_punct_maxim_y, coordonate_punct_maxim_z);
+      third_perpendicular_plane(Coeficients, i, j, coordonate_punct_maxim_x, coordonate_punct_maxim_y, coordonate_punct_maxim_z);
 
       plane = all_planes[1];
 
-      project_plane_2_plane_single(plane, Coeficients, 3, projection);
+      int coef_remaining=6-i-j;
 
-      all_lines[1][3] = *projection;
-      all_lines[3][1] = *projection;
+      project_plane_2_plane_single(plane, Coeficients, coef_remaining, projection);
+
+      all_lines[1][coef_remaining] = *projection;
+      all_lines[coef_remaining][1] = *projection;
 
       *cloud_linii += *projection;
 
-      plane = all_planes[2];
+      plane = all_planes[j];
 
-      project_plane_2_plane_single(plane, Coeficients, 3, projection);
+      project_plane_2_plane_single(plane, Coeficients, coef_remaining, projection);
 
-      all_lines[2][3] = *projection;
-      all_lines[3][2] = *projection;
+      all_lines[2][coef_remaining] = *projection;
+      all_lines[coef_remaining][2] = *projection;
 
       *cloud_linii += *projection;
 
@@ -1100,6 +1104,8 @@ public:
         if(is_perp)
         {
             compute_volume_2_planes(Coeficients,
+                            1,
+                            2,
                             all_planes,
                             all_lines,
                             all_projected_lines,
@@ -1186,6 +1192,8 @@ public:
       }
       */
       compute_volume_2_planes(Coeficients,
+                            1,
+                            2,
                             all_planes,
                             all_lines,
                             all_projected_lines,
@@ -1200,6 +1208,8 @@ public:
          if (is_perp_12)
          {
            compute_volume_2_planes(Coeficients,
+                            1,
+                            2,
                             all_planes,
                             all_lines,
                             all_projected_lines,
@@ -1207,6 +1217,38 @@ public:
                             cloud_linii,
                             ok_lines,
                             Volum);
+         }
+         else
+         {
+           if (is_perp_13)
+         {
+           compute_volume_2_planes(Coeficients,
+                            1,
+                            3,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            cloud_linii,
+                            ok_lines,
+                            Volum);
+         }
+         else
+         {
+           if (is_perp_23)
+         {
+           compute_volume_2_planes(Coeficients,
+                            2,
+                            3,
+                            all_planes,
+                            all_lines,
+                            all_projected_lines,
+                            cloud_proiectii,
+                            cloud_linii,
+                            ok_lines,
+                            Volum);
+         }
+         }
          }
         
       }
