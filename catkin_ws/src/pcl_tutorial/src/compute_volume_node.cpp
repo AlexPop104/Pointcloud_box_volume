@@ -427,122 +427,121 @@ public:
       {
         nr_puncte[0][0] = nr_puncte[0][0] + 1;
 
-        int N=final_pointcloud.width;
+        int N = final_pointcloud.width;
 
-          final_pointcloud.width=final_pointcloud.width+1;
-          final_pointcloud.is_dense = false;
-           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
 
-          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
-          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
-         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
-
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
       if (abs(cloud_final->points[nIndex].y) < abs(y_lower_limit + threshold_y))
       {
         nr_puncte[1][0] = nr_puncte[1][0] + 1;
 
-         int N=final_pointcloud.width;
+        int N = final_pointcloud.width;
 
-          final_pointcloud.width=final_pointcloud.width+1;
-          final_pointcloud.is_dense = false;
-           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
 
-          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
-          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
-         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
       if (abs(cloud_final->points[nIndex].z) < abs(z_lower_limit + threshold_z))
       {
         nr_puncte[2][0] = nr_puncte[2][0] + 1;
 
-         int N=final_pointcloud.width;
+        int N = final_pointcloud.width;
 
-          final_pointcloud.width=final_pointcloud.width+1;
-          final_pointcloud.is_dense = false;
-           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
 
-          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
-          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
-         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
       if (abs(cloud_final->points[nIndex].x) < abs(x_upper_limit - threshold_x))
       {
         nr_puncte[0][1] = nr_puncte[0][1] + 1;
 
-         int N=final_pointcloud.width;
+        int N = final_pointcloud.width;
 
-          final_pointcloud.width=final_pointcloud.width+1;
-          final_pointcloud.is_dense = false;
-           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
 
-          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
-          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
-         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
       if (abs(cloud_final->points[nIndex].y) < abs(y_upper_limit - threshold_y))
       {
         nr_puncte[1][1] = nr_puncte[1][1] + 1;
 
-         int N=final_pointcloud.width;
+        int N = final_pointcloud.width;
 
-          final_pointcloud.width=final_pointcloud.width+1;
-          final_pointcloud.is_dense = false;
-           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
 
-          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
-          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
-         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
       if (abs(cloud_final->points[nIndex].z) < abs(z_upper_limit - threshold_z))
       {
         nr_puncte[2][1] = nr_puncte[2][1] + 1;
 
-         int N=final_pointcloud.width;
+        int N = final_pointcloud.width;
 
-          final_pointcloud.width=final_pointcloud.width+1;
-          final_pointcloud.is_dense = false;
-           final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
 
-          final_pointcloud.points[N].x=cloud_final->points[nIndex].x;
-          final_pointcloud.points[N].y=cloud_final->points[nIndex].y;
-         final_pointcloud.points[N].z=cloud_final->points[nIndex].z;
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
     }
     if (nr_puncte[0][0] >= minimum_nr_points)
-      {
-        std::cout << "Object cut X min. Move towards X_min" << '\n';
-      }
+    {
+      std::cout << "Object cut X min. Move towards X_min" << '\n';
+    }
 
-      if (nr_puncte[1][0] >= minimum_nr_points)
-      {
-        std::cout << "Object cut Y min. Move towards Y_min" << '\n';
-      }
+    if (nr_puncte[1][0] >= minimum_nr_points)
+    {
+      std::cout << "Object cut Y min. Move towards Y_min" << '\n';
+    }
 
-      if (nr_puncte[2][0] >= minimum_nr_points)
-      {
-        std::cout << "Object cut Z min. Move towards Z_min" << '\n';
-      }
+    if (nr_puncte[2][0] >= minimum_nr_points)
+    {
+      std::cout << "Object cut Z min. Move towards Z_min" << '\n';
+    }
 
-      if (nr_puncte[0][1] >= minimum_nr_points)
-      {
-        std::cout << "Object cut X max. Move towards X_max" << '\n';
-      }
+    if (nr_puncte[0][1] >= minimum_nr_points)
+    {
+      std::cout << "Object cut X max. Move towards X_max" << '\n';
+    }
 
-      if (nr_puncte[1][1] >= minimum_nr_points)
-      {
-        std::cout << "Object cut Y max. Move towards Y_max" << '\n';
-      }
+    if (nr_puncte[1][1] >= minimum_nr_points)
+    {
+      std::cout << "Object cut Y max. Move towards Y_max" << '\n';
+    }
 
-      if (nr_puncte[2][1] >= minimum_nr_points)
-      {
-        std::cout << "Object cut Z max. Move towards Z_max" << '\n';
-      }
+    if (nr_puncte[2][1] >= minimum_nr_points)
+    {
+      std::cout << "Object cut Z max. Move towards Z_max" << '\n';
+    }
   }
 
   void check_parallel(pcl::ModelCoefficients::Ptr plane_1,
@@ -1155,23 +1154,21 @@ public:
         p = t + 1;
       }
     }
-    if(p>=2)
+    if (p >= 2)
     {
-        check_passthrough_limits(cloud_final,
-                                threshold_x,
-                                threshold_y,
-                                threshold_z,
-                                z_lower_limit,
-                                z_upper_limit,
-                                y_lower_limit,
-                                y_upper_limit,
-                                x_lower_limit,
-                                x_upper_limit,
-                                minimum_nr_points,
-                                cloud_proximitate);
+      check_passthrough_limits(cloud_final,
+                               threshold_x,
+                               threshold_y,
+                               threshold_z,
+                               z_lower_limit,
+                               z_upper_limit,
+                               y_lower_limit,
+                               y_upper_limit,
+                               x_lower_limit,
+                               x_upper_limit,
+                               minimum_nr_points,
+                               cloud_proximitate);
     }
-    
-
 
     if (p == 2)
     {
@@ -1204,7 +1201,6 @@ public:
     {
 
       // std::cout << "2 Planuri" << '\n';
-      
 
       bool is_perp = 0;
 
@@ -1470,7 +1466,7 @@ public:
     cloud_passthrough_thresshold.is_dense = false;
     cloud_passthrough_thresshold.resize(cloud_passthrough_thresshold.width * cloud_passthrough_thresshold.height);
 
-    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, perp_ok, paral_ok,cloud_passthrough_thresshold);
+    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, perp_ok, paral_ok, cloud_passthrough_thresshold);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
@@ -1557,31 +1553,6 @@ public:
 
     ss3 << "Perpendicular " << perp_ok << " si Paralel " << paral_ok;
 
-    /*
-    if (perp_ok && paral_ok)
-    {
-          ss3<<"Planul e paralel si perpendicular cu podeaua"
-    }
-    else
-    {
-      if (perp_ok)
-        {
-          ss3<<"Planul e perpendicular cu podeaua"
-        }
-      else
-        {
-          if (paral_ok)
-          {
-            ss3<<"Planul e paralel cu podeaua"
-          }
-          else
-          {
-            ss3<<"Planul nu are legatura cu podeaua"
-          }
-        }
-    }
-
-    */
 
     visualization_msgs::Marker marker3;
     marker3.header.frame_id = header_camera.str();
