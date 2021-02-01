@@ -414,7 +414,7 @@ public:
                                 int minimum_nr_points,
                                 pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
-    /*
+    
     int nr_puncte[3][2];
 
     for (int i = 0; i < 3; i++)
@@ -442,6 +442,22 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
+       if (cloud_final->points[nIndex].x > x_upper_limit - threshold_x) 
+      {
+        nr_puncte[0][1] = nr_puncte[0][1] + 1;
+
+        int N = final_pointcloud.width;
+
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
+      }
+
+
       if (cloud_final->points[nIndex].y < y_lower_limit + threshold_y)
       {
         nr_puncte[1][0] = nr_puncte[1][0] + 1;
@@ -457,7 +473,23 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (cloud_final->points[nIndex].z < z_lower_limit + threshold_z)
+      if (cloud_final->points[nIndex].y > y_upper_limit - threshold_y)
+      {
+        nr_puncte[1][1] = nr_puncte[1][1] + 1;
+
+        int N = final_pointcloud.width;
+
+        final_pointcloud.width = final_pointcloud.width + 1;
+        final_pointcloud.is_dense = false;
+        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
+      }
+/*
+
+      if (cloud_final->points[nIndex].z < z_lower_limit + threshold_z) 
       {
         nr_puncte[2][0] = nr_puncte[2][0] + 1;
 
@@ -472,37 +504,9 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (cloud_final->points[nIndex].x < x_upper_limit - threshold_x)
-      {
-        nr_puncte[0][1] = nr_puncte[0][1] + 1;
-
-        int N = final_pointcloud.width;
-
-        final_pointcloud.width = final_pointcloud.width + 1;
-        final_pointcloud.is_dense = false;
-        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
-
-        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
-        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
-        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
-      }
-
-      if (cloud_final->points[nIndex].y < y_upper_limit - threshold_y)
-      {
-        nr_puncte[1][1] = nr_puncte[1][1] + 1;
-
-        int N = final_pointcloud.width;
-
-        final_pointcloud.width = final_pointcloud.width + 1;
-        final_pointcloud.is_dense = false;
-        final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
-
-        final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
-        final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
-        final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
-      }
-
-      if (cloud_final->points[nIndex].z < z_upper_limit - threshold_z);
+     
+      
+      if (cloud_final->points[nIndex].z > z_upper_limit - threshold_z);
       {
         nr_puncte[2][1] = nr_puncte[2][1] + 1;
 
@@ -516,16 +520,14 @@ public:
         final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
-      
-      
-     
+*/
     }
 
-   */
+   
 
-  final_pointcloud=*cloud_final;
+  
 
-    /*
+    
     if (nr_puncte[0][0] >= minimum_nr_points)
     {
       std::cout << "Object cut X min. Move towards X_min" << '\n';
@@ -555,7 +557,7 @@ public:
     {
       std::cout << "Object cut Z max. Move towards Z_max" << '\n';
     }
-    */
+    
     
   }
 
@@ -1098,7 +1100,10 @@ public:
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_proiectii,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_linii,
-                   float &Volum, int &p, bool &perp_ok, bool &paral_ok,
+                   float &Volum,
+                   int &p,
+                   bool &perp_ok,
+                   bool &paral_ok,
                    pcl::PointCloud<pcl::PointXYZ> &cloud_proximitate)
   {
 
@@ -1310,20 +1315,7 @@ public:
       if (is_perp_12 && is_perp_13 && is_perp_23)
       {
 
-        /*
-
-      create_lines(Coeficients, all_planes, all_lines, cloud_linii, ok2, ok_lines);
-
-      
-
-        
-      project_line_2_plane(Coeficients, all_planes, all_lines, all_projected_lines, cloud_proiectii, ok_lines);
-
-      if (ok_lines)
-      {
-        compute_volume(all_projected_lines, Volum);
-      }
-      */
+       
         compute_volume_2_planes(Coeficients,
                                 1,
                                 2,
@@ -1581,7 +1573,7 @@ public:
     pub1_.publish(tempROSMsg);
     pub2_.publish(tempROSMsg2);
     pub3_.publish(tempROSMsg3);
-    pub4_.publish(tempROSMsg3);
+    pub4_.publish(tempROSMsg4);
 
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
