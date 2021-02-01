@@ -398,6 +398,9 @@ public:
     // cloud_normals->size () should have the same size as the input cloud->size ()*
   }
 
+
+
+
   void check_passthrough_limits(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
                                 float threshold_x,
                                 float threshold_y,
@@ -411,6 +414,7 @@ public:
                                 int minimum_nr_points,
                                 pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
+    /*
     int nr_puncte[3][2];
 
     for (int i = 0; i < 3; i++)
@@ -423,7 +427,7 @@ public:
 
     for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
     {
-      if (abs(cloud_final->points[nIndex].x) < abs(x_lower_limit + threshold_x))
+      if (cloud_final->points[nIndex].x < x_lower_limit + threshold_x)
       {
         nr_puncte[0][0] = nr_puncte[0][0] + 1;
 
@@ -438,7 +442,7 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (abs(cloud_final->points[nIndex].y) < abs(y_lower_limit + threshold_y))
+      if (cloud_final->points[nIndex].y < y_lower_limit + threshold_y)
       {
         nr_puncte[1][0] = nr_puncte[1][0] + 1;
 
@@ -453,7 +457,7 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (abs(cloud_final->points[nIndex].z) < abs(z_lower_limit + threshold_z))
+      if (cloud_final->points[nIndex].z < z_lower_limit + threshold_z)
       {
         nr_puncte[2][0] = nr_puncte[2][0] + 1;
 
@@ -468,7 +472,7 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (abs(cloud_final->points[nIndex].x) < abs(x_upper_limit - threshold_x))
+      if (cloud_final->points[nIndex].x < x_upper_limit - threshold_x)
       {
         nr_puncte[0][1] = nr_puncte[0][1] + 1;
 
@@ -483,7 +487,7 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (abs(cloud_final->points[nIndex].y) < abs(y_upper_limit - threshold_y))
+      if (cloud_final->points[nIndex].y < y_upper_limit - threshold_y)
       {
         nr_puncte[1][1] = nr_puncte[1][1] + 1;
 
@@ -498,7 +502,7 @@ public:
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
 
-      if (abs(cloud_final->points[nIndex].z) < abs(z_upper_limit - threshold_z))
+      if (cloud_final->points[nIndex].z < z_upper_limit - threshold_z);
       {
         nr_puncte[2][1] = nr_puncte[2][1] + 1;
 
@@ -512,7 +516,16 @@ public:
         final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
         final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
       }
+      
+      
+     
     }
+
+   */
+
+  final_pointcloud=*cloud_final;
+
+    /*
     if (nr_puncte[0][0] >= minimum_nr_points)
     {
       std::cout << "Object cut X min. Move towards X_min" << '\n';
@@ -542,6 +555,8 @@ public:
     {
       std::cout << "Object cut Z max. Move towards Z_max" << '\n';
     }
+    */
+    
   }
 
   void check_parallel(pcl::ModelCoefficients::Ptr plane_1,
