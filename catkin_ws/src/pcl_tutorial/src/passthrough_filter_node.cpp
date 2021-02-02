@@ -76,7 +76,7 @@ public:
 
     std_msgs::String msg;
 
-    
+    ss<<x_lower_limit<<" "<<x_upper_limit<<" "<<y_lower_limit<<" "<<y_lower_limit;
       
 
     msg.data=ss.str();

@@ -23,6 +23,8 @@
 #include <dynamic_reconfigure/server.h>
 #include "std_msgs/String.h"
 
+#define PI 3.14159265
+
 class ComputeVolumeNode
 {
 public:
@@ -30,6 +32,9 @@ public:
 
   ComputeVolumeNode()
   {
+
+    
+
 
     bool ok2;
 
@@ -59,6 +64,7 @@ public:
     pub2_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_proiectii", 1);
     pub3_ = nh_.advertise<sensor_msgs::PointCloud2>("/output_linii", 1);
     pub4_ = nh_.advertise<sensor_msgs::PointCloud2>("/Cutof_Object_points", 1);
+    pub5_ = nh_.advertise<sensor_msgs::PointCloud2>("/Planes_wrong_angle", 1);
 
     sub_ = nh_.subscribe("/pf_out", 1, &ComputeVolumeNode::cloudCallback, this);
 
@@ -584,6 +590,37 @@ public:
     }
   }
 
+void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
+                                    float Coeficients[3][4],
+                                    int j,
+                                    float angle,
+                    pcl::PointCloud<pcl::PointXYZ>::Ptr wrong_angle_plane)
+  {
+
+    pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients());
+    coefficients->values.resize(4);
+
+    coefficients->values[0] = Coeficients[j - 1][0];
+    coefficients->values[1] = Coeficients[j - 1][1];
+    coefficients->values[2] = Coeficients[j - 1][2];
+    coefficients->values[3] = Coeficients[j - 1][3];
+
+   
+
+      float length = sqrt ( (coefficients->values[0])*(coefficients->values[0])+
+                            (coefficients->values[1])*(coefficients->values[1])+
+                            (coefficients->values[2])*(coefficients->values[2]));
+      float cosine_value= coefficients->values[2] * 1 / length;
+
+      if (abs(cosine_value) < cos(  (angle)*(PI) / 180 )   )
+      {
+          *wrong_angle_plane +=  *(all_planes[j]);
+          std::cout<<cosine_value<<" < "<<cos(angle)*(PI)/180;
+      }
+
+
+  } 
+
   void project_plane_2_plane_single(pcl::PointCloud<pcl::PointXYZ>::Ptr plane,
                                     float Coeficients[3][4],
                                     int j,
@@ -1104,7 +1141,8 @@ public:
                    int &p,
                    bool &perp_ok,
                    bool &paral_ok,
-                   pcl::PointCloud<pcl::PointXYZ> &cloud_proximitate)
+                   pcl::PointCloud<pcl::PointXYZ> &cloud_proximitate,
+                   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_wrong_angle)
   {
 
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
@@ -1188,6 +1226,18 @@ public:
                                x_upper_limit,
                                minimum_nr_points,
                                cloud_proximitate);
+
+     compute_angle(all_planes,
+                   Coeficients,
+                   1,
+                  angle,
+                  cloud_wrong_angle);
+
+    compute_angle(all_planes,
+                   Coeficients,
+                   2,
+                  angle,
+                  cloud_wrong_angle);
     }
 
     if (p == 2)
@@ -1393,19 +1443,23 @@ public:
     threshold_z = config.threshold_z;
     minimum_nr_points = (int)config.minimum_nr_points;
 
-    z_lower_limit = config.z_lower_limit;
+    z_lower_limit = config.z_lower_limit; 
     z_upper_limit = config.z_upper_limit;
     x_lower_limit = config.x_lower_limit;
     x_upper_limit = config.x_upper_limit;
     y_lower_limit = config.y_lower_limit;
     y_upper_limit = config.y_upper_limit;
 
-    passthrough_limits[0] = config.x_lower_limit;
-    passthrough_limits[1] = config.x_upper_limit;
-    passthrough_limits[2] = config.y_lower_limit;
-    passthrough_limits[3] = config.y_upper_limit;
-    passthrough_limits[4] = config.z_lower_limit;
-    passthrough_limits[5] = config.z_upper_limit;
+    angle=config.angle_threshold;
+
+    
+    /*
+    if (nh_.hasParam("/Dimensions"))
+      {
+   std::cout<<"Exista";
+      }
+      */
+   
   }
 
   void
@@ -1473,17 +1527,21 @@ public:
     cloud_passthrough_thresshold.is_dense = false;
     cloud_passthrough_thresshold.resize(cloud_passthrough_thresshold.width * cloud_passthrough_thresshold.height);
 
-    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, perp_ok, paral_ok, cloud_passthrough_thresshold);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_wrong_angle(new pcl::PointCloud<pcl::PointXYZ>);
+
+    compute_all(cloudPTR, cloud_floor, cloud_final, cloud_proiectii, cloud_linii, Volum, p, perp_ok, paral_ok, cloud_passthrough_thresshold,cloud_wrong_angle);
 
     sensor_msgs::PointCloud2 tempROSMsg;
     sensor_msgs::PointCloud2 tempROSMsg2;
     sensor_msgs::PointCloud2 tempROSMsg3;
     sensor_msgs::PointCloud2 tempROSMsg4;
+    sensor_msgs::PointCloud2 tempROSMsg5;
 
     pcl::toROSMsg(*cloud_final, tempROSMsg);
     pcl::toROSMsg(*cloud_proiectii, tempROSMsg2);
     pcl::toROSMsg(*cloud_linii, tempROSMsg3);
     pcl::toROSMsg(cloud_passthrough_thresshold, tempROSMsg4);
+    pcl::toROSMsg(*cloud_wrong_angle, tempROSMsg5);
 
     //Camera_type
     ////////////////////////////////////////
@@ -1510,6 +1568,7 @@ public:
     tempROSMsg2.header.frame_id = header_camera.str();
     tempROSMsg3.header.frame_id = header_camera.str();
     tempROSMsg4.header.frame_id = header_camera.str();
+    tempROSMsg5.header.frame_id = header_camera.str();
 
     //Message Marker Volume
     ////////////////////////////////////////
@@ -1574,6 +1633,7 @@ public:
     pub2_.publish(tempROSMsg2);
     pub3_.publish(tempROSMsg3);
     pub4_.publish(tempROSMsg4);
+    pub5_.publish(tempROSMsg5);
 
     vis_pub.publish(marker);
     vis2_pub.publish(marker2);
@@ -1638,6 +1698,10 @@ private:
   float x_lower_limit;
   float x_upper_limit;
 
+   float angle;
+
+  std::string dimensions;
+
   double selection_camera;
 
   ros::NodeHandle nh_;
@@ -1647,6 +1711,7 @@ private:
   ros::Publisher pub2_;
   ros::Publisher pub3_;
   ros::Publisher pub4_;
+  ros::Publisher pub5_;
 
   ros::Publisher vis_pub;
   ros::Publisher vis2_pub;
