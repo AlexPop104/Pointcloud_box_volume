@@ -25,6 +25,11 @@
 
 #define PI 3.14159265
 
+/* -------- DEFS FOR RANSAC PARAMS -------- */
+
+
+/* ----- END DEFS FOR RANSAC PARAMS ------ */
+
 class ComputeVolumeNode
 {
 public:
@@ -32,9 +37,6 @@ public:
 
   ComputeVolumeNode()
   {
-
-    
-
 
     bool ok2;
 
@@ -74,9 +76,11 @@ public:
     vis2_pub = nh_.advertise<visualization_msgs::Marker>("/Nr_of_planes", 0);
     vis3_pub = nh_.advertise<visualization_msgs::Marker>("/1_plane_cases", 0);
     vis4_pub = nh_.advertise<visualization_msgs::Marker>("/camera_type", 0);
+    vis5_pub = nh_.advertise<visualization_msgs::Marker>("/Volume_Error", 0);
   }
 
   ~ComputeVolumeNode() {}
+
 
   void planar_segmenting_single_time(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                                      pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_segmented,
@@ -565,6 +569,240 @@ public:
     }
     
     
+  }
+
+void check_passthrough_limits_x_min(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                                float threshold_x,
+                                float threshold_y,
+                                float threshold_z,
+                                float z_lower_limit,
+                                float z_upper_limit,
+                                float y_lower_limit,
+                                float y_upper_limit,
+                                float x_lower_limit,
+                                float x_upper_limit,
+                                int minimum_nr_points,
+                                pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
+  {
+    
+   int nr_puncte[3][2];
+
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 2; j++)
+      {
+        nr_puncte[i][j] = 0;
+      }
+    }
+
+    for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+
+      if (cloud_final->points[nIndex].x < x_lower_limit + threshold_x)
+      {
+        nr_puncte[0][0] = nr_puncte[0][0] + 1;
+      
+      }
+
+    }
+
+    if (nr_puncte[0][0] >= minimum_nr_points)
+    {
+      std::cout << "Object cut X min. Move towards X_min" << '\n';
+
+      for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+          if (cloud_final->points[nIndex].x < x_lower_limit + threshold_x)
+          {
+            int N = final_pointcloud.width;
+
+            final_pointcloud.width = final_pointcloud.width + 1;
+            final_pointcloud.is_dense = false;
+             final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+            final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+            final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+            final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
+          }
+      }
+    }
+
+  }
+
+
+void check_passthrough_limits_x_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                                float threshold_x,
+                                float threshold_y,
+                                float threshold_z,
+                                float z_lower_limit,
+                                float z_upper_limit,
+                                float y_lower_limit,
+                                float y_upper_limit,
+                                float x_lower_limit,
+                                float x_upper_limit,
+                                int minimum_nr_points,
+                                pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
+  {
+    
+   int nr_puncte[3][2];
+
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 2; j++)
+      {
+        nr_puncte[i][j] = 0;
+      }
+    }
+
+    for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+
+
+      if (cloud_final->points[nIndex].x > x_upper_limit - threshold_x)
+      {
+        nr_puncte[0][1] = nr_puncte[0][1] + 1;
+        
+      }
+
+
+    }
+
+
+    if (nr_puncte[0][1] >= minimum_nr_points)
+    {
+      std::cout << "Object cut X max. Move towards X_max" << '\n';
+
+      for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+         if (cloud_final->points[nIndex].x > x_upper_limit - threshold_x)
+          {
+            int N = final_pointcloud.width;
+
+            final_pointcloud.width = final_pointcloud.width + 1;
+            final_pointcloud.is_dense = false;
+             final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+            final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+            final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+            final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
+          }
+      }
+    }
+  }
+
+void check_passthrough_limits_y_min(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                                float threshold_x,
+                                float threshold_y,
+                                float threshold_z,
+                                float z_lower_limit,
+                                float z_upper_limit,
+                                float y_lower_limit,
+                                float y_upper_limit,
+                                float x_lower_limit,
+                                float x_upper_limit,
+                                int minimum_nr_points,
+                                pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
+  {
+    
+    int nr_puncte[3][2];
+
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 2; j++)
+      {
+        nr_puncte[i][j] = 0;
+      }
+    }
+
+    for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+
+      if (cloud_final->points[nIndex].y < y_lower_limit + threshold_y)
+      {
+        nr_puncte[1][0] = nr_puncte[1][0] + 1;
+      
+      }
+    }
+
+    if (nr_puncte[1][0] >= minimum_nr_points)
+    {
+      std::cout << "Object cut Y min. Move towards Y_min" << '\n';
+
+      for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+          if (cloud_final->points[nIndex].y < y_lower_limit + threshold_y)
+          {
+            int N = final_pointcloud.width;
+
+            final_pointcloud.width = final_pointcloud.width + 1;
+            final_pointcloud.is_dense = false;
+             final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+            final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+            final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+            final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
+          }
+      }
+    }
+  }
+
+void check_passthrough_limits_y_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
+                                float threshold_x,
+                                float threshold_y,
+                                float threshold_z,
+                                float z_lower_limit,
+                                float z_upper_limit,
+                                float y_lower_limit,
+                                float y_upper_limit,
+                                float x_lower_limit,
+                                float x_upper_limit,
+                                int minimum_nr_points,
+                                pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
+  {
+    
+    int nr_puncte[3][2];
+
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 2; j++)
+      {
+        nr_puncte[i][j] = 0;
+      }
+    }
+
+    for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+    {
+
+      if (cloud_final->points[nIndex].y > y_upper_limit - threshold_y)
+      {
+        nr_puncte[1][1] = nr_puncte[1][1] + 1;
+        
+      }
+
+
+    }
+
+    if (nr_puncte[1][1] >= minimum_nr_points)
+    {
+      std::cout << "Object cut Y max. Move towards Y_max" << '\n';
+
+      for (int nIndex = 0; nIndex < cloud_final->points.size(); nIndex++)
+      {
+         if (cloud_final->points[nIndex].y > y_upper_limit - threshold_y)
+          {
+            int N = final_pointcloud.width;
+
+            final_pointcloud.width = final_pointcloud.width + 1;
+            final_pointcloud.is_dense = false;
+             final_pointcloud.resize(final_pointcloud.width * final_pointcloud.height);
+
+            final_pointcloud.points[N].x = cloud_final->points[nIndex].x;
+            final_pointcloud.points[N].y = cloud_final->points[nIndex].y;
+            final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
+          }
+      }
+    }
+
   }
 
   void check_parallel(pcl::ModelCoefficients::Ptr plane_1,
@@ -1214,7 +1452,46 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
     }
     if (p >= 2)
     {
-      check_passthrough_limits(cloud_final,
+      check_passthrough_limits_x_min(cloud_final,
+                               threshold_x,
+                               threshold_y,
+                               threshold_z,
+                               z_lower_limit,
+                               z_upper_limit,
+                               y_lower_limit,
+                               y_upper_limit,
+                               x_lower_limit,
+                               x_upper_limit,
+                               minimum_nr_points,
+                               cloud_proximitate);
+
+      check_passthrough_limits_x_max(cloud_final,
+                               threshold_x,
+                               threshold_y,
+                               threshold_z,
+                               z_lower_limit,
+                               z_upper_limit,
+                               y_lower_limit,
+                               y_upper_limit,
+                               x_lower_limit,
+                               x_upper_limit,
+                               minimum_nr_points,
+                               cloud_proximitate);
+
+      check_passthrough_limits_y_min(cloud_final,
+                               threshold_x,
+                               threshold_y,
+                               threshold_z,
+                               z_lower_limit,
+                               z_upper_limit,
+                               y_lower_limit,
+                               y_upper_limit,
+                               x_lower_limit,
+                               x_upper_limit,
+                               minimum_nr_points,
+                               cloud_proximitate);
+
+      check_passthrough_limits_y_max(cloud_final,
                                threshold_x,
                                threshold_y,
                                threshold_z,
@@ -1452,6 +1729,8 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
 
     angle=config.angle_threshold;
 
+    real_volume=config.real_volume;
+
     
     /*
     if (nh_.hasParam("/Dimensions"))
@@ -1625,6 +1904,19 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
     marker3.text = ss3.str();
     set_marker(marker3);
 
+    
+    
+    std::stringstream ss4;
+     ss4 << "Error percentage volume: " << (real_volume-Volum)/real_volume *100<< "%";
+
+
+    visualization_msgs::Marker marker4;
+    marker4.header.frame_id = header_camera.str();
+    marker4.text = ss4.str();
+    set_marker(marker4);
+
+    
+
     ///////////////
 
     //Publish the data
@@ -1639,6 +1931,7 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
     vis2_pub.publish(marker2);
     vis3_pub.publish(marker3);
     vis4_pub.publish(marker_camera);
+    vis5_pub.publish(marker4);
 
     cloud_final->clear();
     cloud_linii->clear();
@@ -1700,6 +1993,9 @@ private:
 
    float angle;
 
+  float real_volume;
+
+
   std::string dimensions;
 
   double selection_camera;
@@ -1717,6 +2013,7 @@ private:
   ros::Publisher vis2_pub;
   ros::Publisher vis3_pub;
   ros::Publisher vis4_pub;
+  ros::Publisher vis5_pub;
 };
 
 int main(int argc, char **argv)
