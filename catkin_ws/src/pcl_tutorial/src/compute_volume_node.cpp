@@ -582,6 +582,7 @@ void check_passthrough_limits_x_min(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
                                 float x_lower_limit,
                                 float x_upper_limit,
                                 int minimum_nr_points,
+                                int &nr_points,
                                 pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
     
@@ -625,6 +626,10 @@ void check_passthrough_limits_x_min(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
             final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
           }
       }
+
+      nr_points= nr_puncte[0][0];
+
+      std::cout<<"Puncte X min:"<<nr_points<<'\n';
     }
 
   }
@@ -641,6 +646,7 @@ void check_passthrough_limits_x_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
                                 float x_lower_limit,
                                 float x_upper_limit,
                                 int minimum_nr_points,
+                                int &nr_points,
                                 pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
     
@@ -687,6 +693,9 @@ void check_passthrough_limits_x_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
             final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
           }
       }
+       nr_points= nr_puncte[0][1];
+
+       std::cout<<"Puncte X max:"<<nr_points<<'\n';
     }
   }
 
@@ -701,6 +710,7 @@ void check_passthrough_limits_y_min(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
                                 float x_lower_limit,
                                 float x_upper_limit,
                                 int minimum_nr_points,
+                                int &nr_points,
                                 pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
     
@@ -743,6 +753,9 @@ void check_passthrough_limits_y_min(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
             final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
           }
       }
+       nr_points= nr_puncte[1][0];
+
+       std::cout<<"Puncte Y min:"<<nr_points<<'\n';
     }
   }
 
@@ -757,6 +770,7 @@ void check_passthrough_limits_y_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
                                 float x_lower_limit,
                                 float x_upper_limit,
                                 int minimum_nr_points,
+                                int &nr_points,
                                 pcl::PointCloud<pcl::PointXYZ> &final_pointcloud)
   {
     
@@ -801,6 +815,9 @@ void check_passthrough_limits_y_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
             final_pointcloud.points[N].z = cloud_final->points[nIndex].z;
           }
       }
+       nr_points= nr_puncte[1][1];
+
+       std::cout<<"Puncte Y max:"<<nr_points<<'\n';
     }
 
   }
@@ -831,7 +848,8 @@ void check_passthrough_limits_y_max(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_fi
 void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                     float Coeficients[3][4],
                                     int j,
-                                    float angle,
+                                    float limit_angle,
+                                    float &cos_angle,
                     pcl::PointCloud<pcl::PointXYZ>::Ptr wrong_angle_plane)
   {
 
@@ -850,12 +868,16 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                             (coefficients->values[2])*(coefficients->values[2]));
       float cosine_value= coefficients->values[2] * 1 / length;
 
-      if (abs(cosine_value) < cos(  (angle)*(PI) / 180 )   )
+      if (abs(cosine_value) < cos(  (limit_angle)*(PI) / 180 )   )
       {
           *wrong_angle_plane +=  *(all_planes[j]);
-          std::cout<<cosine_value<<" < "<<cos(angle)*(PI)/180;
+          std::cout<<abs(cosine_value)<<" < "<<cos(limit_angle)*(PI)/180<<'\n';
+
+          cos_angle=abs(cosine_value);
       }
 
+      
+      
 
   } 
 
@@ -1397,6 +1419,16 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
 
     Eigen::Vector3f normal_floor;
 
+    int x_min_nr_points=0;
+    int x_max_nr_points=0;
+    int y_min_nr_points=0;
+    int y_max_nr_points=0;
+
+    float cos_angle_u1=0;
+    float cos_angle_u2=0;
+
+
+
     bool ok = 1;
 
     bool ok2 = 1;
@@ -1463,6 +1495,7 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_lower_limit,
                                x_upper_limit,
                                minimum_nr_points,
+                               x_min_nr_points,
                                cloud_proximitate);
 
       check_passthrough_limits_x_max(cloud_final,
@@ -1476,6 +1509,7 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_lower_limit,
                                x_upper_limit,
                                minimum_nr_points,
+                               x_max_nr_points,
                                cloud_proximitate);
 
       check_passthrough_limits_y_min(cloud_final,
@@ -1489,6 +1523,7 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_lower_limit,
                                x_upper_limit,
                                minimum_nr_points,
+                               y_min_nr_points,
                                cloud_proximitate);
 
       check_passthrough_limits_y_max(cloud_final,
@@ -1502,23 +1537,26 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_lower_limit,
                                x_upper_limit,
                                minimum_nr_points,
+                               y_max_nr_points,
                                cloud_proximitate);
 
-     compute_angle(all_planes,
+    
+
+     
+
+   
+    }
+
+    if (p == 2)
+    {  /*
+        compute_angle(all_planes,
                    Coeficients,
                    1,
                   angle,
                   cloud_wrong_angle);
 
-    compute_angle(all_planes,
-                   Coeficients,
-                   2,
-                  angle,
-                  cloud_wrong_angle);
-    }
+          */
 
-    if (p == 2)
-    {
 
       pcl::ModelCoefficients::Ptr coefficients_plane(new pcl::ModelCoefficients);
       coefficients_plane->values.resize(4);
@@ -1538,14 +1576,36 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                           parallel_threshold,
                           perp_ok);
 
+
+    
+
+
+    /*
       if (paral_ok)
       {
         compute_volume_1_plane(coefficients_floor, all_planes[1], Volum);
       }
+    */
     }
 
     if (p == 3)
     {
+
+    compute_angle(all_planes,
+                   Coeficients,
+                   1,
+                  angle,
+                  cos_angle_u1,
+                  cloud_wrong_angle);
+
+    compute_angle(all_planes,
+                   Coeficients,
+                   2,
+                  angle,
+                  cos_angle_u2,
+                  cloud_wrong_angle);
+
+
 
       // std::cout << "2 Planuri" << '\n';
 
@@ -1588,7 +1648,7 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
 
       check_parallel(coefficients_floor, plane_1, perpendicular_threshold, paral_floor_1);
       check_parallel(coefficients_floor, plane_2, perpendicular_threshold, paral_floor_2);
-
+      /*
       if (paral_floor_1)
       {
         compute_volume_1_plane(coefficients_floor, all_planes[1], Volum);
@@ -1600,12 +1660,33 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
         compute_volume_1_plane(coefficients_floor, all_planes[2], Volum);
         std::cout << "2 Planuri neperpendiculare, 1 plan paralel cu podeaua" << '\n';
       }
-
+      */
       //add_normals(cloud_final,cloud_normals);
     }
 
     if (p == 4)
     {
+      
+      compute_angle(all_planes,
+                   Coeficients,
+                   1,
+                  angle,
+                  cos_angle_u1,
+                  cloud_wrong_angle);
+
+    compute_angle(all_planes,
+                   Coeficients,
+                   2,
+                  angle,
+                  cos_angle_u2,
+                  cloud_wrong_angle);
+      /*
+      compute_angle(all_planes,
+                   Coeficients,
+                   3,
+                  angle,
+                  cloud_wrong_angle);
+      */
 
       bool is_perp_12 = 0;
       bool is_perp_13 = 0;
