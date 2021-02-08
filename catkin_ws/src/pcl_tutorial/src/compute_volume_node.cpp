@@ -1392,6 +1392,55 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
     }
   }
 
+ float score_passthrough_side(int p,pcl::PointCloud<pcl::PointXYZ> cloud_proximitate, int limit_number)
+    {
+      if (p>=2)
+      {
+          if (cloud_proximitate.size()>limit_number)
+           {
+             return(1 / cloud_proximitate.size()) ;
+           }
+          else
+          {
+            return(1);
+          }
+      }
+      else
+      {
+        return(0);
+      }
+    }
+
+
+  float score_angle(int p,int nr_plane, float cos_angle,float cos_angle_limit)
+    {
+      if (p>nr_plane)
+      {
+          if (cos_angle<cos_angle_limit)
+           {
+             return(cos_angle) ;
+           }
+          else
+          {
+            return(1);
+          }
+      }
+      else
+      {
+        return(0);
+      }
+    }
+ /*
+  float score_distance(int p,int plane_nr, float distance ,pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4])
+  {
+     if (p>plane_nr)
+     {
+
+     }
+  }
+
+  */
+ 
   void compute_all(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_floor,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_final,
@@ -1404,6 +1453,30 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                    pcl::PointCloud<pcl::PointXYZ> &cloud_proximitate,
                    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_wrong_angle)
   {
+
+    pcl::PointCloud<pcl::PointXYZ> cloud_proximitate_x_min;
+    cloud_proximitate_x_min.width = 0;
+    cloud_proximitate_x_min.height = 1;
+    cloud_proximitate_x_min.is_dense = false;
+    cloud_proximitate_x_min.resize(cloud_proximitate_x_min.width * cloud_proximitate_x_min.height);
+
+    pcl::PointCloud<pcl::PointXYZ> cloud_proximitate_x_max;
+    cloud_proximitate_x_max.width = 0;
+    cloud_proximitate_x_max.height = 1;
+    cloud_proximitate_x_max.is_dense = false;
+    cloud_proximitate_x_max.resize(cloud_proximitate_x_max.width * cloud_proximitate_x_max.height);
+
+    pcl::PointCloud<pcl::PointXYZ> cloud_proximitate_y_min;
+    cloud_proximitate_y_min.width = 0;
+    cloud_proximitate_y_min.height = 1;
+    cloud_proximitate_y_min.is_dense = false;
+    cloud_proximitate_y_min.resize(cloud_proximitate_y_min.width * cloud_proximitate_y_min.height);
+
+    pcl::PointCloud<pcl::PointXYZ> cloud_proximitate_y_max;
+    cloud_proximitate_y_max.width = 0;
+    cloud_proximitate_y_max.height = 1;
+    cloud_proximitate_y_max.is_dense = false;
+    cloud_proximitate_y_max.resize(cloud_proximitate_y_max.width * cloud_proximitate_y_max.height);
 
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>);
 
@@ -1424,8 +1497,9 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
     int y_min_nr_points=0;
     int y_max_nr_points=0;
 
-    float cos_angle_u1=0;
-    float cos_angle_u2=0;
+    float cos_angle_u1=1;
+    float cos_angle_u2=1;
+    float cos_angle_u3=1;
 
 
 
@@ -1496,7 +1570,9 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_upper_limit,
                                minimum_nr_points,
                                x_min_nr_points,
-                               cloud_proximitate);
+                               cloud_proximitate_x_min);
+
+      cloud_proximitate=cloud_proximitate+cloud_proximitate_x_min;
 
       check_passthrough_limits_x_max(cloud_final,
                                threshold_x,
@@ -1510,7 +1586,9 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_upper_limit,
                                minimum_nr_points,
                                x_max_nr_points,
-                               cloud_proximitate);
+                               cloud_proximitate_x_max);
+
+      cloud_proximitate+=cloud_proximitate_x_max;
 
       check_passthrough_limits_y_min(cloud_final,
                                threshold_x,
@@ -1524,7 +1602,9 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_upper_limit,
                                minimum_nr_points,
                                y_min_nr_points,
-                               cloud_proximitate);
+                               cloud_proximitate_y_min);
+
+      cloud_proximitate+=cloud_proximitate_y_min;
 
       check_passthrough_limits_y_max(cloud_final,
                                threshold_x,
@@ -1538,13 +1618,10 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                                x_upper_limit,
                                minimum_nr_points,
                                y_max_nr_points,
-                               cloud_proximitate);
+                               cloud_proximitate_y_max);
 
-    
+      cloud_proximitate+=cloud_proximitate_y_max;
 
-     
-
-   
     }
 
     if (p == 2)
@@ -1685,8 +1762,11 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
                    Coeficients,
                    3,
                   angle,
+                  cos_angle_u3,
                   cloud_wrong_angle);
-      */
+
+        */
+      
 
       bool is_perp_12 = 0;
       bool is_perp_13 = 0;
@@ -1784,6 +1864,22 @@ void compute_angle( pcl::PointCloud<pcl::PointXYZ>::Ptr all_planes[4],
         }
       }
     }
+
+    float score1;
+    float score2;
+    float score3;
+    float score4;
+
+    score1=score_passthrough_side(p,cloud_proximitate_x_min,minimum_nr_points)+
+          score_passthrough_side(p,cloud_proximitate_x_max,minimum_nr_points)+
+          score_passthrough_side(p,cloud_proximitate_y_min,minimum_nr_points)+
+          score_passthrough_side(p,cloud_proximitate_y_max,minimum_nr_points);
+    std::cout<<"Score 1:"<<score1<<'\n';
+
+    score2=score_angle(p,1,cos_angle_u1,angle)+
+           score_angle(p,2,cos_angle_u2,angle);
+
+    std::cout<<"Score 2:"<<score2<<'\n';
   }
 
   void
